@@ -1,0 +1,104 @@
+<!--pages/discover/discover.wxml-->
+<view class="container">
+  <!-- Search Bar -->
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索活动..."
+        value="{{searchText}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+      />
+    </view>
+  </view>
+
+  <!-- Category Icons Row -->
+  <scroll-view class="category-scroll" scroll-x>
+    <view class="category-list">
+      <view
+        class="category-item {{selectedCategory === item.id ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCategoryTap"
+      >
+        <view class="category-icon">{{item.icon}}</view>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Location Filter -->
+  <view class="location-filter">
+    <view
+      class="filter-item {{locationFilter === 'nearby' ? 'active' : ''}}"
+      data-filter="nearby"
+      bindtap="onLocationFilterChange"
+    >
+      附近(10km)
+    </view>
+    <view
+      class="filter-item {{locationFilter === 'city' ? 'active' : ''}}"
+      data-filter="city"
+      bindtap="onLocationFilterChange"
+    >
+      全城
+    </view>
+    <view
+      class="filter-item {{locationFilter === 'area' ? 'active' : ''}}"
+      data-filter="area"
+      bindtap="onLocationFilterChange"
+    >
+      指定区域
+    </view>
+  </view>
+
+  <!-- Activity Feed -->
+  <view class="activity-feed">
+    <block wx:for="{{activities}}" wx:key="_id">
+      <activity-card
+        activity="{{item}}"
+        data-id="{{item._id}}"
+        bindtap="onActivityTap"
+      />
+    </block>
+
+    <!-- Loading State -->
+    <view wx:if="{{loading}}" class="loading-wrapper">
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- Empty State -->
+    <view wx:if="{{!loading && activities.length === 0}}" class="empty-state">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无活动</text>
+    </view>
+
+    <!-- No More -->
+    <view wx:if="{{!loading && !hasMore && activities.length > 0}}" class="no-more">
+      <text class="no-more-text">没有更多了</text>
+    </view>
+  </view>
+
+  <!-- Floating Action Button -->
+  <view class="fab" bindtap="onCreateActivityTap">
+    <text class="fab-icon">➕</text>
+  </view>
+
+  <!-- 隐私协议弹窗 -->
+  <view class="privacy-mask" wx:if="{{showPrivacy}}">
+    <view class="privacy-dialog">
+      <view class="privacy-title">隐私保护提示</view>
+      <view class="privacy-content">
+        <text>在使用位置服务前，请阅读并同意</text>
+        <text class="privacy-link" bindtap="openPrivacyContract">《心动卡片隐私保护指引》</text>
+      </view>
+      <view class="privacy-buttons">
+        <button class="privacy-btn reject" bindtap="handleRejectPrivacy">拒绝</button>
+        <button class="privacy-btn agree" id="agree-btn" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="handleAgreePrivacy">同意</button>
+      </view>
+    </view>
+  </view>
+</view>

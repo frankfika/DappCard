@@ -1,0 +1,217 @@
+{
+  "mode": "romance_spark",
+  "mode_name": "约会心动",
+  "type": "question",
+  "cards": [
+    {
+      "id": "rs_q_001",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你第一次见到我的时候在想什么？",
+      "tips": "诚实回答"
+    },
+    {
+      "id": "rs_q_002",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你觉得我身上最吸引你的是什么？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_003",
+      "level": 1,
+      "category": "制造话题",
+      "content": "如果用一种动物形容我，你会选什么？",
+      "tips": "说说原因"
+    },
+    {
+      "id": "rs_q_004",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你有没有想过我们会变成现在这样？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_005",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你理想中的约会是什么样的？",
+      "tips": "描述一下场景"
+    },
+    {
+      "id": "rs_q_006",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你喜欢收到什么样的礼物？",
+      "tips": "给对方一点提示"
+    },
+    {
+      "id": "rs_q_007",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你最喜欢我的哪个表情？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_008",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你心情不好的时候希望我怎么做？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_009",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你觉得我们之间最有趣的一次对话是哪次？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_010",
+      "level": 1,
+      "category": "制造话题",
+      "content": "你有给我起过什么私下的昵称吗？",
+      "tips": "心里叫的那种"
+    },
+    {
+      "id": "rs_q_011",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "你有没有在某个瞬间特别想抱我？",
+      "tips": "是什么时候"
+    },
+    {
+      "id": "rs_q_012",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "你觉得我对你是什么感觉？",
+      "tips": "猜一猜"
+    },
+    {
+      "id": "rs_q_013",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "我做什么事情的时候你觉得很可爱？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_014",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "如果我今天不联系你，你会主动找我吗？",
+      "tips": "诚实"
+    },
+    {
+      "id": "rs_q_015",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "你会和朋友说起我吗？怎么介绍的？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_016",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "你觉得我们现在算是什么关系？",
+      "tips": "定义一下"
+    },
+    {
+      "id": "rs_q_017",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "你有没有想过我们以后会怎样？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_018",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "我发的哪条朋友圈你印象最深？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_019",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "你喜欢我穿什么风格的衣服？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_020",
+      "level": 2,
+      "category": "暧昧试探",
+      "content": "你有没有因为我的一句话开心或失落过？",
+      "tips": "是哪句"
+    },
+    {
+      "id": "rs_q_021",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "你觉得我们之间最珍贵的是什么？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_022",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "你有没有什么话一直想对我说但没说？",
+      "tips": "现在可以说"
+    },
+    {
+      "id": "rs_q_023",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "和我在一起的时候你最放松的瞬间是？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_024",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "你希望我们一起去做什么还没做过的事？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_025",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "如果用一首歌形容我们的关系，你会选哪首？",
+      "tips": "可以放出来听"
+    },
+    {
+      "id": "rs_q_026",
+      "level": 3,
+      "category": "��心时刻",
+      "content": "你觉得认识我之后，自己有什么变化？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_027",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "你最感谢我的一件事是什么？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_028",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "如果可以重新开始认识，你希望改变什么？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_029",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "你愿意为我做的最浪漫的事是什么？",
+      "tips": null
+    },
+    {
+      "id": "rs_q_030",
+      "level": 3,
+      "category": "走心时刻",
+      "content": "你能想象我们一年后会是什么样子吗？",
+      "tips": "描述一下画面"
+    }
+  ]
+}

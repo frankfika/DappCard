@@ -1,0 +1,151 @@
+{
+  "mode": "couple_deep",
+  "mode_name": "情侣升温",
+  "type": "truth_or_dare",
+  "cards": [
+    {
+      "id": "cd_td_001",
+      "level": 1,
+      "spicy": "safe",
+      "category": "真心话",
+      "content": "你有没有在梦里梦到过我？梦到什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_td_002",
+      "level": 1,
+      "spicy": "safe",
+      "category": "真心话",
+      "content": "你暗恋过几个人？",
+      "tips": null
+    },
+    {
+      "id": "cd_td_003",
+      "level": 1,
+      "spicy": "safe",
+      "category": "真心话",
+      "content": "你觉得自己最性感的部位是哪里？",
+      "tips": null
+    },
+    {
+      "id": "cd_td_004",
+      "level": 1,
+      "spicy": "safe",
+      "category": "大冒险",
+      "content": "模仿一个你觉得很撩人的动作",
+      "tips": null
+    },
+    {
+      "id": "cd_td_005",
+      "level": 1,
+      "spicy": "safe",
+      "category": "大冒险",
+      "content": "用最嗲的声音说一句话",
+      "tips": null
+    },
+    {
+      "id": "cd_td_006",
+      "level": 1,
+      "spicy": "safe",
+      "category": "大冒险",
+      "content": "做一个你觉得最帅/最美的pose",
+      "tips": null
+    },
+    {
+      "id": "cd_td_007",
+      "level": 2,
+      "spicy": "medium",
+      "category": "真心话",
+      "content": "你们第一次牵手的时候心里在想什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_td_008",
+      "level": 2,
+      "spicy": "medium",
+      "category": "真心话",
+      "content": "你最想让我穿什么风格的衣服？",
+      "tips": "诚实"
+    },
+    {
+      "id": "cd_td_009",
+      "level": 2,
+      "spicy": "medium",
+      "category": "真心话",
+      "content": "你有没有偷偷保存过我的照片？哪一张？",
+      "tips": null
+    },
+    {
+      "id": "cd_td_010",
+      "level": 2,
+      "spicy": "medium",
+      "category": "大冒险",
+      "content": "亲对方的脸颊5次",
+      "tips": "不同位置"
+    },
+    {
+      "id": "cd_td_011",
+      "level": 2,
+      "spicy": "medium",
+      "category": "大冒险",
+      "content": "帮对方解开一颗扣子或拉链",
+      "tips": "眼神交流"
+    },
+    {
+      "id": "cd_td_012",
+      "level": 2,
+      "spicy": "medium",
+      "category": "大冒险",
+      "content": "对着对方的耳朵说一句情话",
+      "tips": "靠近一点"
+    },
+    {
+      "id": "cd_td_013",
+      "level": 3,
+      "spicy": "hot",
+      "category": "真心话",
+      "content": "你有什么私���的小癖好？",
+      "tips": "勇敢说"
+    },
+    {
+      "id": "cd_td_014",
+      "level": 3,
+      "spicy": "hot",
+      "category": "真心话",
+      "content": "你觉得我身上最诱人的地方是哪里？",
+      "tips": null
+    },
+    {
+      "id": "cd_td_015",
+      "level": 3,
+      "spicy": "hot",
+      "category": "真心话",
+      "content": "你最想尝试的亲密方式是什么？",
+      "tips": "可以委婉说"
+    },
+    {
+      "id": "cd_td_016",
+      "level": 3,
+      "spicy": "hot",
+      "category": "大冒险",
+      "content": "亲吻对方的锁骨",
+      "tips": null
+    },
+    {
+      "id": "cd_td_017",
+      "level": 3,
+      "spicy": "hot",
+      "category": "大冒险",
+      "content": "让对方在你身上找到三颗痣",
+      "tips": null
+    },
+    {
+      "id": "cd_td_018",
+      "level": 3,
+      "spicy": "hot",
+      "category": "大冒险",
+      "content": "接下来一分钟，对方可以对你做任何事（合理范围）",
+      "tips": "设好边界"
+    }
+  ]
+}

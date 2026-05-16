@@ -1,0 +1,76 @@
+<!--miniprogram/pages/namecard/namecard.wxml-->
+<view class="container {{themeClass}}">
+  <!-- Cover Section -->
+  <view class="namecard-cover">
+    <image
+      wx:if="{{namecard.coverImage}}"
+      class="cover-image"
+      src="{{namecard.coverImage}}"
+      mode="aspectFill"
+    ></image>
+    <view class="cover-overlay"></view>
+
+    <!-- Avatar -->
+    <view class="avatar-wrapper">
+      <image
+        class="avatar"
+        src="{{namecard.avatarUrl || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+      ></image>
+    </view>
+  </view>
+
+  <!-- User Info -->
+  <view class="user-info">
+    <view class="nickname">{{namecard.nickname || '未设置昵称'}}</view>
+    <view class="bio">{{namecard.bio || '这个人很懒，什么都没留下'}}</view>
+  </view>
+
+  <!-- Motto -->
+  <view class="motto-section" wx:if="{{namecard.motto}}">
+    <view class="motto-icon">💭</view>
+    <view class="motto-text">{{namecard.motto}}</view>
+  </view>
+
+  <!-- Interests -->
+  <view class="interests-section" wx:if="{{namecard.interests && namecard.interests.length > 0}}">
+    <view class="section-title">兴趣爱好</view>
+    <view class="interests-grid">
+      <view class="interest-tag" wx:for="{{namecard.interests}}" wx:key="index">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- Social Links -->
+  <view class="social-section" wx:if="{{namecard.socialLinks && namecard.socialLinks.length > 0}}">
+    <view class="section-title">社交媒体</view>
+    <view class="social-list">
+      <view
+        class="social-item"
+        wx:for="{{namecard.socialLinks}}"
+        wx:key="index"
+        data-link="{{item.link}}"
+        bindtap="handleSocialLink"
+      >
+        <view class="social-platform">{{item.platform}}</view>
+        <view class="social-link">{{item.link}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Action Buttons -->
+  <view class="action-buttons">
+    <button class="action-btn share-btn" bindtap="handleShare" open-type="share">
+      <text>分享名片</text>
+    </button>
+
+    <button class="action-btn" bindtap="handleSaveImage" wx:if="{{!isOwn}}">
+      <text>保存图片</text>
+    </button>
+
+    <button class="action-btn edit-btn" bindtap="handleEdit" wx:if="{{isOwn}}">
+      <text>编辑名片</text>
+    </button>
+  </view>
+</view>

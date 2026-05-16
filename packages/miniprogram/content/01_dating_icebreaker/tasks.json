@@ -1,0 +1,112 @@
+{
+  "mode": "dating_icebreaker",
+  "mode_name": "相亲破冰",
+  "type": "task",
+  "cards": [
+    {
+      "id": "di_t_001",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "用3个词形容对对方的第一印象",
+      "tips": "要诚实哦"
+    },
+    {
+      "id": "di_t_002",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "给对方起一个可爱的昵称",
+      "tips": "根据你的第一感觉"
+    },
+    {
+      "id": "di_t_003",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "模仿一个动物的叫声给对方听",
+      "tips": "越像越好"
+    },
+    {
+      "id": "di_t_004",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "讲一个你知道的冷笑话",
+      "tips": "目标是让对方笑出来"
+    },
+    {
+      "id": "di_t_005",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "展示你手机相册里最近的一张照片",
+      "tips": "截图不算"
+    },
+    {
+      "id": "di_t_006",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "用手势比划一个电影让对方猜",
+      "tips": "不能说话"
+    },
+    {
+      "id": "di_t_007",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "对视10秒钟不许笑",
+      "tips": "先笑的人输"
+    },
+    {
+      "id": "di_t_008",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "说出对方三个优点",
+      "tips": "观察力测试"
+    },
+    {
+      "id": "di_t_009",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "学对方说话的样子",
+      "tips": "模仿要到位"
+    },
+    {
+      "id": "di_t_010",
+      "level": 1,
+      "category": "趣味任务",
+      "content": "展示你的才艺，什么都行",
+      "tips": "哪怕是转笔"
+    },
+    {
+      "id": "di_t_011",
+      "level": 2,
+      "category": "互动任务",
+      "content": "和对方交换一下手机壁纸的故事",
+      "tips": "为什么用这张"
+    },
+    {
+      "id": "di_t_012",
+      "level": 2,
+      "category": "互动任务",
+      "content": "给对方拍一张照片",
+      "tips": "选你觉得最好看的角度"
+    },
+    {
+      "id": "di_t_013",
+      "level": 2,
+      "category": "互动任务",
+      "content": "一起用手机录一段15秒的搞笑视频",
+      "tips": "内容自定"
+    },
+    {
+      "id": "di_t_014",
+      "level": 2,
+      "category": "互动任务",
+      "content": "教对方一个你会的小技能",
+      "tips": "折纸、魔术、手势舞..."
+    },
+    {
+      "id": "di_t_015",
+      "level": 2,
+      "category": "互动任务",
+      "content": "一起合唱一首歌的副歌部分",
+      "tips": "选你们都会的"
+    }
+  ]
+}

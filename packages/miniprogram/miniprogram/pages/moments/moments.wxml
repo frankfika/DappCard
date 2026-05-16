@@ -1,0 +1,127 @@
+<!--miniprogram/pages/moments/moments.wxml-->
+<view class="moments-container">
+  <!-- Header -->
+  <view class="page-header">
+    <text class="page-title">动态广场</text>
+  </view>
+
+  <!-- Posts Feed -->
+  <view class="posts-feed">
+    <block wx:for="{{posts}}" wx:key="_id">
+      <view class="post-card">
+        <!-- User Info -->
+        <view class="post-header">
+          <image class="user-avatar" src="{{item.userAvatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+          <view class="user-info">
+            <text class="user-name">{{item.userName || '匿名用户'}}</text>
+            <text class="post-time">{{item.timeText}}</text>
+          </view>
+        </view>
+
+        <!-- Content -->
+        <view class="post-content">
+          <text class="content-text">{{item.content}}</text>
+        </view>
+
+        <!-- Images -->
+        <view class="post-images" wx:if="{{item.images && item.images.length > 0}}">
+          <block wx:for="{{item.images}}" wx:for-item="img" wx:for-index="imgIdx" wx:key="*this">
+            <image class="post-image post-image-{{item.images.length}}" src="{{img}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.images}}" data-current="{{img}}"></image>
+          </block>
+        </view>
+
+        <!-- Activity Tag -->
+        <view class="activity-tag" wx:if="{{item.activityName}}">
+          <text class="tag-icon">📌</text>
+          <text class="tag-text">来自活动：{{item.activityName}}</text>
+        </view>
+
+        <!-- Interaction Bar -->
+        <view class="interaction-bar">
+          <view class="interaction-item" bindtap="toggleLike" data-id="{{item._id}}" data-index="{{index}}">
+            <text class="icon {{item.isLiked ? 'liked' : ''}}">{{item.isLiked ? '❤️' : '🤍'}}</text>
+            <text class="count">{{item.likesCount || 0}}</text>
+          </view>
+          <view class="interaction-item" bindtap="toggleComments" data-index="{{index}}">
+            <text class="icon">💬</text>
+            <text class="count">{{item.commentsCount || 0}}</text>
+          </view>
+        </view>
+
+        <!-- Comments Section -->
+        <view class="comments-section" wx:if="{{item.showComments}}">
+          <view class="comment-item" wx:for="{{item.comments}}" wx:for-item="comment" wx:key="*this">
+            <text class="comment-user">{{comment.userName}}：</text>
+            <text class="comment-text">{{comment.content}}</text>
+          </view>
+
+          <!-- Add Comment -->
+          <view class="add-comment">
+            <input class="comment-input" placeholder="写评论..." confirm-type="send" bindconfirm="addComment" data-id="{{item._id}}" data-index="{{index}}" value="{{item.commentInput || ''}}"></input>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- Empty State -->
+    <view class="empty-state" wx:if="{{!loading && posts.length === 0}}">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">还没有动态，快来分享第一条吧～</text>
+    </view>
+
+    <!-- Loading -->
+    <view class="loading-state" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- Create Post FAB -->
+  <view class="fab" bindtap="showCreatePost">
+    <text class="fab-icon">✍️</text>
+  </view>
+
+  <!-- Create Post Modal -->
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideCreatePost">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">分享动态</text>
+        <text class="modal-close" bindtap="hideCreatePost">✕</text>
+      </view>
+
+      <view class="modal-body">
+        <!-- Content Input -->
+        <textarea class="content-input" placeholder="分享你的心情..." maxlength="500" value="{{newPost.content}}" bindinput="onContentInput"></textarea>
+        <text class="char-count">{{newPost.content.length}}/500</text>
+
+        <!-- Images -->
+        <view class="image-upload">
+          <block wx:for="{{newPost.images}}" wx:key="*this">
+            <view class="upload-image-item">
+              <image class="upload-image" src="{{item}}" mode="aspectFill"></image>
+              <text class="remove-image" bindtap="removeImage" data-index="{{index}}">✕</text>
+            </view>
+          </block>
+          <view class="upload-btn" wx:if="{{newPost.images.length < 3}}" bindtap="chooseImage">
+            <text class="upload-icon">📷</text>
+            <text class="upload-text">添加图片</text>
+          </view>
+        </view>
+
+        <!-- Activity Selection -->
+        <view class="activity-select">
+          <text class="select-label">关联活动（可选）</text>
+          <picker mode="selector" range="{{activities}}" range-key="name" bindchange="onActivityChange" value="{{newPost.activityIndex}}">
+            <view class="picker-input">
+              {{newPost.activityIndex >= 0 ? activities[newPost.activityIndex].name : '选择活动'}}
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="hideCreatePost">取消</button>
+        <button class="btn-submit" bindtap="submitPost" disabled="{{submitting}}">{{submitting ? '发布中...' : '发布'}}</button>
+      </view>
+    </view>
+  </view>
+</view>

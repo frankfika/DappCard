@@ -1,0 +1,182 @@
+{
+  "mode": "marriage_fresh",
+  "mode_name": "夫妻保鲜",
+  "type": "question",
+  "cards": [
+    {
+      "id": "mf_q_001",
+      "level": 1,
+      "category": "重新认识",
+      "content": "我们在一起这么久，你觉得我变化最大的地方是什么？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_002",
+      "level": 1,
+      "category": "重新认识",
+      "content": "有没有什么关于你的事，你觉得我可能不知道？",
+      "tips": "说一个"
+    },
+    {
+      "id": "mf_q_003",
+      "level": 1,
+      "category": "重新认识",
+      "content": "你最近在为什么事情烦恼？我能帮上什么？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_004",
+      "level": 1,
+      "category": "重新认识",
+      "content": "如果有一天可以重新选择职业，你会选什么？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_005",
+      "level": 1,
+      "category": "重新认识",
+      "content": "你最近有什么新的兴趣或想学的东西吗？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_006",
+      "level": 1,
+      "category": "重新认识",
+      "content": "你小时候有什么梦想到现在还没实现的？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_007",
+      "level": 1,
+      "category": "重新认识",
+      "content": "你最近一次感到真正快乐是什么时候？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_008",
+      "level": 1,
+      "category": "重新认识",
+      "content": "你有什么话想对年轻时的自己说？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_009",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "你觉得我们的婚姻生活中，最缺少的是什么？",
+      "tips": "坦诚说"
+    },
+    {
+      "id": "mf_q_010",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "有没有什么话你一直想说但没说出口？",
+      "tips": "现在可以说"
+    },
+    {
+      "id": "mf_q_011",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "你对我有什么期待是我一直没做到的？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_012",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "你觉得我们吵架的时候，我最让你受伤的是什么？",
+      "tips": "帮助改进"
+    },
+    {
+      "id": "mf_q_013",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "如果给我们的婚姻打分，你会打多少分？为什么？",
+      "tips": "1-10分"
+    },
+    {
+      "id": "mf_q_014",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "你有没有在某个瞬间后悔过我们的决定？",
+      "tips": "诚实"
+    },
+    {
+      "id": "mf_q_015",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "你觉得我最应该改变的一个习惯是什么？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_016",
+      "level": 2,
+      "category": "坦诚沟通",
+      "content": "你最感谢我为这个家做的是什么？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_017",
+      "level": 3,
+      "category": "重燃激情",
+      "content": "你还记得我们刚在一起时你最心动的瞬间吗？",
+      "tips": "回忆一下"
+    },
+    {
+      "id": "mf_q_018",
+      "level": 3,
+      "category": "重燃���情",
+      "content": "你有没有想过如果我们重新谈一次恋爱会是什么样？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_019",
+      "level": 3,
+      "category": "重燃激情",
+      "content": "你希望我们能增加哪些只属于两个人的时间？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_020",
+      "level": 3,
+      "category": "重燃激情",
+      "content": "你觉得我们多久没有真正约会过了？想去哪？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_021",
+      "level": 3,
+      "category": "重燃激情",
+      "content": "有没有什么事是我们以前常做，但现在不做了的？",
+      "tips": "想念吗"
+    },
+    {
+      "id": "mf_q_022",
+      "level": 4,
+      "category": "未来规划",
+      "content": "等孩子长大/退休后，你最想和我一起做什么？",
+      "tips": null
+    },
+    {
+      "id": "mf_q_023",
+      "level": 4,
+      "category": "未来规划",
+      "content": "你理想中我们的老年生活是什么样的？",
+      "tips": "描述一下"
+    },
+    {
+      "id": "mf_q_024",
+      "level": 4,
+      "category": "未来规划",
+      "content": "有没有什么你一直想买/想做但觉得不实际的？",
+      "tips": "说出来讨论"
+    },
+    {
+      "id": "mf_q_025",
+      "level": 4,
+      "category": "未来规划",
+      "content": "你希望我们的下一个人生阶段是什么样的？",
+      "tips": null
+    }
+  ]
+}

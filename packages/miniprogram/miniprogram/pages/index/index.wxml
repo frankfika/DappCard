@@ -1,0 +1,98 @@
+<!-- 首页 - 卡片合集浏览 -->
+<view class="page">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="title">{{t.appName}}</text>
+    <text class="subtitle">{{totalCards}} 张卡片，探索不同的关系问题</text>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索卡片内容、标签..."
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindfocus="onSearchFocus"
+        confirm-type="search"
+      />
+      <text class="search-clear" wx:if="{{searchKeyword}}" bindtap="onSearchClear">x</text>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="search-results" wx:if="{{showSearch && searchResults.length > 0}}">
+    <view class="search-result-item" wx:for="{{searchResults}}" wx:key="id" bindtap="viewSearchResult" data-id="{{item.id}}">
+      <text class="result-question">{{item.question}}</text>
+      <text class="result-source">{{item.source}}</text>
+    </view>
+  </view>
+  <view class="search-empty" wx:if="{{showSearch && searchResults.length === 0 && searchKeyword}}">
+    <text>没有找到匹配的卡片</text>
+  </view>
+
+  <!-- 每日推荐 -->
+  <view class="daily-section" wx:if="{{dailyCard && !showSearch}}" bindtap="viewDailyCard">
+    <view class="daily-card">
+      <view class="daily-label">
+        <text class="daily-icon">✨</text>
+        <text class="daily-title">{{t.dailyTip}}</text>
+      </view>
+      <text class="daily-question">{{dailyCard.question}}</text>
+      <view class="daily-footer">
+        <text class="daily-source">{{dailyCard.source}}</text>
+        <text class="daily-tip">{{dailyTip}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主内容区（搜索时隐藏） -->
+  <view wx:if="{{!showSearch}}">
+    <!-- 推荐合集 -->
+    <view class="collection-section">
+      <text class="section-title">推荐合集</text>
+      <view class="collection-list preset-list">
+        <view
+          class="collection-item preset-item"
+          wx:for="{{presetCollections}}"
+          wx:key="id"
+          bindtap="viewCollection"
+          data-type="{{item.type}}"
+          data-id="{{item.id}}"
+          data-tags="{{item.tags}}"
+        >
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-desc">{{item.desc}}</text>
+          <text class="item-count">{{item.count}} 张</text>
+          <text class="item-arrow">></text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 来源合集 -->
+    <view class="collection-section">
+      <text class="section-title">经典来源</text>
+      <view class="collection-list source-list">
+        <view
+          class="collection-item source-item"
+          wx:for="{{sourceCollections}}"
+          wx:key="id"
+          bindtap="viewCollection"
+          data-type="{{item.type}}"
+          data-id="{{item.id}}"
+          style="border-top: 8rpx solid {{item.color}};"
+        >
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-count">{{item.count}} 张</text>
+          <text class="item-arrow">></text>
+        </view>
+      </view>
+      <view class="all-cards-btn" bindtap="viewAllCards">
+        查看所有 {{totalCards}} 张卡片 >
+      </view>
+    </view>
+  </view>
+
+</view>

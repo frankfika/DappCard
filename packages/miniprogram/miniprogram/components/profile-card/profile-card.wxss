@@ -1,0 +1,76 @@
+.profile-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(255, 138, 128, 0.1);
+  transition: all 0.2s ease;
+}
+
+.profile-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 12rpx rgba(255, 138, 128, 0.15);
+}
+
+.profile-compact {
+  padding: 24rpx;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.profile-compact .profile-header {
+  margin-bottom: 0;
+}
+
+.profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.profile-nickname {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.profile-compact .profile-nickname {
+  font-size: 28rpx;
+}
+
+.profile-bio {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.profile-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.interest-tag {
+  padding: 8rpx 16rpx;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffeded 100%);
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: var(--color-primary);
+  border: 1px solid #ffe5e5;
+}
+
+.profile-compact .interest-tag {
+  font-size: 22rpx;
+  padding: 6rpx 12rpx;
+}

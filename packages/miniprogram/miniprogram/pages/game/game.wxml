@@ -1,0 +1,149 @@
+<!-- 游戏页 - 现代简约风格 -->
+<view class="page">
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="bg-glow bg-glow-1"></view>
+    <view class="bg-glow bg-glow-2"></view>
+  </view>
+
+  <!-- 顶部栏 -->
+  <view class="top-bar">
+    <view class="mode-badge">
+      <view class="mode-indicator"></view>
+      <text class="mode-badge-text">{{cardTypeLabel || '抽卡'}}</text>
+    </view>
+    <view class="progress-wrap">
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{completedCount / totalCount * 100 || 0}}%"></view>
+      </view>
+      <view class="progress-info">
+        <text class="progress-num">{{completedCount}}</text>
+        <text class="progress-sep">/</text>
+        <text class="progress-total">{{totalCount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 卡片区域 -->
+  <view class="card-area"
+    bindtouchstart="onTouchStart"
+    bindtouchend="onTouchEnd"
+  >
+    <!-- 滑动提示 -->
+    <view class="swipe-hint" wx:if="{{currentCard && !isFlipped}}">
+      <text class="swipe-hint-text">左右滑动切换卡片</text>
+    </view>
+
+    <!-- 卡片 -->
+    <view
+      class="game-card {{isFlipped ? 'flipped' : ''}} type-{{cardType}} {{cardAnimClass}}"
+      bindtap="flipCard"
+      wx:if="{{currentCard}}"
+    >
+      <!-- 卡片正面（未翻开） -->
+      <view class="card-face card-front type-{{cardType}}">
+        <view class="corner-deco corner-tl"></view>
+        <view class="corner-deco corner-br"></view>
+
+        <view class="front-content">
+          <view class="front-icon-wrap">
+            <view class="icon-bg"></view>
+            <text class="front-icon">{{cardTypeIcon}}</text>
+          </view>
+          <text class="front-type">{{cardTypeLabel}}</text>
+          <view class="front-hint">
+            <text class="hint-text">{{t.game.tapToFlip}}</text>
+            <view class="hint-line"></view>
+          </view>
+        </view>
+
+        <view class="front-footer">
+          <text class="card-number">NO.{{currentCard.id}}</text>
+        </view>
+      </view>
+
+      <!-- 卡片背面（内容） -->
+      <view class="card-face card-back">
+        <view class="back-header">
+          <view class="back-category">
+            <view class="category-dot"></view>
+            <text class="category-text">{{currentCard.source}}</text>
+          </view>
+        </view>
+
+        <view class="back-body">
+          <view class="content-wrap">
+            <view class="quote-mark quote-left">"</view>
+            <text class="back-content">{{currentCard.question}}</text>
+            <view class="quote-mark quote-right">"</view>
+          </view>
+
+          <!-- 标签 -->
+          <view class="back-tags" wx:if="{{currentCard.tags.length > 0}}">
+            <text class="back-tag" wx:for="{{currentCard.tags}}" wx:key="*this" wx:if="{{index < 3}}">{{item}}</text>
+          </view>
+        </view>
+
+        <view class="back-footer">
+          <view class="footer-accent"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!currentCard}}">
+      <view class="empty-icon-wrap">
+        <view class="check-circle">
+          <text class="check-mark">✓</text>
+        </view>
+      </view>
+      <text class="empty-title">{{t.game.completed}}</text>
+      <text class="empty-desc">{{t.game.completedDesc}}</text>
+      <view class="empty-stats">
+        <view class="stat-item">
+          <text class="stat-num">{{totalCount}}</text>
+          <text class="stat-label">已完成</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-num">100%</text>
+          <text class="stat-label">完成度</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar safe-bottom">
+    <view class="action-group">
+      <!-- 回看按钮 -->
+      <view class="action-btn btn-back {{canGoBack ? '' : 'disabled'}}" bindtap="prevCard" wx:if="{{currentCard || canGoBack}}">
+        <view class="btn-icon-wrap">
+          <text class="btn-icon">←</text>
+        </view>
+        <text class="btn-label">回看</text>
+      </view>
+
+      <view class="action-btn btn-skip" bindtap="skipCard" wx:if="{{currentCard}}">
+        <view class="btn-icon-wrap">
+          <text class="btn-icon">↺</text>
+        </view>
+        <text class="btn-label">{{t.game.skip}}</text>
+      </view>
+
+      <view class="action-btn btn-main" bindtap="nextCard">
+        <view class="btn-icon-wrap">
+          <text class="btn-icon">{{currentCard ? '✓' : '↻'}}</text>
+        </view>
+        <text class="btn-label">{{currentCard ? t.game.next : t.game.restart}}</text>
+      </view>
+
+      <view class="action-btn btn-fav {{isFavorited ? 'active' : ''}}" bindtap="toggleFavorite" wx:if="{{currentCard}}">
+        <view class="btn-icon-wrap">
+          <text class="btn-icon">{{isFavorited ? '★' : '☆'}}</text>
+        </view>
+        <text class="btn-label">{{t.game.favorite}}</text>
+      </view>
+    </view>
+  </view>
+</view>

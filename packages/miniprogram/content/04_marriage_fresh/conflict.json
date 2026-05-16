@@ -1,0 +1,78 @@
+{
+  "mode": "marriage_fresh",
+  "mode_name": "夫妻保鲜",
+  "type": "conflict_resolution",
+  "description": "冲突化解卡：帮助建设性地沟通和解决问题",
+  "cards": [
+    {
+      "id": "mf_c_001",
+      "level": 1,
+      "category": "冲突化解",
+      "content": "用'我觉得...'开头，说说最近一次争吵中你的真实感受",
+      "tips": "不要指责，只说感受"
+    },
+    {
+      "id": "mf_c_002",
+      "level": 1,
+      "category": "冲突化解",
+      "content": "说出对方在争吵中其实是对的那一点",
+      "tips": "承认对方的道理"
+    },
+    {
+      "id": "mf_c_003",
+      "level": 1,
+      "category": "冲突化解",
+      "content": "回忆一次你们成功解决分歧的经历，当时是怎么做到的？",
+      "tips": null
+    },
+    {
+      "id": "mf_c_004",
+      "level": 2,
+      "category": "冲突化解",
+      "content": "���争吵中，我做的什么事最让你伤心？",
+      "tips": "认真听，不反驳"
+    },
+    {
+      "id": "mf_c_005",
+      "level": 2,
+      "category": "冲突化解",
+      "content": "如果重来一次那个争吵，你会怎么说？",
+      "tips": "表达方式的改进"
+    },
+    {
+      "id": "mf_c_006",
+      "level": 2,
+      "category": "冲突化解",
+      "content": "我们吵架时，你最需要我做什么？",
+      "tips": "给我空间/抱抱我/认真听..."
+    },
+    {
+      "id": "mf_c_007",
+      "level": 2,
+      "category": "冲突化解",
+      "content": "约定一个'暂停'暗号，以后吵太凶时可以叫暂停",
+      "tips": "冷静后再继续"
+    },
+    {
+      "id": "mf_c_008",
+      "level": 3,
+      "category": "冲突化解",
+      "content": "有没有什么老问题一直没解决？今天认真聊聊？",
+      "tips": "心平气和地"
+    },
+    {
+      "id": "mf_c_009",
+      "level": 3,
+      "category": "冲突化解",
+      "content": "对方有什么你一直忍着没说的习惯？",
+      "tips": "温和地提出来"
+    },
+    {
+      "id": "mf_c_010",
+      "level": 3,
+      "category": "冲突化解",
+      "content": "一起列出三条以后吵架时都要遵守的规则",
+      "tips": "比如不翻旧账"
+    }
+  ]
+}

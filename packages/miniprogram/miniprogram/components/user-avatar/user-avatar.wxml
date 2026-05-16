@@ -1,0 +1,13 @@
+<view class="user-avatar avatar-{{size}}">
+  <image
+    wx:if="{{src && !imageError}}"
+    class="avatar-image"
+    src="{{src}}"
+    mode="aspectFill"
+    bindload="onImageLoad"
+    binderror="onImageError"
+  />
+  <view wx:elif="{{showDefault}}" class="avatar-default">
+    <text class="avatar-icon">👤</text>
+  </view>
+</view>

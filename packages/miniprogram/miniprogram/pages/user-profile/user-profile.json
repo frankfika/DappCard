@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "用户主页",
+  "usingComponents": {
+    "activity-card": "../../components/activity-card/activity-card"
+  }
+}

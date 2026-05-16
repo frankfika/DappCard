@@ -1,0 +1,76 @@
+<!--miniprogram/pages/profile/profile.wxml-->
+<view class="container">
+  <block wx:if="{{isLoggedIn}}">
+    <!-- User Info Section -->
+    <view class="profile-header">
+      <image wx:if="{{userInfo.avatar}}" class="avatar-large" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+      <view wx:else class="avatar-large avatar-placeholder">
+        <text class="avatar-emoji">👤</text>
+      </view>
+      <view class="user-name">{{userInfo.nickname || '未设置昵称'}}</view>
+      <view class="user-bio">{{userInfo.bio || '还没有个性签名哦~'}}</view>
+    </view>
+
+    <!-- Stats Section -->
+    <view class="stats-row">
+      <view class="stat-item">
+        <view class="stat-value">{{stats.activitiesCreated}}</view>
+        <view class="stat-label">创建活动</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value">{{stats.activitiesJoined}}</view>
+        <view class="stat-label">参与活动</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value">{{stats.companionsFound}}</view>
+        <view class="stat-label">找到同伴</view>
+      </view>
+    </view>
+
+    <!-- Edit Profile Button -->
+    <view class="edit-btn" bindtap="handleEditProfile">
+      <text>编辑资料</text>
+    </view>
+
+    <!-- Menu Items -->
+    <view class="menu-section">
+      <view
+        class="menu-item"
+        wx:for="{{menuItems}}"
+        wx:key="title"
+        data-path="{{item.path}}"
+        bindtap="handleMenuTap"
+      >
+        <view class="menu-item-left">
+          <text class="menu-icon">{{item.icon}}</text>
+          <text class="menu-title">{{item.title}}</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <!-- Not Logged In -->
+    <view class="login-prompt">
+      <text class="empty-icon">👤</text>
+      <view class="prompt-text">登录后查看个人中心</view>
+      <view class="agreement-check" bindtap="toggleAgreement">
+        <view class="checkbox {{agreedToTerms ? 'checked' : ''}}">
+          <text wx:if="{{agreedToTerms}}" class="check-icon">✓</text>
+        </view>
+        <text class="agreement-text">
+          已阅读并同意
+          <text class="agreement-link" catchtap="goToAgreement">《用户服务协议》</text>
+          和
+          <text class="agreement-link" catchtap="goToPrivacy">《隐私政策》</text>
+        </text>
+      </view>
+      <button class="login-btn" bindtap="handleLogin">
+        <text>微信登录</text>
+      </button>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,107 @@
+<!--pages/user-profile/user-profile.wxml-->
+<view class="container" wx:if="{{!loading && userInfo}}">
+  <!-- User Header -->
+  <view class="user-header">
+    <image class="user-avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+    <view class="user-info">
+      <text class="user-name">{{userInfo.nickname}}</text>
+      <text class="user-bio" wx:if="{{userInfo.bio}}">{{userInfo.bio}}</text>
+    </view>
+  </view>
+
+  <!-- Stats -->
+  <view class="stats-section">
+    <view class="stat-item">
+      <text class="stat-value">{{stats.createdCount}}</text>
+      <text class="stat-label">已创建</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.joinedCount}}</text>
+      <text class="stat-label">已参加</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.rating.toFixed(1)}}</text>
+      <text class="stat-label">评分</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.reviewCount}}</text>
+      <text class="stat-label">评价</text>
+    </view>
+  </view>
+
+  <!-- Interests -->
+  <view class="section" wx:if="{{interests.length > 0}}">
+    <text class="section-title">兴趣爱好</text>
+    <view class="interest-tags">
+      <view class="interest-tag" wx:for="{{interests}}" wx:key="index">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Recent Activities -->
+  <view class="section" wx:if="{{recentActivities.length > 0}}">
+    <text class="section-title">近期活动</text>
+    <view class="activity-list">
+      <block wx:for="{{recentActivities}}" wx:key="_id">
+        <activity-card
+          activity="{{item}}"
+          data-id="{{item._id}}"
+          bindtap="onActivityTap"
+        />
+      </block>
+    </view>
+  </view>
+
+  <!-- Reviews -->
+  <view class="section" wx:if="{{reviews.length > 0}}">
+    <text class="section-title">评价 ({{reviews.length}})</text>
+    <view class="review-list">
+      <view class="review-item" wx:for="{{reviews}}" wx:key="_id">
+        <view class="review-header">
+          <image class="reviewer-avatar" src="{{item.reviewerInfo.avatarUrl}}" mode="aspectFill"></image>
+          <view class="reviewer-info">
+            <text class="reviewer-name">{{item.reviewerInfo.nickName}}</text>
+            <text class="review-time">{{item.createTimeFormatted}}</text>
+          </view>
+          <view class="rating-stars">
+            <text class="stars">{{item.starsDisplay}}</text>
+          </view>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Empty Reviews -->
+  <view class="section" wx:if="{{reviews.length === 0}}">
+    <text class="section-title">评价</text>
+    <view class="empty-reviews">
+      <text class="empty-text">暂无评价</text>
+    </view>
+  </view>
+
+  <!-- Action Buttons -->
+  <view class="action-buttons">
+    <button class="action-btn primary" bindtap="onViewNamecard">
+      查看名片
+    </button>
+    <button class="action-btn secondary" bindtap="onReport">
+      举报
+    </button>
+    <button
+      class="action-btn {{isBlocked ? 'blocked' : 'danger'}}"
+      bindtap="{{isBlocked ? 'onUnblock' : 'onBlock'}}"
+    >
+      {{isBlocked ? '取消拉黑' : '拉黑'}}
+    </button>
+  </view>
+</view>
+
+<!-- Loading State -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>

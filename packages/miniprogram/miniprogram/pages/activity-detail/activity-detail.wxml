@@ -1,0 +1,157 @@
+<!--pages/activity-detail/activity-detail.wxml-->
+<view class="container" wx:if="{{!loading && activity}}">
+  <!-- Creator Profile -->
+  <view class="section">
+    <profile-card user="{{creator}}" bindtap="onCreatorTap" />
+  </view>
+
+  <!-- Activity Info -->
+  <view class="section activity-info">
+    <text class="activity-title">{{activity.title}}</text>
+
+    <view class="info-row">
+      <text class="info-icon">📁</text>
+      <text class="info-text">{{activity.category.name}} - {{activity.category.subcategory}}</text>
+    </view>
+
+    <view class="info-row">
+      <text class="info-icon">🕒</text>
+      <text class="info-text">{{activity.datetimeFormatted}}</text>
+    </view>
+
+    <view class="info-row" bindtap="onLocationTap">
+      <text class="info-icon">📍</text>
+      <text class="info-text location-link">{{activity.location.name}}</text>
+    </view>
+
+    <view class="info-row">
+      <text class="info-icon">👥</text>
+      <text class="info-text">{{participants.length}}/{{activity.maxParticipants}}人</text>
+    </view>
+
+    <view class="description">
+      <text class="description-text">{{activity.description}}</text>
+    </view>
+
+    <!-- Activity Images -->
+    <view class="activity-images" wx:if="{{activity.images && activity.images.length > 0}}">
+      <image
+        class="activity-image"
+        wx:for="{{activity.images}}"
+        wx:key="index"
+        src="{{item}}"
+        mode="aspectFill"
+        data-url="{{item}}"
+        bindtap="onImagePreview"
+      ></image>
+    </view>
+
+    <!-- Location Map -->
+    <map
+      class="location-map"
+      latitude="{{activity.location.latitude}}"
+      longitude="{{activity.location.longitude}}"
+      markers="{{[{
+        id: 1,
+        latitude: activity.location.latitude,
+        longitude: activity.location.longitude,
+        iconPath: '/images/marker.png',
+        width: 30,
+        height: 30
+      }]}}"
+      show-location
+      bindtap="onLocationTap"
+    ></map>
+  </view>
+
+  <!-- Participants -->
+  <view class="section" wx:if="{{participants.length > 0}}">
+    <text class="section-title">参与者</text>
+    <view class="participant-list">
+      <view
+        class="participant-item"
+        wx:for="{{participants}}"
+        wx:key="openid"
+        data-openid="{{item.openid}}"
+        bindtap="onParticipantTap"
+      >
+        <image class="participant-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <text class="participant-name">{{item.nickname}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Applicants (Only visible to creator) -->
+  <view class="section" wx:if="{{isCreator && applicants.length > 0}}">
+    <text class="section-title">申请加入</text>
+    <view class="applicant-list">
+      <view
+        class="applicant-item"
+        wx:for="{{applicants}}"
+        wx:key="openid"
+      >
+        <image class="applicant-avatar" src="{{item.user.avatar}}" mode="aspectFill"></image>
+        <text class="applicant-name">{{item.user.nickname}}</text>
+        <button
+          class="approve-btn"
+          data-openid="{{item.openid}}"
+          bindtap="onApproveApplicant"
+        >
+          通过
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- Comments -->
+  <view class="section comments-section">
+    <text class="section-title">评论</text>
+    <view class="comment-list">
+      <view class="comment-item" wx:for="{{comments}}" wx:key="_id">
+        <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="comment-content">
+          <text class="comment-name">{{item.nickname}}</text>
+          <text class="comment-text">{{item.content}}</text>
+          <text class="comment-time">{{item.createTimeFormatted}}</text>
+        </view>
+      </view>
+
+      <view class="empty-comments" wx:if="{{comments.length === 0}}">
+        <text class="empty-text">还没有评论，快来抢沙发吧～</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Action Buttons -->
+  <view class="action-bar" wx:if="{{!isCreator}}">
+    <button
+      class="action-btn {{hasApplied ? 'disabled' : ''}}"
+      bindtap="onApplyTap"
+      disabled="{{hasApplied || isParticipant}}"
+    >
+      {{isParticipant ? '已参与' : hasApplied ? '已申请' : '申请加入'}}
+    </button>
+  </view>
+
+  <!-- Comment Input -->
+  <view class="comment-bar">
+    <input
+      class="comment-input"
+      placeholder="说点什么..."
+      value="{{commentText}}"
+      bindinput="onCommentInput"
+    />
+    <button
+      class="send-btn {{commentText.trim() ? 'active' : ''}}"
+      bindtap="onSendComment"
+      disabled="{{!commentText.trim()}}"
+    >
+      发送
+    </button>
+  </view>
+</view>
+
+<!-- Loading State -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>

@@ -1,0 +1,13 @@
+{
+  "name": "dappcard",
+  "private": true,
+  "workspaces": [
+    "packages/web",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=packages/web",
+    "build": "npm run build --workspace=packages/web",
+    "lint": "npm run lint --workspace=packages/web"
+  }
+}

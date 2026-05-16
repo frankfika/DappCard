@@ -1,0 +1,63 @@
+{
+  "mode": "romance_spark",
+  "mode_name": "约会心动",
+  "type": "scene",
+  "cards": [
+    {
+      "id": "rs_s_001",
+      "level": 1,
+      "category": "场景扮演",
+      "content": "假装你们是第一次见面，互相做自我介绍",
+      "tips": "可以用不同身份"
+    },
+    {
+      "id": "rs_s_002",
+      "level": 1,
+      "category": "场景扮演",
+      "content": "假装你们是电影里的情侣，演一段离别的场景",
+      "tips": "发挥演技"
+    },
+    {
+      "id": "rs_s_003",
+      "level": 2,
+      "category": "场景扮演",
+      "content": "假装其中一人要出国三年，只有5分钟告别时间",
+      "tips": "说说你想说的话"
+    },
+    {
+      "id": "rs_s_004",
+      "level": 2,
+      "category": "场景扮演",
+      "content": "假装你们是偶像剧里在雨中重逢的前任",
+      "tips": "演出来"
+    },
+    {
+      "id": "rs_s_005",
+      "level": 2,
+      "category": "场景扮演",
+      "content": "假装你是来向对方表白的，认真表白一次",
+      "tips": "越认真越好"
+    },
+    {
+      "id": "rs_s_006",
+      "level": 3,
+      "category": "场景扮演",
+      "content": "假装你们是新婚夫妻，今天是婚礼当晚",
+      "tips": "说说你的感受"
+    },
+    {
+      "id": "rs_s_007",
+      "level": 3,
+      "category": "场景扮演",
+      "content": "假装你们是分手后偶遇的前任，会说什么",
+      "tips": "即兴表演"
+    },
+    {
+      "id": "rs_s_008",
+      "level": 3,
+      "category": "场景扮演",
+      "content": "假装你们是吵架三天后第一次见面",
+      "tips": "会怎么和好"
+    }
+  ]
+}

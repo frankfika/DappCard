@@ -1,0 +1,133 @@
+{
+  "mode": "couple_deep",
+  "mode_name": "情侣升温",
+  "type": "task",
+  "cards": [
+    {
+      "id": "cd_t_001",
+      "level": 1,
+      "category": "亲密挑战",
+      "content": "从背后抱住对方，说一句情话",
+      "tips": null
+    },
+    {
+      "id": "cd_t_002",
+      "level": 1,
+      "category": "亲密挑战",
+      "content": "给对方一个长达30秒的吻",
+      "tips": "认真的那种"
+    },
+    {
+      "id": "cd_t_003",
+      "level": 1,
+      "category": "亲密挑战",
+      "content": "躺在对方腿上，让ta给你按摩太阳穴",
+      "tips": "享受一分钟"
+    },
+    {
+      "id": "cd_t_004",
+      "level": 1,
+      "category": "亲密挑战",
+      "content": "蒙上眼睛，让对方喂你吃东西，猜是什么",
+      "tips": null
+    },
+    {
+      "id": "cd_t_005",
+      "level": 1,
+      "category": "亲密挑战",
+      "content": "面对面坐着，双手交握，对视一分钟不说话",
+      "tips": "感受彼此"
+    },
+    {
+      "id": "cd_t_006",
+      "level": 1,
+      "category": "亲密挑战",
+      "content": "给对方一个公主抱（或尝试）",
+      "tips": "小心安全"
+    },
+    {
+      "id": "cd_t_007",
+      "level": 1,
+      "category": "亲密挑战",
+      "content": "用嘴喂对方一颗糖或巧克力",
+      "tips": null
+    },
+    {
+      "id": "cd_t_008",
+      "level": 2,
+      "category": "浪漫挑战",
+      "content": "给对方按摩全身5分钟",
+      "tips": "用心"
+    },
+    {
+      "id": "cd_t_009",
+      "level": 2,
+      "category": "浪漫挑战",
+      "content": "一起洗手，互相帮对方涂护手霜",
+      "tips": "慢慢来"
+    },
+    {
+      "id": "cd_t_010",
+      "level": 2,
+      "category": "浪漫挑战",
+      "content": "和对方跳一支即兴慢舞",
+      "tips": "放首慢歌"
+    },
+    {
+      "id": "cd_t_011",
+      "level": 2,
+      "category": "浪漫挑战",
+      "content": "在对方身上写下'我爱你'三个字（用手指）",
+      "tips": "让ta猜写在哪"
+    },
+    {
+      "id": "cd_t_012",
+      "level": 2,
+      "category": "浪漫挑战",
+      "content": "录一段给一年后彼此的语音",
+      "tips": "保存好"
+    },
+    {
+      "id": "cd_t_013",
+      "level": 2,
+      "category": "浪漫挑战",
+      "content": "给对方画一幅简笔画像",
+      "tips": "画得丑没关系"
+    },
+    {
+      "id": "cd_t_014",
+      "level": 3,
+      "category": "亲密挑战",
+      "content": "帮对方换一套你喜欢的衣服",
+      "tips": "选你觉得好看的"
+    },
+    {
+      "id": "cd_t_015",
+      "level": 3,
+      "category": "亲密挑战",
+      "content": "一起泡澡或一起敷面膜",
+      "tips": "边聊天"
+    },
+    {
+      "id": "cd_t_016",
+      "level": 3,
+      "category": "心意表达",
+      "content": "写一封短情书给对方，现在念出来",
+      "tips": "真诚最重要"
+    },
+    {
+      "id": "cd_t_017",
+      "level": 3,
+      "category": "心意表达",
+      "content": "列出10件想和对方一起做的事",
+      "tips": "一起列"
+    },
+    {
+      "id": "cd_t_018",
+      "level": 3,
+      "category": "心意表达",
+      "content": "约定一个只属于你们的暗号",
+      "tips": "比如表示想抱抱"
+    }
+  ]
+}

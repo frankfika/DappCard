@@ -1,0 +1,324 @@
+/**
+ * 收藏页样式 - 温馨浪漫风格
+ */
+
+.page {
+  min-height: 100vh;
+  padding: 0 32rpx;
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #fef7f4 0%, #fff5f3 100%);
+}
+
+/* ==================== 头部 ==================== */
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  padding: 80rpx 0 40rpx;
+}
+
+.header-count {
+  font-size: 72rpx;
+  font-weight: 700;
+  color: #ff8a80;
+}
+
+.header-label {
+  font-size: 28rpx;
+  color: #8b7e78;
+  margin-left: 12rpx;
+}
+
+/* ==================== 收藏列表 ==================== */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.card-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  transition: all 0.2s ease;
+  box-shadow: 0 2rpx 12rpx rgba(255, 138, 128, 0.1);
+  border: 1rpx solid rgba(255, 138, 128, 0.08);
+}
+
+.card-item:active {
+  transform: scale(0.98);
+  background: #fff8f7;
+}
+
+/* 卡片图标 */
+.card-icon-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.card-icon-wrap.question { background: linear-gradient(135deg, rgba(255, 138, 128, 0.15) 0%, rgba(244, 143, 177, 0.1) 100%); }
+.card-icon-wrap.task { background: linear-gradient(135deg, rgba(244, 143, 177, 0.15) 0%, rgba(206, 147, 216, 0.1) 100%); }
+.card-icon-wrap.choice { background: linear-gradient(135deg, rgba(206, 147, 216, 0.15) 0%, rgba(244, 143, 177, 0.1) 100%); }
+.card-icon-wrap.scene { background: linear-gradient(135deg, rgba(255, 171, 145, 0.15) 0%, rgba(255, 204, 188, 0.1) 100%); }
+.card-icon-wrap.compatibility { background: linear-gradient(135deg, rgba(255, 205, 210, 0.2) 0%, rgba(248, 187, 217, 0.15) 100%); }
+.card-icon-wrap.truth_or_dare { background: linear-gradient(135deg, rgba(255, 138, 128, 0.15) 0%, rgba(239, 154, 154, 0.1) 100%); }
+.card-icon-wrap.conflict_resolution { background: linear-gradient(135deg, rgba(165, 214, 167, 0.15) 0%, rgba(129, 199, 132, 0.1) 100%); }
+
+.card-icon {
+  font-size: 32rpx;
+}
+
+/* 卡片内容 */
+.card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-text {
+  display: block;
+  font-size: 28rpx;
+  color: #4a3f3a;
+  line-height: 1.5;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+}
+
+.card-mode {
+  font-size: 22rpx;
+  color: #ff8a80;
+  padding: 4rpx 12rpx;
+  background: linear-gradient(135deg, #fff5f5 0%, #fce4ec 100%);
+  border-radius: 8rpx;
+  margin-right: 12rpx;
+}
+
+.card-type {
+  font-size: 22rpx;
+  color: #8b7e78;
+}
+
+/* 删除按钮 */
+.card-del {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12rpx;
+}
+
+.card-del text {
+  font-size: 36rpx;
+  color: #f8bbd9;
+  font-weight: 300;
+}
+
+.card-del:active text {
+  color: #ff8a80;
+}
+
+/* ==================== 空状态 ==================== */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-icon {
+  width: 100rpx;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32rpx;
+}
+
+.empty-heart {
+  width: 60rpx;
+  height: 60rpx;
+  background: linear-gradient(135deg, #ffcdd2 0%, #f8bbd9 100%);
+  transform: rotate(45deg);
+  position: relative;
+  border-radius: 8rpx;
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: rotate(45deg) scale(1); }
+  50% { transform: rotate(45deg) scale(1.1); }
+}
+
+.empty-heart::before,
+.empty-heart::after {
+  content: '';
+  position: absolute;
+  width: 60rpx;
+  height: 60rpx;
+  background: linear-gradient(135deg, #ffcdd2 0%, #f8bbd9 100%);
+  border-radius: 50%;
+}
+
+.empty-heart::before {
+  top: -30rpx;
+  left: 0;
+}
+
+.empty-heart::after {
+  top: 0;
+  left: -30rpx;
+}
+
+.empty-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #4a3f3a;
+  margin-bottom: 12rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #8b7e78;
+  margin-bottom: 48rpx;
+}
+
+.empty-btn {
+  padding: 24rpx 60rpx;
+  background: linear-gradient(135deg, #ff8a80 0%, #f48fb1 100%);
+  border-radius: 44rpx;
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 24rpx rgba(255, 138, 128, 0.35);
+}
+
+.empty-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(255, 138, 128, 0.25);
+}
+
+/* ==================== 底部占位 ==================== */
+.bottom-space {
+  height: 40rpx;
+}
+
+/* ==================== 详情弹窗 ==================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(74, 63, 58, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box {
+  width: 85%;
+  max-width: 640rpx;
+  background: #ffffff;
+  border-radius: 28rpx;
+  overflow: hidden;
+  box-shadow: 0 16rpx 48rpx rgba(255, 138, 128, 0.25);
+}
+
+.modal-header {
+  padding: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1rpx solid rgba(255, 138, 128, 0.1);
+}
+
+.modal-header.question { background: linear-gradient(135deg, rgba(255, 138, 128, 0.1) 0%, rgba(244, 143, 177, 0.08) 100%); }
+.modal-header.task { background: linear-gradient(135deg, rgba(244, 143, 177, 0.1) 0%, rgba(206, 147, 216, 0.08) 100%); }
+.modal-header.choice { background: linear-gradient(135deg, rgba(206, 147, 216, 0.1) 0%, rgba(244, 143, 177, 0.08) 100%); }
+.modal-header.scene { background: linear-gradient(135deg, rgba(255, 171, 145, 0.1) 0%, rgba(255, 204, 188, 0.08) 100%); }
+.modal-header.compatibility { background: linear-gradient(135deg, rgba(255, 205, 210, 0.15) 0%, rgba(248, 187, 217, 0.1) 100%); }
+.modal-header.truth_or_dare { background: linear-gradient(135deg, rgba(255, 138, 128, 0.1) 0%, rgba(239, 154, 154, 0.08) 100%); }
+.modal-header.conflict_resolution { background: linear-gradient(135deg, rgba(165, 214, 167, 0.1) 0%, rgba(129, 199, 132, 0.08) 100%); }
+
+.modal-icon {
+  font-size: 40rpx;
+  margin-right: 16rpx;
+}
+
+.modal-type {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #4a3f3a;
+}
+
+.modal-body {
+  padding: 36rpx;
+}
+
+.modal-text {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #4a3f3a;
+  line-height: 1.7;
+  text-align: center;
+  margin-bottom: 28rpx;
+}
+
+.modal-tips {
+  padding: 20rpx 24rpx;
+  background: linear-gradient(135deg, #fff8f7 0%, #fef5f3 100%);
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  color: #8b7e78;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 20rpx;
+  border: 1rpx solid rgba(255, 138, 128, 0.1);
+}
+
+.modal-mode {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: #b5a9a3;
+}
+
+.modal-close {
+  padding: 28rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #ff8a80;
+  font-weight: 500;
+  border-top: 1rpx solid rgba(255, 138, 128, 0.1);
+}
+
+.modal-close:active {
+  background: #fff8f7;
+}

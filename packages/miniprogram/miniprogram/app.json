@@ -1,0 +1,75 @@
+{
+  "pages": [
+    "pages/welcome/welcome",
+    "pages/index/index",
+    "pages/discover/discover",
+    "pages/profile/profile",
+    "pages/game/game",
+    "pages/result/result",
+    "pages/favorites/favorites",
+    "pages/settings/settings",
+    "pages/profile-edit/profile-edit",
+    "pages/namecard/namecard",
+    "pages/namecard-edit/namecard-edit",
+    "pages/create-activity/create-activity",
+    "pages/activity-detail/activity-detail",
+    "pages/my-activities/my-activities",
+    "pages/user-profile/user-profile",
+    "pages/moments/moments",
+    "pages/agreement/agreement",
+    "pages/privacy/privacy"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fef7f4",
+    "navigationBarTitleText": "心动卡片",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#fef7f4"
+  },
+  "tabBar": {
+    "color": "#b5a9a3",
+    "selectedColor": "#ff8a80",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "卡片",
+        "iconPath": "images/tab_home.png",
+        "selectedIconPath": "images/tab_home_active.png"
+      },
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "发现",
+        "iconPath": "images/tab_heart.png",
+        "selectedIconPath": "images/tab_heart_active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab_settings.png",
+        "selectedIconPath": "images/tab_settings_active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "user-avatar": "/components/user-avatar/user-avatar",
+    "tag-selector": "/components/tag-selector/tag-selector",
+    "profile-card": "/components/profile-card/profile-card",
+    "activity-card": "/components/activity-card/activity-card",
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于发现附近的搭子活动"
+    }
+  },
+  "__usePrivacyCheck__": true,
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

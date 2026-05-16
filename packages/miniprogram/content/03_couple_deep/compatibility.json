@@ -1,0 +1,113 @@
+{
+  "mode": "couple_deep",
+  "mode_name": "情侣升温",
+  "type": "compatibility",
+  "description": "默契测试：双方各自作答，然后对比答案",
+  "cards": [
+    {
+      "id": "cd_m_001",
+      "level": 1,
+      "category": "默契测试",
+      "content": "我最喜欢吃的水果是？",
+      "tips": "各自写下答案"
+    },
+    {
+      "id": "cd_m_002",
+      "level": 1,
+      "category": "默契测试",
+      "content": "我压力大的时候会做什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_003",
+      "level": 1,
+      "category": "默契测试",
+      "content": "我最讨厌的食物是？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_004",
+      "level": 1,
+      "category": "默契测试",
+      "content": "我最喜欢的颜色是？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_005",
+      "level": 1,
+      "category": "默契测试",
+      "content": "我睡觉的时候有什么习惯？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_006",
+      "level": 2,
+      "category": "默契测试",
+      "content": "我最近最想买的东西是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_007",
+      "level": 2,
+      "category": "默契测试",
+      "content": "我生气的时候最需要什么？",
+      "tips": "空间/拥抱/倾听..."
+    },
+    {
+      "id": "cd_m_008",
+      "level": 2,
+      "category": "默契测试",
+      "content": "我最害怕什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_009",
+      "level": 2,
+      "category": "默契测试",
+      "content": "我小时候的梦想是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_010",
+      "level": 2,
+      "category": "默契测试",
+      "content": "我最在意别人对我的什么评价？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_011",
+      "level": 3,
+      "category": "默契测试",
+      "content": "我觉得我们之间最大的问题是什么？",
+      "tips": "各自写"
+    },
+    {
+      "id": "cd_m_012",
+      "level": 3,
+      "category": "默契测试",
+      "content": "我最感动的一次约会是哪次？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_013",
+      "level": 3,
+      "category": "默契测试",
+      "content": "我最希望你改变的一个习惯是？",
+      "tips": "诚实"
+    },
+    {
+      "id": "cd_m_014",
+      "level": 3,
+      "category": "默契测试",
+      "content": "我说过让你最开心的一句话是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_m_015",
+      "level": 3,
+      "category": "默契测试",
+      "content": "我心目中理想的求婚方式是？",
+      "tips": null
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "mode": "couple_deep",
+  "mode_name": "情侣升温",
+  "type": "question",
+  "cards": [
+    {
+      "id": "cd_q_001",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你小时候最害怕的事情是什么？现在还怕吗？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_002",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你做过最疯狂的一件事是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_003",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你最骄傲的一次成就是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_004",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你最大的遗憾是什么？",
+      "tips": "可以选择不说"
+    },
+    {
+      "id": "cd_q_005",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你最感谢生命中的哪个人？为什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_006",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你最近一次哭是什么时候？因为什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_007",
+      "level": 1,
+      "category": "深度了解",
+      "content": "如��生命只剩一年，你会怎么过？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_008",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你有什么秘密是从没告诉过任何人的？",
+      "tips": "现在可以说了"
+    },
+    {
+      "id": "cd_q_009",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你最不喜欢自己的哪一点？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_010",
+      "level": 1,
+      "category": "深度了解",
+      "content": "你最想改变过去的哪件事？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_011",
+      "level": 2,
+      "category": "关于我们",
+      "content": "你觉得我们在一起后，你最大的变化是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_012",
+      "level": 2,
+      "category": "关于我们",
+      "content": "我做过什么事让你特别感动？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_013",
+      "level": 2,
+      "category": "关于我们",
+      "content": "你觉得我们之间最需要改善的是什么？",
+      "tips": "认真想一想"
+    },
+    {
+      "id": "cd_q_014",
+      "level": 2,
+      "category": "关于我们",
+      "content": "我做什么事的时候你觉得最帅/最美？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_015",
+      "level": 2,
+      "category": "关于我们",
+      "content": "你有没有在某个瞬间觉得'这个人就是对的人'？",
+      "tips": "是什么时候"
+    },
+    {
+      "id": "cd_q_016",
+      "level": 2,
+      "category": "关于我们",
+      "content": "我们吵架的时候，你心里在想什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_017",
+      "level": 2,
+      "category": "关于我们",
+      "content": "你最想和我一起完成的人生目标是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_018",
+      "level": 2,
+      "category": "关于我们",
+      "content": "如果我们分开，你会最怀念什么？",
+      "tips": "假设而已"
+    },
+    {
+      "id": "cd_q_019",
+      "level": 2,
+      "category": "关于我们",
+      "content": "你觉得我不了解你的哪一面？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_020",
+      "level": 2,
+      "category": "关于我们",
+      "content": "你希望10年后我们是什么样的？",
+      "tips": "描述一下画面"
+    },
+    {
+      "id": "cd_q_021",
+      "level": 3,
+      "category": "内心深处",
+      "content": "你最害怕失去我的哪一面？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_022",
+      "level": 3,
+      "category": "内心深处",
+      "content": "你有没有对我隐瞒过什么？为什么？",
+      "tips": "现在可以说"
+    },
+    {
+      "id": "cd_q_023",
+      "level": 3,
+      "category": "内心深处",
+      "content": "你觉得我最需要被理解的是什么？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_024",
+      "level": 3,
+      "category": "内心深处",
+      "content": "你在这段感情中最脆弱的时候是什么时候？",
+      "tips": null
+    },
+    {
+      "id": "cd_q_025",
+      "level": 3,
+      "category": "内心深处",
+      "content": "如果可以给这段感情打分，你会打多少？为什么？",
+      "tips": "1-10分"
+    }
+  ]
+}

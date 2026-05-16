@@ -1,0 +1,147 @@
+{
+  "mode": "romance_spark",
+  "mode_name": "约会心动",
+  "type": "task",
+  "cards": [
+    {
+      "id": "rs_t_001",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "给对方一个拥抱，持续10秒",
+      "tips": "真��地抱"
+    },
+    {
+      "id": "rs_t_002",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "牵着对方的手走完这条街",
+      "tips": null
+    },
+    {
+      "id": "rs_t_003",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "对着对方的眼睛说一句真心话",
+      "tips": "不许移开眼神"
+    },
+    {
+      "id": "rs_t_004",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "给对方喂一口你正在吃的东西",
+      "tips": null
+    },
+    {
+      "id": "rs_t_005",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "录一段语音说你喜欢对方的三个地方",
+      "tips": "发给ta"
+    },
+    {
+      "id": "rs_t_006",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "帮对方整理一下头发或衣领",
+      "tips": "温柔一点"
+    },
+    {
+      "id": "rs_t_007",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "和对方自拍一张合照",
+      "tips": "选一个有创意的pose"
+    },
+    {
+      "id": "rs_t_008",
+      "level": 1,
+      "category": "甜蜜任务",
+      "content": "给对方一个头顶吻或额头吻",
+      "tips": "如果你们够熟的话"
+    },
+    {
+      "id": "rs_t_009",
+      "level": 2,
+      "category": "浪漫任务",
+      "content": "即兴给对方唱一小段情歌",
+      "tips": "什么歌都行"
+    },
+    {
+      "id": "rs_t_010",
+      "level": 2,
+      "category": "浪漫任务",
+      "content": "在对方手心写一个字，让ta猜",
+      "tips": "写得轻柔一点"
+    },
+    {
+      "id": "rs_t_011",
+      "level": 2,
+      "category": "浪漫任务",
+      "content": "假装第一次见面，重新向对方搭讪",
+      "tips": "发挥演技"
+    },
+    {
+      "id": "rs_t_012",
+      "level": 2,
+      "category": "浪漫任务",
+      "content": "用三句话写一首关于对方的小诗",
+      "tips": "打油诗也行"
+    },
+    {
+      "id": "rs_t_013",
+      "level": 2,
+      "category": "浪漫任务",
+      "content": "给对方按摩肩膀30秒",
+      "tips": null
+    },
+    {
+      "id": "rs_t_014",
+      "level": 2,
+      "category": "浪漫任务",
+      "content": "和对方交换一件随身物品，保留到约会结束",
+      "tips": "比如手链、发圈"
+    },
+    {
+      "id": "rs_t_015",
+      "level": 2,
+      "category": "浪漫任务",
+      "content": "蒙上眼睛，让对方牵着你走10步",
+      "tips": "感受信任"
+    },
+    {
+      "id": "rs_t_016",
+      "level": 3,
+      "category": "心动任务",
+      "content": "靠在对方肩上一分钟，什么都不做",
+      "tips": "享受这个瞬间"
+    },
+    {
+      "id": "rs_t_017",
+      "level": 3,
+      "category": "心动任务",
+      "content": "鼻尖碰鼻尖，保持5秒",
+      "tips": "不许笑场"
+    },
+    {
+      "id": "rs_t_018",
+      "level": 3,
+      "category": "心动任务",
+      "content": "向对方正式地说一次'我喜欢你'",
+      "tips": "认真的那种"
+    },
+    {
+      "id": "rs_t_019",
+      "level": 3,
+      "category": "心动任务",
+      "content": "从背后抱住对方",
+      "tips": "感受心跳"
+    },
+    {
+      "id": "rs_t_020",
+      "level": 3,
+      "category": "心动任务",
+      "content": "下次见面前，给对方手写一张小卡片",
+      "tips": "写什么都行"
+    }
+  ]
+}

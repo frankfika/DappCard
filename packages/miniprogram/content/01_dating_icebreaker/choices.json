@@ -1,0 +1,167 @@
+{
+  "mode": "dating_icebreaker",
+  "mode_name": "相亲破冰",
+  "type": "choice",
+  "cards": [
+    {
+      "id": "di_c_001",
+      "level": 1,
+      "category": "二选一",
+      "content": "周末宅家 vs 出门浪",
+      "optionA": "周末宅家",
+      "optionB": "出门浪"
+    },
+    {
+      "id": "di_c_002",
+      "level": 1,
+      "category": "二选一",
+      "content": "养猫 vs 养狗",
+      "optionA": "养猫",
+      "optionB": "养狗"
+    },
+    {
+      "id": "di_c_003",
+      "level": 1,
+      "category": "二选一",
+      "content": "早起 vs 熬夜",
+      "optionA": "早起",
+      "optionB": "熬夜"
+    },
+    {
+      "id": "di_c_004",
+      "level": 1,
+      "category": "二选一",
+      "content": "海边度假 vs 山里露营",
+      "optionA": "海边度假",
+      "optionB": "山里露营"
+    },
+    {
+      "id": "di_c_005",
+      "level": 1,
+      "category": "二选一",
+      "content": "吃辣 vs 不吃辣",
+      "optionA": "吃辣",
+      "optionB": "不吃辣"
+    },
+    {
+      "id": "di_c_006",
+      "level": 1,
+      "category": "二选一",
+      "content": "计划派 vs 随性派",
+      "optionA": "计划派",
+      "optionB": "随性派"
+    },
+    {
+      "id": "di_c_007",
+      "level": 1,
+      "category": "二选一",
+      "content": "存钱 vs 享受当下",
+      "optionA": "存钱",
+      "optionB": "享受当下"
+    },
+    {
+      "id": "di_c_008",
+      "level": 1,
+      "category": "二选一",
+      "content": "大城市打拼 vs 小城市安稳",
+      "optionA": "大城市打拼",
+      "optionB": "小城市安稳"
+    },
+    {
+      "id": "di_c_009",
+      "level": 1,
+      "category": "二选一",
+      "content": "看电影 vs 看演唱会",
+      "optionA": "看电影",
+      "optionB": "看演唱会"
+    },
+    {
+      "id": "di_c_010",
+      "level": 1,
+      "category": "二选一",
+      "content": "社交达人 vs 社恐患者",
+      "optionA": "社交达人",
+      "optionB": "社恐患者"
+    },
+    {
+      "id": "di_c_011",
+      "level": 2,
+      "category": "二选一",
+      "content": "吵完架当天和好 vs 冷静几天再说",
+      "optionA": "当天和好",
+      "optionB": "冷静几天"
+    },
+    {
+      "id": "di_c_012",
+      "level": 2,
+      "category": "二选一",
+      "content": "每天联系 vs 有事再聊",
+      "optionA": "每天联系",
+      "optionB": "有事再聊"
+    },
+    {
+      "id": "di_c_013",
+      "level": 2,
+      "category": "二选一",
+      "content": "先买房 vs 先结婚",
+      "optionA": "先买房",
+      "optionB": "先结婚"
+    },
+    {
+      "id": "di_c_014",
+      "level": 2,
+      "category": "二选一",
+      "content": "恋爱高调秀 vs 低调不发圈",
+      "optionA": "高调秀",
+      "optionB": "低调不发圈"
+    },
+    {
+      "id": "di_c_015",
+      "level": 2,
+      "category": "二选一",
+      "content": "裸婚 vs 必须有仪式",
+      "optionA": "裸婚也行",
+      "optionB": "必须有仪式"
+    },
+    {
+      "id": "di_c_016",
+      "level": 2,
+      "category": "二选一",
+      "content": "事业优先 vs 家庭优先",
+      "optionA": "事业优先",
+      "optionB": "家庭优先"
+    },
+    {
+      "id": "di_c_017",
+      "level": 2,
+      "category": "二选一",
+      "content": "门当户对 vs 只看感情",
+      "optionA": "门当户对",
+      "optionB": "只看感情"
+    },
+    {
+      "id": "di_c_018",
+      "level": 2,
+      "category": "二选一",
+      "content": "独立带娃 vs 老人帮忙",
+      "optionA": "独立带娃",
+      "optionB": "老人帮忙"
+    },
+    {
+      "id": "di_c_019",
+      "level": 2,
+      "category": "二选一",
+      "content": "经济AA vs 一方为主",
+      "optionA": "经济AA",
+      "optionB": "一方为主"
+    },
+    {
+      "id": "di_c_020",
+      "level": 2,
+      "category": "二选一",
+      "content": "旅行住酒店 vs 住民宿",
+      "optionA": "住酒店",
+      "optionB": "住民宿"
+    }
+  ]
+}

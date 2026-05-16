@@ -1,0 +1,89 @@
+<!--miniprogram/pages/namecard-edit/namecard-edit.wxml-->
+<view class="container">
+  <!-- Theme Selector -->
+  <view class="section">
+    <view class="section-title">选择主题</view>
+    <view class="theme-grid">
+      <view
+        class="theme-item {{currentTheme === item.value ? 'active' : ''}}"
+        wx:for="{{themes}}"
+        wx:key="value"
+        data-theme="{{item.value}}"
+        bindtap="onThemeSelect"
+      >
+        <view class="theme-preview" style="background: {{item.color}}"></view>
+        <view class="theme-label">{{item.label}}</view>
+        <view class="theme-check" wx:if="{{currentTheme === item.value}}">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Cover Image -->
+  <view class="section">
+    <view class="section-title">封面图片</view>
+    <view class="cover-upload" bindtap="handleChooseCover">
+      <image
+        wx:if="{{namecard.coverImage}}"
+        class="cover-preview"
+        src="{{namecard.coverImage}}"
+        mode="aspectFill"
+      ></image>
+      <view wx:else class="cover-placeholder">
+        <text class="upload-icon">📷</text>
+        <text class="upload-text">点击上传封面</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Motto -->
+  <view class="section">
+    <view class="section-title">个人座右铭</view>
+    <textarea
+      class="motto-input"
+      placeholder="写下你的座右铭..."
+      value="{{namecard.motto}}"
+      bindinput="onMottoInput"
+      maxlength="50"
+      show-confirm-bar="{{false}}"
+    ></textarea>
+  </view>
+
+  <!-- Social Links -->
+  <view class="section">
+    <view class="section-header">
+      <view class="section-title">社交媒体</view>
+      <view class="add-btn" bindtap="handleAddSocialLink">
+        <text>+ 添加</text>
+      </view>
+    </view>
+
+    <view class="social-list" wx:if="{{namecard.socialLinks.length > 0}}">
+      <view
+        class="social-item"
+        wx:for="{{namecard.socialLinks}}"
+        wx:key="index"
+      >
+        <view class="social-info">
+          <view class="social-platform">{{item.platform}}</view>
+          <view class="social-link">{{item.link}}</view>
+        </view>
+        <view
+          class="remove-btn"
+          data-index="{{index}}"
+          bindtap="handleRemoveSocialLink"
+        >
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-tip" wx:else>
+      <text>还没有添加社交媒体</text>
+    </view>
+  </view>
+
+  <!-- Save Button -->
+  <view class="save-btn" bindtap="handleSave">
+    <text>保存名片</text>
+  </view>
+</view>

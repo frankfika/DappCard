@@ -1,0 +1,112 @@
+{
+  "mode": "marriage_fresh",
+  "mode_name": "夫妻保鲜",
+  "type": "task",
+  "cards": [
+    {
+      "id": "mf_t_001",
+      "level": 1,
+      "category": "重燃激情",
+      "content": "假装今晚是你们的第一次约会",
+      "tips": "重新打扮见面"
+    },
+    {
+      "id": "mf_t_002",
+      "level": 1,
+      "category": "重燃激情",
+      "content": "给对方一个从前常有，现在很少给的拥抱",
+      "tips": "抱久一点"
+    },
+    {
+      "id": "mf_t_003",
+      "level": 1,
+      "category": "重燃激情",
+      "content": "翻出你们的老照片，一起回忆当时的故事",
+      "tips": null
+    },
+    {
+      "id": "mf_t_004",
+      "level": 1,
+      "category": "重燃激情",
+      "content": "放一首你们的定情歌曲，一起跳个慢舞",
+      "tips": null
+    },
+    {
+      "id": "mf_t_005",
+      "level": 1,
+      "category": "重燃激情",
+      "content": "今晚手机静音，只属于彼此",
+      "tips": "放下工作和孩子的事"
+    },
+    {
+      "id": "mf_t_006",
+      "level": 2,
+      "category": "仪式感",
+      "content": "互相给对方写一张感谢卡，交换阅读",
+      "tips": "写三件感谢的事"
+    },
+    {
+      "id": "mf_t_007",
+      "level": 2,
+      "category": "仪式感",
+      "content": "一起计划一次只有两个人的旅行",
+      "tips": "哪怕只是周末"
+    },
+    {
+      "id": "mf_t_008",
+      "level": 2,
+      "category": "仪式感",
+      "content": "重新拍一组类似婚纱照风格的照片",
+      "tips": "用手机就行"
+    },
+    {
+      "id": "mf_t_009",
+      "level": 2,
+      "category": "仪式感",
+      "content": "一起做一顿饭，从买菜到上桌",
+      "tips": "当做约会"
+    },
+    {
+      "id": "mf_t_010",
+      "level": 2,
+      "category": "仪式感",
+      "content": "给对方按摩20分钟，不求回报",
+      "tips": "真正地放松"
+    },
+    {
+      "id": "mf_t_011",
+      "level": 3,
+      "category": "亲密任务",
+      "content": "今晚早点上床，聊天一小时再睡",
+      "tips": "不看手机"
+    },
+    {
+      "id": "mf_t_012",
+      "level": 3,
+      "category": "亲密任务",
+      "content": "互相分享一个你从没说过的秘密",
+      "tips": null
+    },
+    {
+      "id": "mf_t_013",
+      "level": 3,
+      "category": "亲密任务",
+      "content": "用你们刚在一起时的方式，重新撩一下对方",
+      "tips": "回忆当时怎么撩的"
+    },
+    {
+      "id": "mf_t_014",
+      "level": 3,
+      "category": "亲密任务",
+      "content": "一起看一部爱情电影，全程牵手",
+      "tips": null
+    },
+    {
+      "id": "mf_t_015",
+      "level": 3,
+      "category": "亲密任务",
+      "content": "给对方一个惊喜，什么都行",
+      "tips": "下次见面时"
+    }
+  ]
+}

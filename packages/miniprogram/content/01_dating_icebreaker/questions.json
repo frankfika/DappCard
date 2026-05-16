@@ -1,0 +1,357 @@
+{
+  "mode": "dating_icebreaker",
+  "mode_name": "相亲破冰",
+  "type": "question",
+  "cards": [
+    {
+      "id": "di_q_001",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你理想的周末是怎样度过的？",
+      "tips": "可以从早到晚描述一遍"
+    },
+    {
+      "id": "di_q_002",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你现在手机里最常用的3个App是什么？",
+      "tips": "除了微信"
+    },
+    {
+      "id": "di_q_003",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你有什么奇怪的小习惯或小癖好？",
+      "tips": "比如睡觉必须开灯/关灯"
+    },
+    {
+      "id": "di_q_004",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你最近在追什么剧或看什么书？",
+      "tips": "聊聊为什么喜欢"
+    },
+    {
+      "id": "di_q_005",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你最拿手的一道菜是什么？",
+      "tips": "如果不会做饭，说说最爱吃的"
+    },
+    {
+      "id": "di_q_006",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你小时候的梦想是什么？现在实现了吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_007",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你最喜欢自己身上的哪个特点？",
+      "tips": "性格或外貌都可以"
+    },
+    {
+      "id": "di_q_008",
+      "level": 1,
+      "category": "基础了解",
+      "content": "如果有一个月假期，你会去哪里？",
+      "tips": "钱不是问题的情况下"
+    },
+    {
+      "id": "di_q_009",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你养过宠物吗？最想养什么？",
+      "tips": null
+    },
+    {
+      "id": "di_q_010",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你最近一次运动是什么时候？做了什么？",
+      "tips": "走路不算哦"
+    },
+    {
+      "id": "di_q_011",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你是早起型还是熬夜型？",
+      "tips": "说说你的作息时间"
+    },
+    {
+      "id": "di_q_012",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你的工作中最有成就感的一件事是什么？",
+      "tips": null
+    },
+    {
+      "id": "di_q_013",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你最近一次笑到肚子疼是因为什么？",
+      "tips": null
+    },
+    {
+      "id": "di_q_014",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你喜欢热闹还是安静的环境？",
+      "tips": "社交场合和日常生活"
+    },
+    {
+      "id": "di_q_015",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你有什么特别的技能或才艺吗？",
+      "tips": "哪怕是很小的"
+    },
+    {
+      "id": "di_q_016",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你和朋友们通常怎么聚会？",
+      "tips": null
+    },
+    {
+      "id": "di_q_017",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你最近学到的一个新技能或新知识是什么？",
+      "tips": null
+    },
+    {
+      "id": "di_q_018",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你有收藏什么东西的习惯吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_019",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你最喜欢的季节是哪个？为什么？",
+      "tips": null
+    },
+    {
+      "id": "di_q_020",
+      "level": 1,
+      "category": "基础了解",
+      "content": "你觉得自己是个什么样的人？用三个词形容一下",
+      "tips": null
+    },
+    {
+      "id": "di_q_021",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得感情中最重要的是什么？",
+      "tips": "信任、陪伴、尊重..."
+    },
+    {
+      "id": "di_q_022",
+      "level": 2,
+      "category": "价值观",
+      "content": "你对婚后要不要和父母住一起怎么看？",
+      "tips": null
+    },
+    {
+      "id": "di_q_023",
+      "level": 2,
+      "category": "价值观",
+      "content": "你希望未来定居在什么样的城市？",
+      "tips": "大城市还是回老家"
+    },
+    {
+      "id": "di_q_024",
+      "level": 2,
+      "category": "价值观",
+      "content": "你怎么看待AA制和经济分工？",
+      "tips": null
+    },
+    {
+      "id": "di_q_025",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得吵架后谁应该先道歉？",
+      "tips": null
+    },
+    {
+      "id": "di_q_026",
+      "level": 2,
+      "category": "价值观",
+      "content": "你能接受另一半有异性好朋友吗？",
+      "tips": "边界在哪里"
+    },
+    {
+      "id": "di_q_027",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得恋爱多久结婚比较合适？",
+      "tips": null
+    },
+    {
+      "id": "di_q_028",
+      "level": 2,
+      "category": "价值观",
+      "content": "你对要孩子这件事怎么看？",
+      "tips": "想要几个、什么时候"
+    },
+    {
+      "id": "di_q_029",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得家务应该怎么分工？",
+      "tips": null
+    },
+    {
+      "id": "di_q_030",
+      "level": 2,
+      "category": "价值观",
+      "content": "你更看重事业还是家庭？",
+      "tips": "如果必须排序的话"
+    },
+    {
+      "id": "di_q_031",
+      "level": 2,
+      "category": "价值观",
+      "content": "你能接受另一半的工作经常出差吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_032",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得婚前同居有必要吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_033",
+      "level": 2,
+      "category": "价值观",
+      "content": "你怎么看待彩礼/嫁妆？",
+      "tips": null
+    },
+    {
+      "id": "di_q_034",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得恋爱中需要每天聊天吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_035",
+      "level": 2,
+      "category": "价值观",
+      "content": "你怎么处理和另一半意见不一致的情况？",
+      "tips": null
+    },
+    {
+      "id": "di_q_036",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得感情中应该保留多少私人空间？",
+      "tips": null
+    },
+    {
+      "id": "di_q_037",
+      "level": 2,
+      "category": "价值观",
+      "content": "你怎么看待另一半的前任？",
+      "tips": null
+    },
+    {
+      "id": "di_q_038",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得谈恋爱应该公开还是低调？",
+      "tips": "发朋友圈之类的"
+    },
+    {
+      "id": "di_q_039",
+      "level": 2,
+      "category": "价值观",
+      "content": "你会因为父母反对而放弃一段感情吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_040",
+      "level": 2,
+      "category": "价值观",
+      "content": "你觉得感情中可以有善意的谎言吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_041",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你谈过几次恋爱？最长的一段多久？",
+      "tips": "可以选择不回答具体数字"
+    },
+    {
+      "id": "di_q_042",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你上一段感情是怎么结束的？",
+      "tips": "如果不想说可以跳过"
+    },
+    {
+      "id": "di_q_043",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你觉得自己在感情中是什么类型？",
+      "tips": "主动型/被动型/作型..."
+    },
+    {
+      "id": "di_q_044",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你在上一段感情中学到了什么？",
+      "tips": null
+    },
+    {
+      "id": "di_q_045",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你的择偶标准是什么？",
+      "tips": "说三个最重要的"
+    },
+    {
+      "id": "di_q_046",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你绝对不能接受另一半的什么特点？",
+      "tips": "红线在哪里"
+    },
+    {
+      "id": "di_q_047",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你觉得什么情况下可以考虑结婚？",
+      "tips": null
+    },
+    {
+      "id": "di_q_048",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你对自己目前的生活状态满意吗？",
+      "tips": "想改变什么"
+    },
+    {
+      "id": "di_q_049",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "你最大的缺点是什么？你在改吗？",
+      "tips": null
+    },
+    {
+      "id": "di_q_050",
+      "level": 3,
+      "category": "进阶话题",
+      "content": "五年后你希望自己是什么样的状态？",
+      "tips": "事业、家庭、生活"
+    }
+  ]
+}

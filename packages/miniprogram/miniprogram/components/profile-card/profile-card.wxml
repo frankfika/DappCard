@@ -1,0 +1,24 @@
+<view class="profile-card {{compact ? 'profile-compact' : ''}}" bindtap="onCardTap">
+  <view class="profile-header">
+    <user-avatar
+      src="{{user.avatar}}"
+      size="{{compact ? 'small' : 'medium'}}"
+      showDefault="{{true}}"
+    />
+    <view class="profile-info">
+      <text class="profile-nickname">{{user.nickname || '匿名用户'}}</text>
+      <text wx:if="{{user.bio && !compact}}" class="profile-bio">{{user.bio}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{user.interests && user.interests.length > 0}}" class="profile-interests">
+    <view
+      wx:for="{{user.interests}}"
+      wx:key="index"
+      class="interest-tag"
+    >
+      <text wx:if="{{item.icon}}">{{item.icon}} </text>
+      <text>{{item.name || item}}</text>
+    </view>
+  </view>
+</view>

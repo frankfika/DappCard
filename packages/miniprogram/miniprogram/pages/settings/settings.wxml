@@ -1,0 +1,84 @@
+<!-- 设置页 -->
+<view class="page">
+  <!-- 统计卡片 -->
+  <view class="stats-card">
+    <view class="stats-content">
+      <view class="stats-header">
+        <text class="stats-title">{{t.settings.yourInteraction}}</text>
+      </view>
+      <view class="stats-grid">
+        <view class="stat-item">
+          <text class="stat-num">{{totalCompleted}}</text>
+          <text class="stat-label">{{t.settings.completedCards}}</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-num">{{favoriteCount}}</text>
+          <text class="stat-label">{{t.settings.favoriteCards}}</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-num">{{daysPlayed}}</text>
+          <text class="stat-label">{{t.settings.daysPlayed}}</text>
+        </view>
+      </view>
+      <!-- 总进度条 -->
+      <view class="overall-progress">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{overallProgress}}%"></view>
+        </view>
+        <text class="progress-text">{{overallProgress}}% ({{totalCompleted}}/{{totalCards}})</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据管理 -->
+  <view class="section">
+    <text class="section-title">{{t.settings.dataManage}}</text>
+    <view class="menu-card">
+      <view class="menu-item simple" bindtap="resetAllProgress">
+        <text class="menu-text">{{t.settings.resetAll}}</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item simple" bindtap="clearFavorites">
+        <text class="menu-text">{{t.settings.clearFavorites}}</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item simple danger" bindtap="clearAllData">
+        <text class="menu-text">{{t.settings.clearAllData}}</text>
+        <text class="menu-arrow">></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分享 -->
+  <view class="section">
+    <text class="section-title">{{t.settings.more}}</text>
+    <view class="menu-card">
+      <button class="menu-item simple share-btn" open-type="share">
+        <text class="menu-text">{{t.settings.share}}</text>
+        <text class="menu-arrow">></text>
+      </button>
+      <view class="menu-item simple" bindtap="goToAgreement">
+        <text class="menu-text">用户服务协议</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item simple" bindtap="goToPrivacy">
+        <text class="menu-text">隐私政策</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item simple">
+        <text class="menu-text">{{t.settings.version}}</text>
+        <text class="menu-value">2.0.0</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部 -->
+  <view class="footer">
+    <text class="footer-text">{{t.appName}}</text>
+    <text class="footer-sub">{{t.settings.footer}}</text>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>
