@@ -1,4 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useAccount, useWriteContract, useReadContract } from 'wagmi';
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from './lib/web3/config';
+import { uploadToIPFS, fetchFromIPFS, computeContentHash, type ChainContent } from './lib/web3/ipfs';
 
 export interface Profile {
   name: string;
@@ -34,6 +37,14 @@ export interface Activity {
   joined: boolean;
 }
 
+export interface SyncStatus {
+  isSynced: boolean;
+  lastSyncAt: number | null;
+  ipfsHash: string | null;
+  txHash: string | null;
+  chainId: number | null;
+}
+
 const DEFAULT_PROFILE: Profile = {
   name: '',
   handle: '',
@@ -53,6 +64,14 @@ const DEFAULT_GAME_SESSION: GameSession = {
   favorites: [],
 };
 
+const DEFAULT_SYNC_STATUS: SyncStatus = {
+  isSynced: false,
+  lastSyncAt: null,
+  ipfsHash: null,
+  txHash: null,
+  chainId: null,
+};
+
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
     const stored = localStorage.getItem(key);
@@ -68,17 +87,123 @@ export function useProfile() {
   const [isSetup, setIsSetup] = useState(() => {
     return !!loadFromStorage('dappcard_profile', DEFAULT_PROFILE).name;
   });
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>(() =>
+    loadFromStorage('dappcard_profile_sync', DEFAULT_SYNC_STATUS)
+  );
+
+  const { address, chainId } = useAccount();
+  const { writeContractAsync } = useWriteContract();
 
   useEffect(() => {
     localStorage.setItem('dappcard_profile', JSON.stringify(profile));
     setIsSetup(!!profile.name);
   }, [profile]);
 
+  useEffect(() => {
+    localStorage.setItem('dappcard_profile_sync', JSON.stringify(syncStatus));
+  }, [syncStatus]);
+
   const updateProfile = useCallback((updates: Partial<Profile>) => {
     setProfile(prev => ({ ...prev, ...updates }));
+    setSyncStatus(prev => ({ ...prev, isSynced: false }));
   }, []);
 
-  return { profile, updateProfile, isSetup };
+  const syncToChain = useCallback(async (): Promise<boolean> => {
+    if (!address || !chainId) return false;
+    const contractAddr = CONTRACT_ADDRESS[chainId];
+    if (!contractAddr || contractAddr === '0x0000000000000000000000000000000000000000') {
+      console.warn('Contract not deployed on chain', chainId);
+      return false;
+    }
+
+    try {
+      const content: ChainContent = {
+        version: '1.0',
+        app: 'dappcard',
+        type: 'profile',
+        data: profile,
+        timestamp: Date.now(),
+      };
+
+      const contentJson = JSON.stringify(content);
+      const [ipfsHash, contentHash] = await Promise.all([
+        uploadToIPFS(content),
+        computeContentHash(contentJson),
+      ]);
+
+      const txHash = await writeContractAsync({
+        address: contractAddr,
+        abi: CONTRACT_ABI as any,
+        functionName: 'publish',
+        args: ['profile', ipfsHash, contentHash],
+      } as any);
+
+      setSyncStatus({
+        isSynced: true,
+        lastSyncAt: Date.now(),
+        ipfsHash,
+        txHash,
+        chainId,
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Failed to sync profile to chain:', error);
+      return false;
+    }
+  }, [address, chainId, profile, writeContractAsync]);
+
+  const loadFromChain = useCallback(async (): Promise<boolean> => {
+    if (!address || !chainId) return false;
+    const contractAddr = CONTRACT_ADDRESS[chainId];
+    if (!contractAddr || contractAddr === '0x0000000000000000000000000000000000000000') {
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${getRpcUrl(chainId)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'eth_call',
+          params: [
+            {
+              to: contractAddr,
+              data: encodeGetLatestProfile(address),
+            },
+            'latest',
+          ],
+        }),
+      });
+
+      const result = await response.json();
+      if (result.result && result.result !== '0x') {
+        const ipfsHash = decodeStringResult(result.result);
+        if (ipfsHash) {
+          const content = await fetchFromIPFS(ipfsHash);
+          if (content && content.type === 'profile') {
+            setProfile(content.data as Profile);
+            setSyncStatus({
+              isSynced: true,
+              lastSyncAt: Date.now(),
+              ipfsHash,
+              txHash: null,
+              chainId,
+            });
+            return true;
+          }
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error('Failed to load profile from chain:', error);
+      return false;
+    }
+  }, [address, chainId]);
+
+  return { profile, updateProfile, isSetup, syncStatus, syncToChain, loadFromChain };
 }
 
 export function useGameSession() {
@@ -117,10 +242,20 @@ export function useActivities() {
   const [activities, setActivities] = useState<Activity[]>(() =>
     loadFromStorage('dappcard_activities', [])
   );
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>(() =>
+    loadFromStorage('dappcard_activities_sync', DEFAULT_SYNC_STATUS)
+  );
+
+  const { address, chainId } = useAccount();
+  const { writeContractAsync } = useWriteContract();
 
   useEffect(() => {
     localStorage.setItem('dappcard_activities', JSON.stringify(activities));
   }, [activities]);
+
+  useEffect(() => {
+    localStorage.setItem('dappcard_activities_sync', JSON.stringify(syncStatus));
+  }, [syncStatus]);
 
   const addActivity = useCallback((activity: Omit<Activity, 'id' | 'participants' | 'joined'>) => {
     const newActivity: Activity = {
@@ -130,6 +265,7 @@ export function useActivities() {
       joined: true,
     };
     setActivities(prev => [newActivity, ...prev]);
+    setSyncStatus(prev => ({ ...prev, isSynced: false }));
     return newActivity;
   }, []);
 
@@ -149,5 +285,83 @@ export function useActivities() {
     ));
   }, []);
 
-  return { activities, addActivity, joinActivity, leaveActivity };
+  const syncToChain = useCallback(async (): Promise<boolean> => {
+    if (!address || !chainId) return false;
+    const contractAddr = CONTRACT_ADDRESS[chainId];
+    if (!contractAddr || contractAddr === '0x0000000000000000000000000000000000000000') {
+      return false;
+    }
+
+    try {
+      const content: ChainContent = {
+        version: '1.0',
+        app: 'dappcard',
+        type: 'activity',
+        data: activities,
+        timestamp: Date.now(),
+      };
+
+      const contentJson = JSON.stringify(content);
+      const [ipfsHash, contentHash] = await Promise.all([
+        uploadToIPFS(content),
+        computeContentHash(contentJson),
+      ]);
+
+      const txHash = await writeContractAsync({
+        address: contractAddr,
+        abi: CONTRACT_ABI as any,
+        functionName: 'publish',
+        args: ['activity', ipfsHash, contentHash],
+      } as any);
+
+      setSyncStatus({
+        isSynced: true,
+        lastSyncAt: Date.now(),
+        ipfsHash,
+        txHash,
+        chainId,
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Failed to sync activities to chain:', error);
+      return false;
+    }
+  }, [address, chainId, activities, writeContractAsync]);
+
+  return { activities, addActivity, joinActivity, leaveActivity, syncStatus, syncToChain };
+}
+
+function getRpcUrl(chainId: number): string {
+  const urls: Record<number, string> = {
+    11155111: 'https://rpc.sepolia.org',
+    84532: 'https://sepolia.base.org',
+    421614: 'https://sepolia-rollup.arbitrum.io/rpc',
+    80002: 'https://rpc-amoy.polygon.technology',
+  };
+  return urls[chainId] || '';
+}
+
+function encodeGetLatestProfile(address: string): string {
+  const methodId = '0x9bd2c0e7';
+  const paddedAddress = address.toLowerCase().replace('0x', '').padStart(64, '0');
+  return methodId + paddedAddress;
+}
+
+function decodeStringResult(hex: string): string | null {
+  try {
+    if (hex === '0x' || hex.length < 130) return null;
+    const offset = parseInt(hex.slice(2, 66), 16) * 2;
+    const length = parseInt(hex.slice(66, 130), 16) * 2;
+    if (offset + 64 + length > hex.length * 2) return null;
+    const strHex = hex.slice(130 + offset, 130 + offset + length);
+    if (!strHex) return null;
+    const bytes = [];
+    for (let i = 0; i < strHex.length; i += 2) {
+      bytes.push(parseInt(strHex.slice(i, i + 2), 16));
+    }
+    return new TextDecoder().decode(new Uint8Array(bytes));
+  } catch {
+    return null;
+  }
 }

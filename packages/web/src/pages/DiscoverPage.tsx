@@ -1,13 +1,26 @@
 import { useState } from 'react';
-import { MapPin, Users, Plus, X, Clock, Check } from 'lucide-react';
+import { MapPin, Users, Plus, X, Clock, Check, CloudUpload, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useAccount } from 'wagmi';
 import { companionTypes } from '@shared';
 import { useActivities } from '../store';
 
 export default function DiscoverPage() {
-  const { activities, addActivity, joinActivity, leaveActivity } = useActivities();
+  const { activities, addActivity, joinActivity, leaveActivity, syncStatus, syncToChain } = useActivities();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const { isConnected } = useAccount();
+
+  const handleSync = async () => {
+    if (!isConnected || syncing) return;
+    setSyncing(true);
+    try {
+      await syncToChain();
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const filteredActivities = selectedCategory
     ? activities.filter(a => a.category === selectedCategory)
@@ -19,9 +32,31 @@ export default function DiscoverPage() {
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="px-5 pt-4 pb-2 flex items-center justify-between shrink-0">
         <h2 className="text-[18px] font-black text-gray-900">发现搭子</h2>
-        <button onClick={() => setShowCreate(true)} className="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center shadow-sm active:scale-95 transition-transform">
-          <Plus className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          {isConnected && (
+            <button
+              onClick={handleSync}
+              disabled={syncing || syncStatus.isSynced}
+              className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm active:scale-95 transition-transform ${
+                syncStatus.isSynced
+                  ? 'bg-green-50 text-green-600 border border-green-200'
+                  : 'bg-white text-gray-600 border border-gray-200'
+              }`}
+              title={syncStatus.isSynced ? '已同步到链上' : '同步到链上'}
+            >
+              {syncing ? (
+                <div className="w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin" />
+              ) : syncStatus.isSynced ? (
+                <Globe className="w-4 h-4" />
+              ) : (
+                <CloudUpload className="w-4 h-4" />
+              )}
+            </button>
+          )}
+          <button onClick={() => setShowCreate(true)} className="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center shadow-sm active:scale-95 transition-transform">
+            <Plus className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 pb-32 no-scrollbar">

@@ -2,9 +2,10 @@ import { useState } from 'react';
 import {
   Share, MapPin, Sparkles, MessageCircle, Wallet, Twitter,
   Check, User, Zap, X, Send, Plus, Trash2,
-  CheckCircle2, Link2, ExternalLink, Edit3
+  CheckCircle2, Link2, ExternalLink, Edit3, CloudUpload, Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useAccount } from 'wagmi';
 import { useProfile } from '../store';
 
 const AVATAR_SEEDS = ['Alex', 'Luna', 'Max', 'Zoe', 'Kai', 'Nova', 'Aria', 'Leo', 'Mia', 'Finn', 'Sage', 'River'];
@@ -18,12 +19,14 @@ const TAG_OPTIONS = [
 ];
 
 export default function CardPage() {
-  const { profile, updateProfile, isSetup } = useProfile();
+  const { profile, updateProfile, isSetup, syncStatus, syncToChain } = useProfile();
   const [isEditing, setIsEditing] = useState(false);
   const [showShareDiv, setShowShareDiv] = useState(false);
   const [showSayHi, setShowSayHi] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isMe, setIsMe] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+  const { isConnected } = useAccount();
 
   if (!isSetup) {
     return <OnboardingFlow onComplete={(data) => updateProfile(data)} />;
@@ -33,6 +36,16 @@ export default function CardPage() {
     navigator.clipboard.writeText(window.location.href);
     setIsCopied(true);
     setTimeout(() => { setIsCopied(false); if (platform === 'copy') setShowShareDiv(false); }, 1500);
+  };
+
+  const handleSync = async () => {
+    if (!isConnected || syncing) return;
+    setSyncing(true);
+    try {
+      await syncToChain();
+    } finally {
+      setSyncing(false);
+    }
   };
 
   const avatarUrl = profile.avatar || `https://api.dicebear.com/7.x/notionists/svg?seed=${profile.name}&backgroundColor=transparent`;
@@ -154,6 +167,26 @@ export default function CardPage() {
             <button onClick={() => setIsEditing(true)} className="w-[52px] h-[52px] rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all border border-gray-100">
               <Edit3 className="w-5 h-5 text-gray-700" />
             </button>
+            {isConnected && (
+              <button
+                onClick={handleSync}
+                disabled={syncing || syncStatus.isSynced}
+                className={`w-[52px] h-[52px] rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all border ${
+                  syncStatus.isSynced
+                    ? 'bg-green-50 border-green-200 text-green-600'
+                    : 'bg-white border-gray-100 text-gray-600'
+                }`}
+                title={syncStatus.isSynced ? '已同步到链上' : '同步到链上'}
+              >
+                {syncing ? (
+                  <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin" />
+                ) : syncStatus.isSynced ? (
+                  <Globe className="w-5 h-5" />
+                ) : (
+                  <CloudUpload className="w-5 h-5" />
+                )}
+              </button>
+            )}
             <button onClick={() => setShowShareDiv(true)} className="flex-1 h-[52px] rounded-full bg-gray-900 text-[#A6F7E2] font-black text-[14px] shadow-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all">
               分享名片 <Share className="w-4 h-4 ml-1" />
             </button>

@@ -7,10 +7,11 @@
 
 ### 一张卡片，连接无限可能
 
-![Version](https://img.shields.io/badge/Version-0.1.0-blue?style=flat-square)
-![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20WeChat%20Mini%20Program-green?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.2.0-blue?style=flat-square)
+![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20WeChat%20%7C%20Telegram%20%7C%20TikTok%20%7C%20Facebook%20%7C%20Twitter-green?style=flat-square)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
 ![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss)
+![Web3](https://img.shields.io/badge/Web3-Wagmi%20%2B%20Viem-orange?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)
 
 [核心功能](#-核心功能) · [界面导览](#-界面导览) · [快速开始](#-快速开始) · [技术架构](#-技术架构)
@@ -111,16 +112,47 @@ npm run build
 
 构建产物位于 `packages/web/dist/` 目录。
 
+## 多平台支持
+
+| 平台 | 类型 | 存储策略 | 区块链支持 |
+|------|------|----------|------------|
+| **Web** | 响应式 Web App | IPFS + 智能合约 | 完整支持 |
+| **微信小程序** | 原生小程序 | 微信云开发 + 链上只读 | 链上读取 |
+| **Telegram** | Mini App | IPFS + 智能合约 | 完整支持 |
+| **TikTok** | Mini App | IPFS + 智能合约 | 完整支持 |
+| **Facebook** | Instant Games | IPFS + 智能合约 | 完整支持 |
+| **Twitter/X** | Card + Web | IPFS + 智能合约 | 完整支持 |
+| **抖音** | 小程序 | 中心化服务器（合规） | 可选扩展 |
+
+### 国内 vs 海外策略
+
+由于国内平台审核政策，**国内版本**（微信、抖音）采用：
+- 用户数据存储在自有服务器/微信云开发
+- 区块链相关功能使用合规词汇（"数字身份"替代"钱包"，"存证"替代"上链"）
+- 提供"外部浏览器打开"选项，用户可在完整版体验链上功能
+
+**海外版本**（Telegram、TikTok、Facebook、Twitter）支持完整的 Web3 功能：
+- 钱包连接（MetaMask、WalletConnect）
+- 多链部署（Ethereum Sepolia、Base Sepolia、Arbitrum Sepolia、Polygon Amoy）
+- 内容永久存储在 IPFS，所有权记录在链上
+
 ## 技术架构
 
 ```
 DappCard/
 ├── packages/
-│   ├── web/           # Web 端 (React + Vite + Tailwind CSS)
-│   ├── shared/        # 共享库 (卡牌数据、标签、类型定义)
-│   └── miniprogram/   # 微信小程序端
-├── docs/              # 文档与截图
-└── scripts/           # 工具脚本
+│   ├── web/              # Web 端 (React + Vite + Tailwind CSS)
+│   ├── shared/           # 共享库 (卡牌数据、标签、类型定义)
+│   ├── miniprogram/      # 微信小程序端
+│   ├── contracts/        # 智能合约 (Solidity)
+│   └── platforms/        # 多平台适配
+│       ├── telegram/     # Telegram Mini App SDK
+│       ├── facebook/     # Facebook Instant Games SDK
+│       ├── twitter/      # Twitter/X Card 集成
+│       ├── tiktok/       # TikTok Mini App SDK
+│       └── douyin/       # 抖音小程序 SDK + 合规适配
+├── docs/                 # 文档与截图
+└── scripts/              # 工具脚本
 ```
 
 ### 技术栈
@@ -133,28 +165,74 @@ DappCard/
 | 动画库 | Motion (Framer Motion) |
 | 状态管理 | React Hooks + localStorage |
 | 图标 | Lucide React |
+| 钱包连接 | Wagmi + RainbowKit |
+| 区块链交互 | Viem |
+| 智能合约 | Solidity + Hardhat |
+| 去中心化存储 | IPFS (Pinata) |
+| 测试框架 | Playwright |
 
 ## 项目结构
 
 ```
 packages/web/src/
-├── App.tsx              # 主应用组件，标签栏路由
+├── App.tsx                         # 主应用组件，标签栏路由
+├── components/
+│   ├── WalletConnect.tsx           # 钱包连接按钮
+│   └── IMBrowserNotice.tsx         # IM 浏览器提示
+├── lib/
+│   ├── web3/
+│   │   ├── config.ts               # 多链配置 + 合约 ABI
+│   │   └── ipfs.ts                 # IPFS 上传/读取
+│   └── compatibility/
+│       ├── browser.ts              # 浏览器环境检测
+│       └── im-adapters.ts          # IM 平台适配策略
 ├── pages/
-│   ├── CardPage.tsx     # 名片页 (onboarding + profile + edit)
-│   ├── GamesPage.tsx    # 互动卡牌页 (presets + draw + history)
-│   └── DiscoverPage.tsx # 发现页 (categories + activities + create)
-├── store.ts             # localStorage 状态管理
-└── main.tsx             # 应用入口
+│   ├── CardPage.tsx                # 名片页 + 链上同步
+│   ├── GamesPage.tsx               # 互动卡牌页 + 链上同步
+│   └── DiscoverPage.tsx            # 发现页 + 活动上链
+├── store.ts                        # 状态管理 + 链上同步逻辑
+└── main.tsx                        # 应用入口 (注入 WagmiProvider)
 ```
 
-## 数据持久化
+## 链上存储（参考 mirror.xyz）
 
-DappCard 使用浏览器 localStorage 进行数据持久化：
+DappCard 采用 **双层存储架构**，参考 mirror.xyz 的实现逻辑：
+
+### 存储层
+| 层级 | 技术 | 用途 |
+|------|------|------|
+| **数据层** | IPFS (Pinata) | 实际内容存储（名片 JSON、活动列表、游戏记录） |
+| **锚定层** | 智能合约 | 存储 IPFS CID + 作者地址 + 时间戳 |
+
+### 支持的测试网
+| 网络 | Chain ID | 用途 |
+|------|----------|------|
+| Ethereum Sepolia | 11155111 | 主锚定链 |
+| Base Sepolia | 84532 | 低 Gas L2 |
+| Arbitrum Sepolia | 421614 | 低 Gas L2 |
+| Polygon Amoy | 80002 | 国内友好 |
+
+### 核心流程
+```
+用户编辑名片 → 点击"同步到链上"
+→ 内容序列化为 JSON → 上传到 IPFS → 获得 CID
+→ 调用智能合约 publish("profile", cid, sha256)
+→ 交易确认，链上永久存证
+```
+
+### 数据持久化
+
+**Web/海外版本**：
+- 链上合约 → IPFS → localStorage（降级兼容）
+
+**国内版本**：
+- 微信云开发 / 自有服务器 → localStorage
 
 - `dappcard_profile` — 用户名片信息
 - `dappcard_tab` — 当前选中的标签页
 - `dappcard_game_session` — 游戏历史与收藏
 - `dappcard_activities` — 活动列表
+- `dappcard_profile_sync` — 链上同步状态
 
 ## 贡献指南
 

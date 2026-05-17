@@ -1,9 +1,12 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Shuffle, Heart, RotateCcw, ChevronDown, ChevronUp, History, X } from 'lucide-react';
+import { Shuffle, Heart, RotateCcw, ChevronDown, ChevronUp, History, X, CloudUpload, Globe } from 'lucide-react';
+import { useAccount, useWriteContract } from 'wagmi';
 import { allCards, getCardsByTags, shuffleArray, presets, tags, tagCategories } from '@shared';
 import type { Card } from '@shared';
 import { useGameSession } from '../store';
+import { uploadToIPFS, computeContentHash } from '../lib/web3/ipfs';
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../lib/web3/config';
 
 export default function GamesPage() {
   const { session, addToHistory, toggleFavorite, resetHistory } = useGameSession();
@@ -14,6 +17,10 @@ export default function GamesPage() {
   const [showHistory, setShowHistory] = useState(false);
   const [cardKey, setCardKey] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const [synced, setSynced] = useState(false);
+  const { isConnected, address, chainId } = useAccount();
+  const { writeContractAsync } = useWriteContract();
 
   const getFilteredCards = useCallback(() => {
     let cards: Card[];
@@ -41,6 +48,39 @@ export default function GamesPage() {
     }, 200);
   };
 
+  const handleSync = async () => {
+    if (!isConnected || !address || !chainId || syncing) return;
+    const contractAddr = CONTRACT_ADDRESS[chainId];
+    if (!contractAddr || contractAddr === '0x0000000000000000000000000000000000000000') return;
+
+    setSyncing(true);
+    try {
+      const content = {
+        version: '1.0',
+        app: 'dappcard',
+        type: 'game' as const,
+        data: session,
+        timestamp: Date.now(),
+      };
+      const contentJson = JSON.stringify(content);
+      const [ipfsHash, contentHash] = await Promise.all([
+        uploadToIPFS(content),
+        computeContentHash(contentJson),
+      ]);
+      await writeContractAsync({
+        address: contractAddr,
+        abi: CONTRACT_ABI as any,
+        functionName: 'publish',
+        args: ['game', ipfsHash, contentHash],
+      } as any);
+      setSynced(true);
+    } catch (error) {
+      console.error('Failed to sync game to chain:', error);
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   const toggleTag = (tag: string) => {
     setSelectedPreset(null);
     setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
@@ -61,6 +101,26 @@ export default function GamesPage() {
       <div className="px-5 pt-4 pb-2 flex items-center justify-between shrink-0">
         <h2 className="text-[18px] font-black text-gray-900">互动卡片</h2>
         <div className="flex items-center gap-2">
+          {isConnected && (
+            <button
+              onClick={handleSync}
+              disabled={syncing || synced}
+              className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm border active:scale-95 transition-transform ${
+                synced
+                  ? 'bg-green-50 text-green-600 border-green-200'
+                  : 'bg-white/80 text-gray-500 border-gray-100'
+              }`}
+              title={synced ? '已同步到链上' : '同步到链上'}
+            >
+              {syncing ? (
+                <div className="w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin" />
+              ) : synced ? (
+                <Globe className="w-4 h-4" />
+              ) : (
+                <CloudUpload className="w-4 h-4" />
+              )}
+            </button>
+          )}
           <button onClick={() => setShowHistory(true)} className="w-8 h-8 rounded-full bg-white/80 flex items-center justify-center shadow-sm border border-gray-100">
             <History className="w-4 h-4 text-gray-500" />
           </button>
