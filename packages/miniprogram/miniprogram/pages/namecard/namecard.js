@@ -1,5 +1,6 @@
 // miniprogram/pages/namecard/namecard.js
 const app = getApp()
+const web3 = require('../../utils/web3.js')
 
 Page({
   data: {
@@ -13,9 +14,13 @@ Page({
       socialLinks: [],
       motto: '',
       theme: 'romantic',
-      coverImage: ''
+      coverImage: '',
+      walletAddress: ''
     },
-    themeClass: 'theme-romantic'
+    themeClass: 'theme-romantic',
+    onChainProfile: null,
+    hasWalletAddress: false,
+    isLoadingOnChain: false
   },
 
   onLoad(options) {
@@ -59,8 +64,14 @@ Page({
 
         this.setData({
           namecard: namecard,
-          themeClass: themeClass
+          themeClass: themeClass,
+          hasWalletAddress: !!(namecard.walletAddress && namecard.walletAddress.startsWith('0x'))
         })
+
+        // 如果有绑定钱包地址，自动加载链上数据
+        if (namecard.walletAddress && namecard.walletAddress.startsWith('0x')) {
+          this.loadOnChainProfile(namecard.walletAddress)
+        }
       } else {
         wx.showToast({
           title: '加载失败',
@@ -75,6 +86,45 @@ Page({
         icon: 'none'
       })
     })
+  },
+
+  async loadOnChainProfile(walletAddress) {
+    this.setData({ isLoadingOnChain: true })
+
+    try {
+      // 优先从 Base Sepolia 读取（Gas 最低）
+      const chainId = 84532
+      const ipfsHash = await web3.getLatestProfile(walletAddress, chainId)
+
+      if (ipfsHash) {
+        const content = await web3.fetchFromIPFS(ipfsHash)
+        this.setData({
+          onChainProfile: {
+            ipfsHash,
+            content,
+            chainId,
+            loaded: true
+          }
+        })
+      } else {
+        this.setData({
+          onChainProfile: {
+            loaded: true,
+            empty: true
+          }
+        })
+      }
+    } catch (error) {
+      console.error('Load on-chain profile failed:', error)
+      this.setData({
+        onChainProfile: {
+          loaded: true,
+          error: true
+        }
+      })
+    } finally {
+      this.setData({ isLoadingOnChain: false })
+    }
   },
 
   handleEdit() {
@@ -108,6 +158,26 @@ Page({
           icon: 'success'
         })
       }
+    })
+  },
+
+  handleOpenOnChainDetail() {
+    const { onChainProfile } = this.data
+    if (!onChainProfile || !onChainProfile.ipfsHash) return
+
+    wx.showModal({
+      title: '链上名片详情',
+      content: `IPFS: ${onChainProfile.ipfsHash}\n网络: Base Sepolia`,
+      showCancel: false
+    })
+  },
+
+  handleBindWallet() {
+    wx.showModal({
+      title: '绑定钱包地址',
+      content: '请在 Web 端完成钱包绑定，小程序端暂不支持直接操作钱包。',
+      confirmText: '知道了',
+      showCancel: false
     })
   }
 })

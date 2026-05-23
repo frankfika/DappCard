@@ -11,7 +11,12 @@ export interface Profile {
   tags: { label: string; icon: string }[];
   lookingFor: string;
   highlights: { id: number; title: string; type: string; icon: string; link: string }[];
-  verified: { wallet: string; twitter: string; discord: string };
+  verified: {
+    wallet: string;
+    twitter: string;
+    discord: string;
+    wechat: string;
+  };
   event: string;
 }
 
@@ -53,7 +58,7 @@ const DEFAULT_PROFILE: Profile = {
   tags: [],
   lookingFor: '',
   highlights: [],
-  verified: { wallet: '', twitter: '', discord: '' },
+  verified: { wallet: '', twitter: '', discord: '', wechat: '' },
   event: '',
 };
 

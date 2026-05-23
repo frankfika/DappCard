@@ -90,6 +90,138 @@
   color: #666666;
 }
 
+/* On-Chain Section */
+.onchain-section {
+  background: rgba(255, 255, 255, 0.95);
+  margin: 0 30rpx 30rpx;
+  padding: 30rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.onchain-section .section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #4a3f3a;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.onchain-icon {
+  font-size: 36rpx;
+}
+
+.onchain-loading {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.loading-dot {
+  width: 32rpx;
+  height: 32rpx;
+  border: 4rpx solid #e0e0e0;
+  border-top-color: #ff8a80;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.onchain-empty,
+.onchain-error {
+  text-align: center;
+  padding: 20rpx 0;
+}
+
+.onchain-empty text,
+.onchain-error text {
+  display: block;
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.onchain-hint {
+  font-size: 24rpx !important;
+  color: #bbbbbb !important;
+  margin-top: 8rpx;
+}
+
+.onchain-data {
+  padding: 10rpx 0;
+}
+
+.onchain-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.onchain-row:last-child {
+  border-bottom: none;
+}
+
+.onchain-label {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.onchain-value {
+  font-size: 28rpx;
+  color: #4a3f3a;
+  font-weight: 500;
+  max-width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.onchain-hash {
+  font-family: monospace;
+  font-size: 24rpx;
+  color: #ff8a80;
+}
+
+.onchain-verify {
+  margin-top: 20rpx;
+  text-align: right;
+  font-size: 26rpx;
+  color: #ff8a80;
+}
+
+.onchain-bind {
+  padding: 0;
+  overflow: hidden;
+}
+
+.onchain-bind-content {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  gap: 16rpx;
+}
+
+.onchain-bind-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #4a3f3a;
+}
+
+.onchain-bind-arrow {
+  font-size: 28rpx;
+  color: #cccccc;
+}
+
 /* Motto Section */
 .motto-section {
   background: rgba(255, 255, 255, 0.95);

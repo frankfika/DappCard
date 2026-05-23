@@ -18,6 +18,7 @@ export const chainNames: Record<number, string> = {
   [baseSepolia.id]: 'Base Sepolia',
   [arbitrumSepolia.id]: 'Arbitrum Sepolia',
   [polygonAmoy.id]: 'Polygon Amoy',
+  31337: 'Hardhat Local',
 };
 
 export const chainLogos: Record<number, string> = {
@@ -25,6 +26,7 @@ export const chainLogos: Record<number, string> = {
   [baseSepolia.id]: 'https://cryptologos.cc/logos/base-base-logo.svg',
   [arbitrumSepolia.id]: 'https://cryptologos.cc/logos/arbitrum-arb-logo.svg',
   [polygonAmoy.id]: 'https://cryptologos.cc/logos/polygon-matic-logo.svg',
+  31337: 'https://cryptologos.cc/logos/ethereum-eth-logo.svg',
 };
 
 export const wagmiConfig = getDefaultConfig({
@@ -39,6 +41,7 @@ export const CONTRACT_ADDRESS: Record<number, `0x${string}`> = {
   [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
   [arbitrumSepolia.id]: '0x0000000000000000000000000000000000000000',
   [polygonAmoy.id]: '0x0000000000000000000000000000000000000000',
+  31337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 };
 
 export const CONTRACT_ABI = [

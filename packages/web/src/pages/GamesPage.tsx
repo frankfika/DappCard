@@ -8,6 +8,9 @@ import { useGameSession } from '../store';
 import { uploadToIPFS, computeContentHash } from '../lib/web3/ipfs';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../lib/web3/config';
 
+const CARD_STYLE = 'bg-card border border-border rounded-2xl';
+const BTN_PRIMARY = 'h-[48px] rounded-2xl bg-foreground text-background font-bold text-sm border border-border flex items-center justify-center gap-2 transition-all disabled:opacity-40';
+
 export default function GamesPage() {
   const { session, addToHistory, toggleFavorite, resetHistory } = useGameSession();
   const [currentCard, setCurrentCard] = useState<Card | null>(null);
@@ -99,21 +102,21 @@ export default function GamesPage() {
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="px-5 pt-4 pb-2 flex items-center justify-between shrink-0">
-        <h2 className="text-[18px] font-black text-gray-900">互动卡片</h2>
+        <h2 className="text-[18px] font-black text-foreground">互动卡片</h2>
         <div className="flex items-center gap-2">
           {isConnected && (
             <button
               onClick={handleSync}
               disabled={syncing || synced}
-              className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm border active:scale-95 transition-transform ${
+              className={`w-8 h-8 rounded-lg flex items-center justify-center border border-border  transition-all ${
                 synced
-                  ? 'bg-green-50 text-green-600 border-green-200'
-                  : 'bg-white/80 text-gray-500 border-gray-100'
+                  ? 'bg-muted text-foreground'
+                  : 'bg-card text-muted-foreground'
               }`}
-              title={synced ? '已同步到链上' : '同步到链上'}
+              title={synced ? '已保存到区块链' : '存到链上'}
             >
               {syncing ? (
-                <div className="w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin" />
+                <div className="w-3.5 h-3.5 border border-muted-foreground border-t-foreground rounded-full animate-spin" />
               ) : synced ? (
                 <Globe className="w-4 h-4" />
               ) : (
@@ -121,10 +124,10 @@ export default function GamesPage() {
               )}
             </button>
           )}
-          <button onClick={() => setShowHistory(true)} className="w-8 h-8 rounded-full bg-white/80 flex items-center justify-center shadow-sm border border-gray-100">
-            <History className="w-4 h-4 text-gray-500" />
+          <button onClick={() => setShowHistory(true)} className="w-8 h-8 rounded-lg bg-card flex items-center justify-center border border-border  transition-all">
+            <History className="w-4 h-4 text-muted-foreground" />
           </button>
-          <span className="text-[11px] font-bold text-gray-400 bg-white/80 px-2.5 py-1 rounded-full">{totalPlayed} played</span>
+          <span className="text-[11px] font-bold text-muted-foreground bg-card px-2.5 py-1 rounded-lg border border-border ">{totalPlayed} played</span>
         </div>
       </div>
 
@@ -136,10 +139,10 @@ export default function GamesPage() {
               <button
                 key={preset.id}
                 onClick={() => selectPreset(preset.id)}
-                className={`px-4 py-2.5 rounded-[16px] text-left transition-all border whitespace-nowrap shrink-0 ${
+                className={`px-4 py-2.5 rounded-lg text-left transition-all border whitespace-nowrap shrink-0  transition-all ${
                   selectedPreset === preset.id
-                    ? 'bg-gray-900 text-white border-gray-900'
-                    : 'bg-white/80 border-white/60 hover:bg-white text-gray-700'
+                    ? 'bg-foreground text-background border-border'
+                    : 'bg-card border-border text-foreground'
                 }`}
               >
                 <span className="text-[14px] mr-1">{preset.icon}</span>
@@ -150,7 +153,7 @@ export default function GamesPage() {
         </div>
 
         {/* Filter Toggle */}
-        <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-1 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2 pl-1">
+        <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-1 text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-2 pl-1">
           标签筛选 {showFilters ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
         </button>
 
@@ -159,10 +162,10 @@ export default function GamesPage() {
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-4">
               {tagCategories.slice(0, 4).map(cat => (
                 <div key={cat.id} className="mb-2.5">
-                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1 pl-0.5">{cat.icon} {cat.name}</div>
+                  <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1 pl-0.5">{cat.icon} {cat.name}</div>
                   <div className="flex flex-wrap gap-1.5">
                     {Object.entries(tags).filter(([, def]) => def.category === cat.id).map(([key, def]) => (
-                      <button key={key} onClick={() => toggleTag(key)} className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all ${selectedTags.includes(key) ? 'text-white shadow-sm' : 'bg-gray-50 text-gray-600'}`} style={selectedTags.includes(key) ? { backgroundColor: def.color } : undefined}>
+                      <button key={key} onClick={() => toggleTag(key)} className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all border  transition-all ${selectedTags.includes(key) ? 'text-white' : 'bg-muted text-muted-foreground border-border'}`} style={selectedTags.includes(key) ? { backgroundColor: def.color } : undefined}>
                         {def.icon} {def.name}
                       </button>
                     ))}
@@ -174,7 +177,7 @@ export default function GamesPage() {
         </AnimatePresence>
 
         {/* Card Count */}
-        <div className="text-[11px] text-gray-400 font-bold text-center mb-3">
+        <div className="text-[11px] text-muted-foreground font-bold text-center mb-3">
           {filteredCount > 0 ? `${filteredCount} cards remaining` : 'All cards played!'}
         </div>
 
@@ -182,12 +185,12 @@ export default function GamesPage() {
         <div className="flex flex-col items-center">
           <AnimatePresence mode="wait">
             {currentCard ? (
-              <motion.div key={cardKey} initial={{ rotateY: 90, opacity: 0 }} animate={{ rotateY: 0, opacity: 1 }} exit={{ rotateY: -90, opacity: 0 }} transition={{ duration: 0.3 }} className="w-full bg-white/90 backdrop-blur-xl rounded-[28px] p-7 shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-white mb-4 min-h-[180px] flex flex-col justify-center relative">
+              <motion.div key={cardKey} initial={{ rotateY: 90, opacity: 0 }} animate={{ rotateY: 0, opacity: 1 }} exit={{ rotateY: -90, opacity: 0 }} transition={{ duration: 0.3 }} className={`w-full ${CARD_STYLE} p-7 mb-4 min-h-[180px] flex flex-col justify-center relative`}>
                 <button onClick={() => toggleFavorite(currentCard.id)} className="absolute top-4 right-4">
-                  <Heart className={`w-5 h-5 transition-colors ${isFav ? 'text-red-500 fill-red-500' : 'text-gray-300'}`} />
+                  <Heart className={`w-5 h-5 transition-colors ${isFav ? 'text-destructive fill-destructive' : 'text-muted-foreground'}`} />
                 </button>
-                <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-2">{currentCard.source}</div>
-                <p className="text-[17px] font-bold text-gray-800 leading-relaxed mb-4">{currentCard.question}</p>
+                <div className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-2">{currentCard.source}</div>
+                <p className="text-[17px] font-bold text-foreground leading-relaxed mb-4">{currentCard.question}</p>
                 <div className="flex flex-wrap gap-1">
                   {currentCard.tags.slice(0, 3).map(tag => {
                     const def = tags[tag];
@@ -198,9 +201,8 @@ export default function GamesPage() {
                 </div>
               </motion.div>
             ) : (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full bg-white/60 backdrop-blur-md rounded-[28px] p-7 border border-white/60 mb-4 min-h-[180px] flex flex-col items-center justify-center">
-                <div className="text-[36px] mb-2">🃏</div>
-                <p className="text-[13px] font-bold text-gray-400 text-center">选择一个主题，然后抽卡</p>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`w-full bg-muted border border-border rounded-xl p-7 mb-4 min-h-[180px] flex flex-col items-center justify-center`}>
+                <p className="text-[13px] font-bold text-muted-foreground text-center">选择一个主题，然后抽卡</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -208,11 +210,11 @@ export default function GamesPage() {
           {/* Action Buttons */}
           <div className="flex gap-3 w-full">
             {filteredCount === 0 && (
-              <button onClick={resetHistory} className="w-[48px] h-[48px] rounded-full bg-white shadow-md flex items-center justify-center border border-gray-100 active:scale-95 transition-all">
-                <RotateCcw className="w-4 h-4 text-gray-600" />
+              <button onClick={resetHistory} className="w-[48px] h-[48px] rounded-xl bg-card  flex items-center justify-center border border-border ">
+                <RotateCcw className="w-4 h-4 text-foreground" />
               </button>
             )}
-            <button onClick={drawCard} disabled={isDrawing || filteredCount === 0} className="flex-1 h-[48px] rounded-full bg-gray-900 text-white font-black text-[14px] shadow-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-40">
+            <button onClick={drawCard} disabled={isDrawing || filteredCount === 0} className={`flex-1 ${BTN_PRIMARY}`}>
               <Shuffle className="w-4 h-4" />
               {currentCard ? '下一张' : '抽卡'}
             </button>
@@ -224,42 +226,42 @@ export default function GamesPage() {
       <AnimatePresence>
         {showHistory && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowHistory(false)} className="absolute inset-0 bg-gray-900/30 backdrop-blur-sm z-40" />
-            <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }} className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[36px] p-5 pt-4 z-50 max-h-[70%] flex flex-col">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowHistory(false)} className="absolute inset-0 bg-foreground/20 z-40" />
+            <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }} className="absolute bottom-0 left-0 right-0 bg-card rounded-t-[24px] p-5 pt-4 z-50 max-h-[70%] flex flex-col border-t border-border">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[16px] font-black text-gray-900">History & Favorites</h3>
-                <button onClick={() => setShowHistory(false)} className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"><X className="w-4 h-4" /></button>
+                <h3 className="text-[16px] font-black text-foreground">History & Favorites</h3>
+                <button onClick={() => setShowHistory(false)} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center border border-border  transition-all"><X className="w-4 h-4" /></button>
               </div>
               <div className="flex-1 overflow-y-auto space-y-2">
                 {session.favorites.length > 0 && (
                   <div className="mb-3">
-                    <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Favorites ({session.favorites.length})</div>
+                    <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2">Favorites ({session.favorites.length})</div>
                     {session.favorites.map(id => {
                       const card = allCards.find(c => c.id === id);
                       if (!card) return null;
                       return (
-                        <div key={id} className="bg-gray-50 rounded-[16px] p-3 mb-1.5 flex items-start gap-2">
-                          <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 mt-0.5 shrink-0" />
-                          <p className="text-[12px] font-medium text-gray-700 leading-snug">{card.question}</p>
+                        <div key={id} className="bg-muted border border-border rounded-xl p-3 mb-1.5 flex items-start gap-2 ">
+                          <Heart className="w-3.5 h-3.5 text-destructive fill-destructive mt-0.5 shrink-0" />
+                          <p className="text-[12px] font-medium text-foreground leading-snug">{card.question}</p>
                         </div>
                       );
                     })}
                   </div>
                 )}
-                <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Played ({totalPlayed})</div>
-                {totalPlayed === 0 && <p className="text-[12px] text-gray-400">No cards played yet</p>}
+                <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2">Played ({totalPlayed})</div>
+                {totalPlayed === 0 && <p className="text-[12px] text-muted-foreground">No cards played yet</p>}
                 {session.history.slice(-10).reverse().map(id => {
                   const card = allCards.find(c => c.id === id);
                   if (!card) return null;
                   return (
-                    <div key={id} className="bg-gray-50 rounded-[14px] p-2.5 mb-1">
-                      <p className="text-[11px] font-medium text-gray-600 leading-snug">{card.question}</p>
+                    <div key={id} className="bg-muted border border-border rounded-xl p-2.5 mb-1 ">
+                      <p className="text-[11px] font-medium text-muted-foreground leading-snug">{card.question}</p>
                     </div>
                   );
                 })}
               </div>
               {totalPlayed > 0 && (
-                <button onClick={() => { resetHistory(); setShowHistory(false); }} className="mt-3 w-full py-3 bg-gray-100 rounded-full text-[12px] font-bold text-gray-600 active:bg-gray-200 transition-colors">
+                <button onClick={() => { resetHistory(); setShowHistory(false); }} className="mt-3 w-full py-3 bg-muted border border-border rounded-full text-[12px] font-bold text-muted-foreground  transition-all">
                   Reset History
                 </button>
               )}

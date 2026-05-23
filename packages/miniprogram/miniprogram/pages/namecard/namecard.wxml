@@ -26,6 +26,57 @@
     <view class="bio">{{namecard.bio || '这个人很懒，什么都没留下'}}</view>
   </view>
 
+  <!-- On-Chain Profile -->
+  <view class="onchain-section" wx:if="{{hasWalletAddress}}">
+    <view class="section-title">
+      <text class="onchain-icon">⛓</text>
+      <text>链上名片</text>
+    </view>
+
+    <view class="onchain-loading" wx:if="{{isLoadingOnChain}}">
+      <view class="loading-dot"></view>
+      <text>正在读取链上数据...</text>
+    </view>
+
+    <view class="onchain-content" wx:if="{{!isLoadingOnChain && onChainProfile}}">
+      <view class="onchain-empty" wx:if="{{onChainProfile.empty}}">
+        <text>暂无链上名片数据</text>
+        <text class="onchain-hint">在 Web 端保存名片到链上后即可查看</text>
+      </view>
+
+      <view class="onchain-error" wx:if="{{onChainProfile.error}}">
+        <text>读取链上数据失败</text>
+        <text class="onchain-hint">请检查网络连接后重试</text>
+      </view>
+
+      <view class="onchain-data" wx:if="{{onChainProfile.loaded && !onChainProfile.empty && !onChainProfile.error}}">
+        <view class="onchain-row">
+          <text class="onchain-label">存储网络</text>
+          <text class="onchain-value">Base Sepolia</text>
+        </view>
+        <view class="onchain-row">
+          <text class="onchain-label">IPFS 哈希</text>
+          <text class="onchain-value onchain-hash">{{onChainProfile.ipfsHash}}</text>
+        </view>
+        <view class="onchain-row" wx:if="{{onChainProfile.content && onChainProfile.content.data}}">
+          <text class="onchain-label">链上内容</text>
+          <text class="onchain-value">已同步</text>
+        </view>
+        <view class="onchain-verify" bindtap="handleOpenOnChainDetail">
+          <text>查看详情 ></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="onchain-section onchain-bind" wx:if="{{isOwn && !hasWalletAddress}}">
+    <view class="onchain-bind-content" bindtap="handleBindWallet">
+      <text class="onchain-icon">⛓</text>
+      <text class="onchain-bind-text">绑定钱包地址，开启链上存储</text>
+      <text class="onchain-bind-arrow">></text>
+    </view>
+  </view>
+
   <!-- Motto -->
   <view class="motto-section" wx:if="{{namecard.motto}}">
     <view class="motto-icon">💭</view>
