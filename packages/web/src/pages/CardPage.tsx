@@ -422,27 +422,28 @@ function OnboardingFlow({ onComplete }: { onComplete: (data: Partial<import('../
                   </div>
                   <div className="pt-2 border-t border-border/50">
                     <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">你在寻找什么（选填）</label>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {LOOKING_FOR_OPTIONS.slice(0, 4).map(opt => (
-                      <button
-                        key={opt}
-                        onClick={() => setLookingFor(opt)}
-                        className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border ${
-                          lookingFor === opt 
-                            ? 'bg-foreground text-background border-foreground shadow-sm scale-95' 
-                            : 'bg-background text-foreground border-border hover:border-foreground hover:bg-secondary/50'
-                        }`}
-                      >
-                        {opt}
-                      </button>
-                    ))}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {LOOKING_FOR_OPTIONS.slice(0, 4).map(opt => (
+                        <button
+                          key={opt}
+                          onClick={() => setLookingFor(opt)}
+                          className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border ${
+                            lookingFor === opt
+                              ? 'bg-foreground text-background border-foreground shadow-sm scale-95'
+                              : 'bg-background text-foreground border-border hover:border-foreground hover:bg-secondary/50'
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                    <input
+                      value={lookingFor}
+                      onChange={e => setLookingFor(e.target.value)}
+                      placeholder="或者自定义输入..."
+                      className="w-full border border-border rounded-xl px-4 py-3 text-[14px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background"
+                    />
                   </div>
-                  <input 
-                    value={lookingFor} 
-                    onChange={e => setLookingFor(e.target.value)} 
-                    placeholder="或者自定义输入..." 
-                    className="w-full border border-border rounded-xl px-4 py-3 text-[14px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background" 
-                  />
                 </div>
               </div>
             </div>
