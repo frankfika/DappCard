@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
 import {
   Share, MapPin, Sparkles, MessageCircle, Wallet, Twitter,
   Check, User, Zap, Plus, Trash2,
@@ -245,7 +245,7 @@ export default function CardPage() {
       )}
 
       <AnimatePresence>{showShareDiv && <ShareDrawer onClose={() => setShowShareDiv(false)} handleShare={handleShare} isCopied={isCopied} profile={profile} />}</AnimatePresence>
-      <AnimatePresence>{isEditing && <EditProfile profile={profile} avatarUrl={avatarUrl} onSave={(p) => { updateProfile(p); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}</AnimatePresence>
+      <AnimatePresence>{isEditing && <EditProfile profile={profile} onSave={(p) => { updateProfile(p); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}</AnimatePresence>
     </div>
   );
 }
@@ -259,6 +259,19 @@ function OnboardingFlow({ onComplete }: { onComplete: (data: Partial<import('../
   const [customTag, setCustomTag] = useState('');
   const [lookingFor, setLookingFor] = useState('');
   const [avatarSeed, setAvatarSeed] = useState(AVATAR_SEEDS[0]);
+  const [customAvatar, setCustomAvatar] = useState<string | null>(null);
+  const [avatarMode, setAvatarMode] = useState<'generated' | 'custom'>('generated');
+
+  const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setCustomAvatar(ev.target?.result as string);
+      setAvatarMode('custom');
+    };
+    reader.readAsDataURL(file);
+  };
 
   const toggleTag = (label: string) => {
     setSelectedTags(prev =>
@@ -271,6 +284,10 @@ function OnboardingFlow({ onComplete }: { onComplete: (data: Partial<import('../
     setCustomTag('');
   };
 
+  const currentAvatarUrl = avatarMode === 'custom' && customAvatar
+    ? customAvatar
+    : `https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`;
+
   const finish = () => {
     onComplete({
       name,
@@ -278,7 +295,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (data: Partial<import('../
       bio,
       tags: selectedTags,
       lookingFor,
-      avatar: `https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`,
+      avatar: avatarMode === 'custom' && customAvatar ? customAvatar : `https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`,
     });
   };
 
@@ -346,25 +363,43 @@ function OnboardingFlow({ onComplete }: { onComplete: (data: Partial<import('../
                   </p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <div className="w-20 h-20 rounded-full mb-4">
-                    <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`} className="w-full h-full rounded-full bg-secondary" alt="avatar" />
+                  <div className="w-20 h-20 rounded-full mb-4 overflow-hidden bg-secondary">
+                    <img src={currentAvatarUrl} className="w-full h-full rounded-full bg-secondary object-cover" alt="avatar" />
                   </div>
-                  <div className="flex gap-2 flex-wrap justify-center max-w-[240px]">
-                    {AVATAR_SEEDS.slice(0, 8).map(seed => (
-                      <button key={seed} onClick={() => setAvatarSeed(seed)} className={`w-8 h-8 rounded-full overflow-hidden border transition-all ${avatarSeed === seed ? 'border-foreground scale-110' : 'border-transparent opacity-50 hover:opacity-80'}`}>
-                        <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${seed}&backgroundColor=transparent`} className="w-full h-full bg-secondary" alt={seed} />
-                      </button>
-                    ))}
+                  <div className="flex gap-2 mb-3">
+                    <button
+                      onClick={() => setAvatarMode('generated')}
+                      className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border ${avatarMode === 'generated' ? 'bg-foreground text-background border-foreground' : 'bg-background text-foreground border-border hover:border-foreground'}`}
+                    >
+                      生成头像
+                    </button>
+                    <label className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border cursor-pointer ${avatarMode === 'custom' ? 'bg-foreground text-background border-foreground' : 'bg-background text-foreground border-border hover:border-foreground'}`}>
+                      <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
+                      上传头像
+                    </label>
                   </div>
+                  {avatarMode === 'generated' ? (
+                    <div className="flex gap-2 flex-wrap justify-center max-w-[240px]">
+                      {AVATAR_SEEDS.slice(0, 8).map(seed => (
+                        <button key={seed} onClick={() => setAvatarSeed(seed)} className={`w-8 h-8 rounded-full overflow-hidden border transition-all ${avatarSeed === seed ? 'border-foreground scale-110' : 'border-transparent opacity-50 hover:opacity-80'}`}>
+                          <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${seed}&backgroundColor=transparent`} className="w-full h-full bg-secondary" alt={seed} />
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <button onClick={() => { setCustomAvatar(null); setAvatarMode('generated'); }} className="text-[12px] font-semibold text-muted-foreground hover:text-foreground transition-colors">
+                      移除自定义头像
+                    </button>
+                  )}
                 </div>
                 <div className="space-y-4">
                   <div>
                     <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">名字 *</label>
                     <input value={name} onChange={e => setName(e.target.value)} placeholder="你的名字或昵称" className="w-full border border-border rounded-xl px-4 py-3 text-[15px] font-semibold text-foreground outline-none focus:border-foreground transition-colors bg-background" />
                   </div>
-                  <div>
-                    <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">一句话介绍</label>
-                    <input value={handle} onChange={e => setHandle(e.target.value)} placeholder="例如：AI 产品设计师" className="w-full border border-border rounded-xl px-4 py-3 text-[14px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background" />
+                  <div className="pt-2 border-t border-border/50">
+                    <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">选填</label>
+                    <input value={handle} onChange={e => setHandle(e.target.value)} placeholder="一句话介绍" className="w-full border border-border rounded-xl px-4 py-3 text-[14px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background" />
                   </div>
                 </div>
               </div>
@@ -380,12 +415,13 @@ function OnboardingFlow({ onComplete }: { onComplete: (data: Partial<import('../
                     简短有力的介绍更容易被记住。
                   </p>
                 </div>
-                <div>
-                  <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">个人简介</label>
-                  <textarea value={bio} onChange={e => setBio(e.target.value)} placeholder="正在构建下一代社交产品..." className="w-full border border-border rounded-xl px-4 py-3 text-[14px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background resize-none h-24" />
-                </div>
-                <div>
-                  <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">你在寻找什么</label>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">个人简介</label>
+                    <textarea value={bio} onChange={e => setBio(e.target.value)} placeholder="正在构建下一代社交产品..." className="w-full border border-border rounded-xl px-4 py-3 text-[14px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background resize-none h-24" />
+                  </div>
+                  <div className="pt-2 border-t border-border/50">
+                    <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">你在寻找什么（选填）</label>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {LOOKING_FOR_OPTIONS.slice(0, 4).map(opt => (
                       <button
@@ -494,7 +530,7 @@ function OnboardingFlow({ onComplete }: { onComplete: (data: Partial<import('../
   );
 }
 
-function EditProfile({ profile, avatarUrl, onSave, onClose }: { profile: import('../store').Profile; avatarUrl: string; onSave: (p: Partial<import('../store').Profile>) => void; onClose: () => void }) {
+function EditProfile({ profile, onSave, onClose }: { profile: import('../store').Profile; onSave: (p: Partial<import('../store').Profile>) => void; onClose: () => void }) {
   const [name, setName] = useState(profile.name);
   const [handle, setHandle] = useState(profile.handle);
   const [bio, setBio] = useState(profile.bio);
@@ -515,6 +551,26 @@ function EditProfile({ profile, avatarUrl, onSave, onClose }: { profile: import(
       return AVATAR_SEEDS[0];
     }
   });
+  const [customAvatar, setCustomAvatar] = useState<string | null>(null);
+  const [avatarMode, setAvatarMode] = useState<'generated' | 'custom'>(() => {
+    try {
+      new URL(profile.avatar);
+      return profile.avatar.startsWith('data:') ? 'custom' : 'generated';
+    } catch {
+      return 'generated';
+    }
+  });
+
+  const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setCustomAvatar(ev.target?.result as string);
+      setAvatarMode('custom');
+    };
+    reader.readAsDataURL(file);
+  };
 
   const toggleTag = (label: string) => {
     setSelectedTags(prev => prev.find(t => t.label === label) ? removeTagItem(prev, label) : addTagItem(prev, label));
@@ -537,17 +593,21 @@ function EditProfile({ profile, avatarUrl, onSave, onClose }: { profile: import(
     setHighlights(prev => prev.filter(h => h.id !== id));
   };
 
+  const currentAvatarUrl = avatarMode === 'custom' && customAvatar
+    ? customAvatar
+    : `https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`;
+
   const save = () => {
-    onSave({ 
-      name, 
-      handle, 
-      bio, 
-      lookingFor, 
-      event, 
-      tags: selectedTags, 
-      highlights: highlights.filter(h => h.title), 
+    onSave({
+      name,
+      handle,
+      bio,
+      lookingFor,
+      event,
+      tags: selectedTags,
+      highlights: highlights.filter(h => h.title),
       verified: { wallet, twitter, discord, wechat },
-      avatar: `https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`
+      avatar: avatarMode === 'custom' && customAvatar ? customAvatar : `https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`
     });
   };
 
@@ -560,33 +620,51 @@ function EditProfile({ profile, avatarUrl, onSave, onClose }: { profile: import(
       </div>
       <div className="px-6 py-6 space-y-6">
         <div className="flex flex-col items-center">
-          <div className="w-20 h-20 rounded-full mb-4">
-            <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${avatarSeed}&backgroundColor=transparent`} alt="Avatar" className="w-full h-full object-cover bg-secondary rounded-full" />
+          <div className="w-20 h-20 rounded-full mb-3 overflow-hidden bg-secondary">
+            <img src={currentAvatarUrl} alt="Avatar" className="w-full h-full object-cover" />
           </div>
-          <div className="flex gap-2 flex-wrap justify-center">
-            {AVATAR_SEEDS.slice(0, 8).map(seed => (
-              <button key={seed} onClick={() => setAvatarSeed(seed)} className={`w-8 h-8 rounded-full overflow-hidden border transition-all ${avatarSeed === seed ? 'border-foreground' : 'border-transparent opacity-40'}`}>
-                <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${seed}&backgroundColor=transparent`} className="w-full h-full bg-secondary" alt={seed} />
-              </button>
-            ))}
+          <div className="flex gap-2 mb-2">
+            <button
+              onClick={() => setAvatarMode('generated')}
+              className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border ${avatarMode === 'generated' ? 'bg-foreground text-background border-foreground' : 'bg-background text-foreground border-border hover:border-foreground'}`}
+            >
+              生成头像
+            </button>
+            <label className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border cursor-pointer ${avatarMode === 'custom' ? 'bg-foreground text-background border-foreground' : 'bg-background text-foreground border-border hover:border-foreground'}`}>
+              <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
+              上传头像
+            </label>
           </div>
+          {avatarMode === 'generated' ? (
+            <div className="flex gap-2 flex-wrap justify-center">
+              {AVATAR_SEEDS.slice(0, 8).map(seed => (
+                <button key={seed} onClick={() => setAvatarSeed(seed)} className={`w-8 h-8 rounded-full overflow-hidden border transition-all ${avatarSeed === seed ? 'border-foreground' : 'border-transparent opacity-40'}`}>
+                  <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${seed}&backgroundColor=transparent`} className="w-full h-full bg-secondary" alt={seed} />
+                </button>
+              ))}
+            </div>
+          ) : customAvatar && (
+            <button onClick={() => { setCustomAvatar(null); setAvatarMode('generated'); }} className="text-[12px] font-semibold text-muted-foreground hover:text-foreground transition-colors">
+              移除自定义头像
+            </button>
+          )}
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">名字</label>
+            <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">名字 *</label>
             <input value={name} onChange={e => setName(e.target.value)} className="w-full border border-border rounded-xl px-4 py-3 text-[15px] font-semibold text-foreground outline-none focus:border-foreground transition-colors bg-background" />
           </div>
-          <div>
-            <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">一句话介绍</label>
-            <input value={handle} onChange={e => setHandle(e.target.value)} placeholder="例如：正在做 AI 产品，也欢迎聊合作" className="w-full border border-border rounded-xl px-4 py-3 text-[15px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background" />
+          <div className="pt-2 border-t border-border/50">
+            <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">选填</label>
+            <input value={handle} onChange={e => setHandle(e.target.value)} placeholder="一句话介绍" className="w-full border border-border rounded-xl px-4 py-3 text-[15px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background" />
           </div>
           <div>
             <label className="text-[12px] font-semibold text-muted-foreground mb-2 block">简介</label>
             <textarea value={bio} onChange={e => setBio(e.target.value)} className="w-full border border-border rounded-xl px-4 py-3 text-[15px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background resize-none h-20" />
           </div>
           <div>
-            <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">Looking For</label>
+            <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">你在寻找什么（选填）</label>
             <div className="flex flex-wrap gap-2 mb-3">
               {LOOKING_FOR_OPTIONS.map(opt => (
                 <button
@@ -605,7 +683,7 @@ function EditProfile({ profile, avatarUrl, onSave, onClose }: { profile: import(
             <input value={lookingFor} onChange={e => setLookingFor(e.target.value)} placeholder="或者自定义输入..." className="w-full border border-border rounded-xl px-4 py-3 text-[14px] font-medium text-foreground outline-none focus:border-foreground transition-colors bg-background" />
           </div>
           <div>
-            <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">活动 / 地点</label>
+            <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">日常出没地（选填）</label>
             <div className="flex flex-wrap gap-2 mb-3">
               {EVENT_OPTIONS.map(opt => (
                 <button
@@ -626,7 +704,7 @@ function EditProfile({ profile, avatarUrl, onSave, onClose }: { profile: import(
         </div>
 
         <div>
-          <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">标签</label>
+          <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">标签（选填）</label>
           <div className="flex flex-wrap gap-2">
             {TAG_OPTIONS.map(tag => (
               <button key={tag} onClick={() => toggleTag(tag)} className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border ${selectedTags.find(t => t.label === tag) ? 'bg-foreground text-background border-foreground' : 'bg-background text-foreground border-border hover:border-foreground'}`}>
@@ -678,7 +756,7 @@ function EditProfile({ profile, avatarUrl, onSave, onClose }: { profile: import(
         </div>
 
         <div>
-          <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">已验证账号</label>
+          <label className="text-[12px] font-semibold text-muted-foreground mb-3 block">已验证账号（选填）</label>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center shrink-0">
