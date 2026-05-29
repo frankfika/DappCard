@@ -46,8 +46,7 @@ function getThreads() {
 }
 
 function addThread(thread) {
-  const threads = getThreads();
-  threads.unshift(thread);
+  const threads = [thread, ...getThreads()];
   setStorage(THREADS_KEY, threads);
   return threads;
 }

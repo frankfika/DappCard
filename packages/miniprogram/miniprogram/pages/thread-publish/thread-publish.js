@@ -34,7 +34,6 @@ Page({
     wx.chooseMedia({
       count: 3 - this.data.imagePreviews.length,
       mediaType: ['image'],
-      sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
         const paths = res.tempFiles.map(f => f.tempFilePath);
@@ -69,13 +68,14 @@ Page({
         handle: profile.handle || '0x...',
       },
       content: this.data.content.trim(),
-      images: this.data.imagePreviews.length > 0 ? this.data.imagePreviews : undefined,
+      images: this.data.imagePreviews.length > 0 ? this.data.imagePreviews : [],
       tags: [this.data.selectedTag],
       likes: 0,
       timestamp: '刚刚',
       isLiked: false,
     };
     store.addThread(thread);
-    wx.navigateBack();
+    wx.showToast({ title: '发布成功', icon: 'success' });
+    setTimeout(() => wx.navigateBack(), 600);
   },
 });

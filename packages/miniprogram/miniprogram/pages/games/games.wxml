@@ -75,7 +75,7 @@
     </view>
 
     <view wx:if="{{showHistory}}" class="history-list">
-      <view wx:for="{{getHistoryCards()}}" wx:key="id" class="history-item">
+      <view wx:for="{{historyCards}}" wx:key="id" class="history-item">
         <view class="history-question">{{item.question}}</view>
         <view class="history-source">{{item.source}}</view>
       </view>

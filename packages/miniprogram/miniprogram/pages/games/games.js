@@ -11,6 +11,7 @@ Page({
     tags: tags,
     presets: presets,
     history: [],
+    historyCards: [],
     favorites: [],
     totalPlayed: 0,
     filteredCount: 0,
@@ -27,12 +28,14 @@ Page({
 
   loadSession() {
     const session = store.getGameSession();
+    const history = session.history || [];
     this.setData({
-      history: session.history || [],
+      history,
+      historyCards: allCards.filter(c => history.includes(c.id)),
       favorites: session.favorites || [],
       selectedPreset: session.presetId,
       selectedTags: session.selectedTags || [],
-      totalPlayed: (session.history || []).length,
+      totalPlayed: history.length,
     }, () => this.updateComputed());
   },
 
@@ -58,9 +61,11 @@ Page({
     const shuffled = shuffleArray(cards);
     const card = shuffled[0];
     store.addToHistory(card.id);
+    const nextHistory = [...this.data.history, card.id];
     this.setData({
       currentCard: card,
-      history: [...this.data.history, card.id],
+      history: nextHistory,
+      historyCards: allCards.filter(c => nextHistory.includes(c.id)),
       totalPlayed: this.data.totalPlayed + 1,
     }, () => this.updateComputed());
   },
@@ -101,7 +106,7 @@ Page({
 
   resetAll() {
     store.resetHistory();
-    this.setData({ history: [], totalPlayed: 0, currentCard: null }, () => this.updateComputed());
+    this.setData({ history: [], historyCards: [], totalPlayed: 0, currentCard: null }, () => this.updateComputed());
     wx.showToast({ title: '已重置', icon: 'success' });
   },
 
@@ -117,17 +122,5 @@ Page({
       selectedTags: this.data.selectedTags,
     });
     this.updateComputed();
-  },
-
-  getFilteredCount() {
-    return this.getFilteredCards().length;
-  },
-
-  isFav() {
-    return this.data.currentCard && this.data.favorites.includes(this.data.currentCard.id);
-  },
-
-  getHistoryCards() {
-    return allCards.filter(c => this.data.history.includes(c.id));
   },
 });
