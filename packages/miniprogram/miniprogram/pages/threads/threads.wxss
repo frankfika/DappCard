@@ -19,6 +19,7 @@
 .thread-header { margin-bottom: 24rpx; }
 .author-info { display: flex; align-items: center; gap: 24rpx; }
 .author-avatar { width: 96rpx; height: 96rpx; border-radius: 32rpx; background: #f5f5f5; }
+.author-avatar-placeholder { background: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 40rpx; font-weight: bold; }
 .author-meta { flex: 1; }
 .author-name { font-size: 34rpx; font-weight: 900; color: #111; }
 .author-handle { font-size: 26rpx; color: #888; margin-top: 4rpx; font-weight: 600; }
@@ -27,10 +28,10 @@
 
 .thread-images { display: grid; gap: 16rpx; margin-bottom: 24rpx; border-radius: 32rpx; overflow: hidden; }
 .images-1 { grid-template-columns: 1fr; }
-.images-1 .thread-img { aspect-ratio: 16/9; }
+.images-1 .thread-img { height: 300rpx; aspect-ratio: 16/9; }
 .images-2 { grid-template-columns: 1fr 1fr; }
 .images-3 { grid-template-columns: 1fr 1fr 1fr; }
-.thread-img { width: 100%; aspect-ratio: 1; background: #f5f5f5; }
+.thread-img { width: 100%; height: 300rpx; aspect-ratio: 1; background: #f5f5f5; }
 
 .thread-tags { display: flex; flex-wrap: wrap; gap: 16rpx; margin-bottom: 32rpx; }
 .thread-tag { font-size: 26rpx; font-weight: 800; color: #666; background: #f4f5f7; padding: 10rpx 24rpx; border-radius: 16rpx; }

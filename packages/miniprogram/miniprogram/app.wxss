@@ -54,7 +54,7 @@ page {
   --shadow-glow: 0 4rpx 20rpx rgba(37, 99, 235, 0.12);
 
   background: var(--color-bg);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
   font-size: 28rpx;
   color: var(--color-text);
   line-height: 1.5;

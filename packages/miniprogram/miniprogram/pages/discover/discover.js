@@ -26,10 +26,14 @@ Page({
   loadActivities() {
     let activities = store.getActivities();
     if (activities.length === 0) {
-      activities = mockActivities.map(a => ({ ...a, joined: false }));
-      wx.setStorageSync('dappcard_activities', activities);
+      mockActivities.forEach(a => store.addActivity({ ...a, joined: false }));
+      activities = store.getActivities();
     }
-    this.setData({ activities });
+    const enriched = activities.map(a => {
+      const cat = this.getCategoryInfo(a.category);
+      return { ...a, _categoryColor: cat ? cat.color : '#999', _categoryIcon: cat ? cat.icon : '', _categoryName: cat ? cat.name : '' };
+    });
+    this.setData({ activities: enriched });
   },
 
   selectCategory(e) {
@@ -49,14 +53,14 @@ Page({
 
   joinActivity(e) {
     const id = e.currentTarget.dataset.id;
-    const activities = store.joinActivity(id);
-    this.setData({ activities });
+    store.joinActivity(id);
+    this.loadActivities();
   },
 
   leaveActivity(e) {
     const id = e.currentTarget.dataset.id;
-    const activities = store.leaveActivity(id);
-    this.setData({ activities });
+    store.leaveActivity(id);
+    this.loadActivities();
   },
 
   openCreate() {
@@ -90,7 +94,7 @@ Page({
       maxParticipants: this.data.createMaxParticipants,
       category: this.data.createCategory || 'sport',
       subcategory: '',
-      avatar: `https://api.dicebear.com/7.x/notionists/svg?seed=${profile.name || 'user'}`,
+      avatar: '',
       creator: profile.name || '匿名',
     });
     this.setData({

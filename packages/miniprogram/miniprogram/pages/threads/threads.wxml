@@ -15,7 +15,8 @@
         <!-- Author -->
         <view class="thread-header">
           <view class="author-info">
-            <image class="author-avatar" src="{{thread.author.avatar}}" mode="aspectFill" />
+            <image wx:if="{{thread.author.avatar}}" class="author-avatar" src="{{thread.author.avatar}}" mode="aspectFill" />
+            <view wx:else class="author-avatar author-avatar-placeholder">{{thread.author.name ? thread.author.name[0] : '?'}}</view>
             <view class="author-meta">
               <view class="author-name">{{thread.author.name}}</view>
               <view class="author-handle">{{thread.author.handle}} · {{thread.timestamp}}</view>

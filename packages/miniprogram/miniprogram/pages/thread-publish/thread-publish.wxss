@@ -46,6 +46,9 @@
   background: #f5f5f5;
   flex-shrink: 0;
 }
+.author-avatar-placeholder {
+  background: #e0e0e0;
+}
 .content-input {
   flex: 1;
   min-height: 200rpx;
@@ -62,6 +65,7 @@
 }
 .image-preview-item {
   position: relative;
+  height: 200rpx;
   aspect-ratio: 1;
   border-radius: 20rpx;
   overflow: hidden;

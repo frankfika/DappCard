@@ -41,7 +41,8 @@
       <view class="card-inner">
         <!-- Profile Header -->
         <view class="profile-header">
-          <image class="avatar" src="{{profile.avatar ? profile.avatar : 'https://api.dicebear.com/7.x/notionists/png?seed=' + profile.name + '&backgroundColor=transparent'}}" mode="aspectFill" />
+          <image wx:if="{{profile.avatar}}" class="avatar" src="{{profile.avatar}}" mode="aspectFill" />
+          <view wx:else class="avatar avatar-placeholder">{{profile.name ? profile.name[0] : '?'}}</view>
           <view class="profile-name">{{profile.name}}</view>
           <view wx:if="{{profile.handle}}" class="profile-handle">{{profile.handle}}</view>
         </view>
@@ -116,33 +117,70 @@
   <canvas type="2d" id="shareCanvas" style="width: 750px; height: 600px; position: fixed; top: -9999px; left: -9999px;"></canvas>
 
   <!-- Edit Modal -->
+  <wxs module="utils">
+    module.exports = {
+      includes: function(arr, item) {
+        if (!arr) return false;
+        return arr.indexOf(item) !== -1;
+      }
+    }
+  </wxs>
+
   <view wx:if="{{isEditing}}" class="modal-overlay" bindtap="closeEdit">
     <view class="modal-sheet" catchtap="noop">
       <view class="modal-header">
-        <view class="modal-close" bindtap="closeEdit">✕</view>
         <view class="modal-title">编辑名片</view>
-        <view class="modal-save" bindtap="saveEdit">保存</view>
+        <view class="modal-actions">
+          <view class="modal-close" bindtap="closeEdit">取消</view>
+          <view class="modal-save-btn" bindtap="saveEdit">完成</view>
+        </view>
       </view>
-      <scroll-view scroll-y class="modal-body">
-        <input class="input" placeholder="名字" placeholder-style="color: #bbb;" value="{{editName}}" bindinput="onEditNameInput" />
-        <input class="input" placeholder="DappCard ID" placeholder-style="color: #bbb;" value="{{editHandle}}" bindinput="onEditHandleInput" />
-        <textarea class="textarea" placeholder="个人简介" placeholder-style="color: #bbb;" value="{{editBio}}" bindinput="onEditBioInput" />
-        <view class="section-title">标签（最多5个）</view>
-        <view class="tag-grid">
-          <view wx:for="{{tagOptions}}" wx:key="*this" class="tag-item {{editTags.includes(item) ? 'tag-active' : ''}}" bindtap="onEditTagSelect" data-tag="{{item}}">{{item}}</view>
+      <scroll-view scroll-y class="modal-body" enhanced show-scrollbar="{{false}}">
+        <!-- Basic Info -->
+        <view class="edit-section">
+          <input class="edit-input font-bold" placeholder="你的名字" placeholder-style="color: #bbb;" value="{{editName}}" bindinput="onEditNameInput" />
+          <input class="edit-input edit-input-handle" placeholder="DappCard ID" placeholder-style="color: #bbb;" value="{{editHandle}}" bindinput="onEditHandleInput" />
+          <textarea class="edit-textarea" placeholder="写一句炫酷的个人简介..." placeholder-style="color: #bbb;" value="{{editBio}}" bindinput="onEditBioInput" />
         </view>
-        <view class="custom-tag-row">
-          <input class="custom-tag-input" placeholder="自定义标签..." placeholder-style="color: #bbb;" value="{{editCustomTag}}" bindinput="onEditCustomTagInput" />
-          <view class="custom-tag-btn {{editCustomTag ? 'custom-tag-btn-active' : ''}}" bindtap="addEditCustomTag">添加</view>
+
+        <!-- Tags -->
+        <view class="edit-section">
+          <view class="section-header">
+            <text class="section-title-new">我的标签</text>
+            <text class="section-subtitle-new">{{editTags.length}}/5</text>
+          </view>
+          <scroll-view scroll-x class="h-scroll" enhanced show-scrollbar="{{false}}">
+            <view class="h-scroll-inner">
+              <view wx:for="{{tagOptions}}" wx:key="*this" class="pill {{utils.includes(editTags, item) ? 'pill-active' : ''}}" bindtap="onEditTagSelect" data-tag="{{item}}">{{item}}</view>
+            </view>
+          </scroll-view>
+          <view class="custom-tag-row">
+            <input class="custom-tag-input" placeholder="输入自定义标签..." placeholder-style="color: #bbb;" value="{{editCustomTag}}" bindinput="onEditCustomTagInput" />
+            <view class="custom-tag-btn {{editCustomTag ? 'custom-tag-btn-active' : ''}}" bindtap="addEditCustomTag">添加</view>
+          </view>
         </view>
-        <view class="section-title">Looking for</view>
-        <view class="option-list">
-          <view wx:for="{{lookingForOptions}}" wx:key="*this" class="option-item {{editLookingFor === item ? 'option-active' : ''}}" bindtap="onEditLookingSelect" data-item="{{item}}">{{item}}</view>
+
+        <!-- Looking For -->
+        <view class="edit-section">
+          <view class="section-title-new">寻找什么</view>
+          <scroll-view scroll-x class="h-scroll" enhanced show-scrollbar="{{false}}">
+            <view class="h-scroll-inner">
+              <view wx:for="{{lookingForOptions}}" wx:key="*this" class="pill-card {{editLookingFor === item ? 'pill-card-active' : ''}}" bindtap="onEditLookingSelect" data-item="{{item}}">{{item}}</view>
+            </view>
+          </scroll-view>
         </view>
-        <view class="section-title">活动</view>
-        <view class="option-list">
-          <view wx:for="{{eventOptions}}" wx:key="*this" class="option-item {{editEvent === item ? 'option-active' : ''}}" bindtap="onEditEventSelect" data-item="{{item}}">{{item}}</view>
+
+        <!-- Event -->
+        <view class="edit-section">
+          <view class="section-title-new">当前活动</view>
+          <scroll-view scroll-x class="h-scroll" enhanced show-scrollbar="{{false}}">
+            <view class="h-scroll-inner">
+              <view wx:for="{{eventOptions}}" wx:key="*this" class="pill-card {{editEvent === item ? 'pill-card-active' : ''}}" bindtap="onEditEventSelect" data-item="{{item}}">{{item}}</view>
+            </view>
+          </scroll-view>
         </view>
+
+        <view class="bottom-space-sm" />
       </scroll-view>
     </view>
   </view>

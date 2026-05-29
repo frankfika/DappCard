@@ -26,7 +26,7 @@
         <view class="stat-label">已抽</view>
       </view>
       <view class="stat-item">
-        <view class="stat-value">{{getFilteredCount()}}</view>
+        <view class="stat-value">{{filteredCount}}</view>
         <view class="stat-label">剩余</view>
       </view>
       <view class="stat-item">
@@ -39,9 +39,9 @@
     <view class="game-actions">
       <button class="draw-btn" bindtap="drawCard">{{currentCard ? '再抽一张' : '抽卡'}}</button>
       <view wx:if="{{currentCard}}" class="secondary-actions">
-        <view class="action-btn {{isFav() ? 'action-fav' : ''}}" bindtap="toggleFavorite">
-          <text class="action-btn-icon">{{isFav() ? '❤️' : '🤍'}}</text>
-          <text class="action-btn-text">{{isFav() ? '已收藏' : '收藏'}}</text>
+        <view class="action-btn {{isCurrentFav ? 'action-fav' : ''}}" bindtap="toggleFavorite">
+          <text class="action-btn-icon">{{isCurrentFav ? '❤️' : '🤍'}}</text>
+          <text class="action-btn-text">{{isCurrentFav ? '已收藏' : '收藏'}}</text>
         </view>
       </view>
     </view>

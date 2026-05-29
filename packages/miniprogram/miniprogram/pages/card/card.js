@@ -1,5 +1,19 @@
 const store = require('../../utils/store.js');
 
+function drawRoundRectPath(ctx, x, y, w, h, r) {
+  const radius = Math.min(r, w / 2, h / 2);
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + w - radius, y);
+  ctx.arc(x + w - radius, y + radius, radius, -Math.PI / 2, 0);
+  ctx.lineTo(x + w, y + h - radius);
+  ctx.arc(x + w - radius, y + h - radius, radius, 0, Math.PI / 2);
+  ctx.lineTo(x + radius, y + h);
+  ctx.arc(x + radius, y + h - radius, radius, Math.PI / 2, Math.PI);
+  ctx.lineTo(x, y + radius);
+  ctx.arc(x + radius, y + radius, radius, Math.PI, -Math.PI / 2);
+  ctx.closePath();
+}
+
 const AVATAR_SEEDS = ['Alex', 'Luna', 'Max', 'Zoe', 'Kai', 'Nova', 'Aria', 'Leo', 'Mia', 'Finn', 'Sage', 'River'];
 const TAG_OPTIONS = [
   'Builder', 'Designer', 'Founder', 'Developer', 'Researcher',
@@ -74,13 +88,6 @@ Page({
     if (!isSetup) {
       this.setData({ showOnboarding: true, onboardingStep: 0 });
     }
-  },
-
-  getAvatarUrl() {
-    const profile = this.data.profile;
-    if (profile && profile.avatar) return profile.avatar.replace('/svg?', '/png?');
-    const seed = (profile && profile.name) ? profile.name : AVATAR_SEEDS[Math.floor(Math.random() * AVATAR_SEEDS.length)];
-    return `https://api.dicebear.com/7.x/notionists/png?seed=${seed}&backgroundColor=transparent`;
   },
 
   // Onboarding
@@ -229,7 +236,7 @@ Page({
   noop() {},
   goHome() {
     wx.showTabBar();
-    wx.reLaunch({ url: '/pages/card/card' });
+    wx.switchTab({ url: '/pages/card/card' });
   },
 
   onShareAppMessage() {
@@ -288,107 +295,132 @@ Page({
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, width, height);
 
-        // Load avatar
-        const avatarUrl = profile.avatar ? profile.avatar.replace('/svg?', '/png?') : `https://api.dicebear.com/7.x/notionists/png?seed=${profile.name}&backgroundColor=transparent`;
-        
-        wx.getImageInfo({
-          src: avatarUrl,
-          success: (imageRes) => {
-            const img = canvas.createImage();
-            img.src = imageRes.path;
-            img.onload = () => {
-              // Draw Avatar
-              ctx.save();
-              ctx.beginPath();
-              ctx.roundRect ? ctx.roundRect(80, 80, 160, 160, 32) : ctx.rect(80, 80, 160, 160);
-              ctx.clip();
-              ctx.drawImage(img, 80, 80, 160, 160);
-              ctx.restore();
+        const renderContent = (img) => {
+          // Draw Avatar
+          if (img) {
+            ctx.save();
+            ctx.beginPath();
+            drawRoundRectPath(ctx, 80, 80, 160, 160, 32);
+            ctx.clip();
+            ctx.drawImage(img, 80, 80, 160, 160);
+            ctx.restore();
+          } else {
+            const initial = profile.name ? profile.name.charAt(0).toUpperCase() : '?';
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+            const color = colors[profile.name ? profile.name.charCodeAt(0) % colors.length : 0];
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(160, 160, 80, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 72px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initial, 160, 160);
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'alphabetic';
+          }
 
-              // Draw border
-              ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-              ctx.lineWidth = 4;
-              ctx.beginPath();
-              ctx.roundRect ? ctx.roundRect(80, 80, 160, 160, 32) : ctx.rect(80, 80, 160, 160);
-              ctx.stroke();
+          // Draw border
+          ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          drawRoundRectPath(ctx, 80, 80, 160, 160, 32);
+          ctx.stroke();
 
-              // Draw Name
-              ctx.fillStyle = '#ffffff';
-              ctx.font = 'bold 64px sans-serif';
-              ctx.fillText(profile.name, 280, 140);
+          // Draw Name
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 64px sans-serif';
+          ctx.fillText(profile.name, 280, 140);
 
-              // Draw Handle
-              if (profile.handle) {
-                ctx.fillStyle = 'rgba(255,255,255,0.6)';
-                ctx.font = 'bold 32px sans-serif';
-                ctx.fillText(profile.handle, 280, 190);
-              }
+          // Draw Handle
+          if (profile.handle) {
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.font = 'bold 32px sans-serif';
+            ctx.fillText(profile.handle, 280, 190);
+          }
 
-              // Draw Tags
-              let tagX = 280;
-              let tagY = 230;
-              ctx.font = 'bold 24px sans-serif';
-              const tags = profile.tags || [];
-              const allTags = profile.event ? [{label: `📍 ${profile.event}`}, ...tags] : tags;
-              
-              allTags.slice(0, 3).forEach(tag => {
-                const textWidth = ctx.measureText(tag.label).width;
-                ctx.fillStyle = 'rgba(255,255,255,0.1)';
-                ctx.beginPath();
-                ctx.roundRect ? ctx.roundRect(tagX, tagY, textWidth + 32, 48, 24) : ctx.rect(tagX, tagY, textWidth + 32, 48);
-                ctx.fill();
-                
-                ctx.fillStyle = '#ffffff';
-                ctx.fillText(tag.label, tagX + 16, tagY + 34);
-                tagX += textWidth + 48;
-              });
+          // Draw Tags
+          let tagX = 280;
+          let tagY = 230;
+          ctx.font = 'bold 24px sans-serif';
+          const tags = profile.tags || [];
+          const allTags = profile.event ? [{label: `📍 ${profile.event}`}, ...tags] : tags;
 
-              // Draw Moment Preview Box
-              if (profile.latestMoment) {
-                ctx.fillStyle = 'rgba(255,255,255,0.05)';
-                ctx.beginPath();
-                ctx.roundRect ? ctx.roundRect(80, 320, 590, 200, 32) : ctx.rect(80, 320, 590, 200);
-                ctx.fill();
-                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+          allTags.slice(0, 3).forEach(tag => {
+            const textWidth = ctx.measureText(tag.label).width;
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.beginPath();
+            drawRoundRectPath(ctx, tagX, tagY, textWidth + 32, 48, 24);
+            ctx.fill();
 
-                ctx.fillStyle = 'rgba(255,255,255,0.6)';
-                ctx.font = 'bold 24px sans-serif';
-                ctx.fillText('✨ 最新动态', 120, 380);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(tag.label, tagX + 16, tagY + 34);
+            tagX += textWidth + 48;
+          });
 
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '500 32px sans-serif';
-                const momentText = profile.latestMoment.length > 30 ? profile.latestMoment.substring(0, 30) + '...' : profile.latestMoment;
-                // Simple multiline
-                const words = momentText.split('');
-                let line = '';
-                let y = 440;
-                for (let n = 0; n < words.length; n++) {
-                  const testLine = line + words[n];
-                  const metrics = ctx.measureText(testLine);
-                  if (metrics.width > 500 && n > 0) {
-                    ctx.fillText(line, 120, y);
-                    line = words[n];
-                    y += 44;
-                  } else {
-                    line = testLine;
-                  }
-                }
+          // Draw Moment Preview Box
+          if (profile.latestMoment) {
+            ctx.fillStyle = 'rgba(255,255,255,0.05)';
+            ctx.beginPath();
+            drawRoundRectPath(ctx, 80, 320, 590, 200, 32);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.font = 'bold 24px sans-serif';
+            ctx.fillText('✨ 最新动态', 120, 380);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '500 32px sans-serif';
+            const momentText = profile.latestMoment.length > 30 ? profile.latestMoment.substring(0, 30) + '...' : profile.latestMoment;
+            // Simple multiline
+            const words = momentText.split('');
+            let line = '';
+            let y = 440;
+            for (let n = 0; n < words.length; n++) {
+              const testLine = line + words[n];
+              const metrics = ctx.measureText(testLine);
+              if (metrics.width > 500 && n > 0) {
                 ctx.fillText(line, 120, y);
+                line = words[n];
+                y += 44;
+              } else {
+                line = testLine;
               }
+            }
+            ctx.fillText(line, 120, y);
+          }
 
-              // Export
-              wx.canvasToTempFilePath({
-                canvas,
-                success: res => resolve(res.tempFilePath),
-                fail: err => reject(err)
-              });
-            };
-            img.onerror = () => reject('Load image failed');
-          },
-          fail: err => reject(err)
-        });
+          // Export
+          wx.canvasToTempFilePath({
+            canvas,
+            success: res => resolve(res.tempFilePath),
+            fail: err => reject(err)
+          });
+        };
+
+        // Only load external image if avatar exists and is not from dicebear
+        const avatarUrl = profile.avatar && !profile.avatar.includes('dicebear.com')
+          ? profile.avatar.replace('/svg?', '/png?')
+          : null;
+
+        if (avatarUrl) {
+          wx.getImageInfo({
+            src: avatarUrl,
+            success: (imageRes) => {
+              const img = canvas.createImage();
+              img.src = imageRes.path;
+              img.onload = () => renderContent(img);
+              img.onerror = () => renderContent(null);
+            },
+            fail: () => renderContent(null)
+          });
+        } else {
+          renderContent(null);
+        }
       });
     });
   },

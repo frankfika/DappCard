@@ -15,7 +15,7 @@ const DEFAULT_GAME = { presetId: null, selectedTags: [], history: [], favorites:
 function getStorage(key, fallback) {
   try {
     const data = wx.getStorageSync(key);
-    if (data) return data;
+    if (data !== '' && data !== null && data !== undefined) return data;
   } catch (e) {}
   return fallback;
 }

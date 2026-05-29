@@ -13,6 +13,8 @@ Page({
     history: [],
     favorites: [],
     totalPlayed: 0,
+    filteredCount: 0,
+    isCurrentFav: false,
   },
 
   onLoad() {
@@ -31,7 +33,7 @@ Page({
       selectedPreset: session.presetId,
       selectedTags: session.selectedTags || [],
       totalPlayed: (session.history || []).length,
-    });
+    }, () => this.updateComputed());
   },
 
   getFilteredCards() {
@@ -60,13 +62,13 @@ Page({
       currentCard: card,
       history: [...this.data.history, card.id],
       totalPlayed: this.data.totalPlayed + 1,
-    });
+    }, () => this.updateComputed());
   },
 
   toggleFavorite() {
     if (!this.data.currentCard) return;
     const session = store.toggleFavorite(this.data.currentCard.id);
-    this.setData({ favorites: session.favorites });
+    this.setData({ favorites: session.favorites }, () => this.updateComputed());
   },
 
   toggleTag(e) {
@@ -99,8 +101,14 @@ Page({
 
   resetAll() {
     store.resetHistory();
-    this.setData({ history: [], totalPlayed: 0, currentCard: null });
+    this.setData({ history: [], totalPlayed: 0, currentCard: null }, () => this.updateComputed());
     wx.showToast({ title: '已重置', icon: 'success' });
+  },
+
+  updateComputed() {
+    const filteredCount = this.getFilteredCards().length;
+    const isCurrentFav = !!(this.data.currentCard && this.data.favorites.includes(this.data.currentCard.id));
+    this.setData({ filteredCount, isCurrentFav });
   },
 
   saveSession() {
@@ -108,6 +116,7 @@ Page({
       presetId: this.data.selectedPreset,
       selectedTags: this.data.selectedTags,
     });
+    this.updateComputed();
   },
 
   getFilteredCount() {

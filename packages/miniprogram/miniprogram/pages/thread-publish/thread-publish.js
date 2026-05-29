@@ -14,7 +14,7 @@ Page({
   onLoad() {
     const profile = store.getProfile();
     this.setData({
-      authorAvatar: profile.avatar || 'https://api.dicebear.com/7.x/notionists/svg?seed=fallback&backgroundColor=transparent',
+      authorAvatar: profile.avatar || '',
     });
   },
 
@@ -31,13 +31,15 @@ Page({
       wx.showToast({ title: '最多3张图片', icon: 'none' });
       return;
     }
-    wx.chooseImage({
+    wx.chooseMedia({
       count: 3 - this.data.imagePreviews.length,
+      mediaType: ['image'],
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
+        const paths = res.tempFiles.map(f => f.tempFilePath);
         this.setData({
-          imagePreviews: [...this.data.imagePreviews, ...res.tempFilePaths],
+          imagePreviews: [...this.data.imagePreviews, ...paths],
         });
       },
     });
@@ -63,7 +65,7 @@ Page({
       id: Date.now().toString(),
       author: {
         name: profile.name || 'Anonymous',
-        avatar: profile.avatar || `https://api.dicebear.com/7.x/notionists/svg?seed=fallback&backgroundColor=transparent`,
+        avatar: profile.avatar || '',
         handle: profile.handle || '0x...',
       },
       content: this.data.content.trim(),

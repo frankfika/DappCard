@@ -5,9 +5,9 @@ const TAGS = ['All', 'Work', 'Life', 'Web3', 'Thoughts'];
 const MOCK_THREADS = [
   {
     id: '1',
-    author: { name: 'Alex Chen', avatar: 'https://api.dicebear.com/7.x/notionists/svg?seed=Alex&backgroundColor=transparent', handle: '0x1234...5678' },
+    author: { name: 'Alex Chen', avatar: '', handle: '0x1234...5678' },
     content: '刚刚完成了 DappCard 的 2.0 设计系统重构，采用了更现代的毛玻璃风格和物理弹簧动画。感觉整个应用变得更有呼吸感了。',
-    images: ['https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'],
+    images: [],
     tags: ['Work', 'Web3'],
     likes: 24,
     timestamp: '2小时前',
@@ -15,7 +15,7 @@ const MOCK_THREADS = [
   },
   {
     id: '2',
-    author: { name: 'Sarah Wang', avatar: 'https://api.dicebear.com/7.x/notionists/svg?seed=Sarah&backgroundColor=transparent', handle: 'sarah.eth' },
+    author: { name: 'Sarah Wang', avatar: '', handle: 'sarah.eth' },
     content: '今天在咖啡馆里遇到了两个同样在做独立开发的 Builder。Web3 的圈子真小，但是大家都好有热情！',
     tags: ['Life', 'Thoughts'],
     likes: 12,

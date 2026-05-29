@@ -21,10 +21,11 @@
     <view class="activity-list">
       <view wx:for="{{activities}}" wx:key="id" wx:for-item="activity" class="activity-card {{!selectedCategory || activity.category === selectedCategory ? '' : 'hidden'}}">
         <view class="activity-main">
-          <image class="activity-avatar" src="{{activity.avatar}}" mode="aspectFill" />
+          <image wx:if="{{activity.avatar}}" class="activity-avatar" src="{{activity.avatar}}" mode="aspectFill" />
+          <view wx:else class="activity-avatar activity-avatar-placeholder"></view>
           <view class="activity-info">
             <view class="activity-meta">
-              <view class="activity-badge" style="background: {{getCategoryInfo(activity.category).color}}">{{getCategoryInfo(activity.category).icon}} {{getCategoryInfo(activity.category).name}}</view>
+              <view class="activity-badge" style="background: {{activity._categoryColor}}">{{activity._categoryIcon}} {{activity._categoryName}}</view>
               <text class="activity-creator">{{activity.creator}}</text>
             </view>
             <view class="activity-title">{{activity.title}}</view>

@@ -7,7 +7,8 @@
 
   <view class="publish-body">
     <view class="content-area">
-      <image class="author-avatar" src="{{authorAvatar}}" mode="aspectFill" />
+      <image wx:if="{{authorAvatar}}" class="author-avatar" src="{{authorAvatar}}" mode="aspectFill" />
+      <view wx:else class="author-avatar author-avatar-placeholder"></view>
       <textarea class="content-input" placeholder="分享点什么..." placeholder-style="color: #bbb;" value="{{content}}" bindinput="onContentInput" maxlength="500" />
     </view>
 
