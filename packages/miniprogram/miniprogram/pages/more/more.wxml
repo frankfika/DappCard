@@ -1,0 +1,63 @@
+<view class="page">
+  <view class="page-header">
+    <view class="page-title">Explore</view>
+  </view>
+
+  <scroll-view scroll-y class="page-body">
+    <!-- Chain Identity -->
+    <view class="section">
+      <view class="identity-card">
+        <view class="identity-header">
+          <view class="identity-icon">🔗</view>
+          <view class="identity-info">
+            <view class="identity-title">链上身份</view>
+            <view class="identity-desc">本地微链已记录 {{profileComplete ? '完整' : '部分'}} 资料</view>
+          </view>
+        </view>
+        <view class="identity-status">
+          <view class="status-badge {{profileComplete ? 'status-complete' : ''}}">
+            {{profileComplete ? '已就绪' : '待完善'}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Network -->
+    <view class="section">
+      <view class="section-label">
+        <text class="label-icon">✨</text>
+        <text>Network</text>
+      </view>
+      <view class="entry-card" bindtap="goDiscover">
+        <view class="entry-main">
+          <view class="entry-icon entry-icon-primary">🧭</view>
+          <view class="entry-text">
+            <view class="entry-title">发现搭子</view>
+            <view class="entry-desc">探索并连接志同道合的朋友</view>
+          </view>
+        </view>
+        <view class="entry-arrow">›</view>
+      </view>
+    </view>
+
+    <!-- Utilities -->
+    <view class="section">
+      <view class="section-label">
+        <text class="label-icon">🧰</text>
+        <text>Utilities</text>
+      </view>
+      <view class="grid-2">
+        <view class="grid-card" bindtap="goGames">
+          <view class="grid-icon">🎮</view>
+          <view class="grid-title">互动卡片</view>
+          <view class="grid-desc">破冰与深入交流的小游戏</view>
+        </view>
+        <view class="grid-card grid-card-disabled">
+          <view class="grid-icon">⚙️</view>
+          <view class="grid-title">设置</view>
+          <view class="grid-desc">应用偏好与账户管理，敬请期待</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -125,10 +125,33 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
     overscroll-behavior-y: none; /* Prevent pull-to-refresh on mobile */
+    -webkit-tap-highlight-color: transparent; /* No iOS grey flash on tap */
+    touch-action: manipulation; /* Eliminate 300ms tap delay */
+    -webkit-text-size-adjust: 100%; /* Prevent Safari from zooming text on landscape */
+    text-size-adjust: 100%;
     }
   html {
     @apply font-sans;
+    /* Use small viewport unit on mobile to handle dynamic browser chrome */
+    height: 100%;
     }
+  /* Inputs at >=16px to keep iOS from auto-zooming on focus */
+  input, textarea, select {
+    font-size: 16px;
+  }
+  @media (min-width: 768px) {
+    input, textarea, select { font-size: inherit; }
+  }
+  button { -webkit-tap-highlight-color: transparent; }
+  /* Respect users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -142,10 +165,23 @@
   scrollbar-width: none;  /* Firefox */
 }
 
-/* Safe area insets for mobile */
-.pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 20px);
-}
-.pt-safe {
-  padding-top: env(safe-area-inset-top, 20px);
-}
+/* Safe area insets for mobile (iOS notch / Android navigation bar) */
+.pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 16px); }
+.pt-safe { padding-top: max(env(safe-area-inset-top), 16px); }
+.pl-safe { padding-left: env(safe-area-inset-left); }
+.pr-safe { padding-right: env(safe-area-inset-right); }
+.mb-safe { margin-bottom: env(safe-area-inset-bottom); }
+.mt-safe { margin-top: env(safe-area-inset-top); }
+.h-safe-bottom { height: env(safe-area-inset-bottom); }
+
+/* Dynamic viewport height — shrinks with mobile address bar */
+.h-dvh { height: 100vh; height: 100dvh; }
+.min-h-dvh { min-height: 100vh; min-height: 100dvh; }
+.max-h-dvh { max-height: 100vh; max-height: 100dvh; }
+
+/* Touch-friendly minimum tap target (44px is the WCAG recommendation) */
+.tap-target { min-height: 44px; min-width: 44px; }
+
+/* Subtle press feedback for buttons */
+.press-fb { transition: transform 120ms ease, opacity 120ms ease; }
+.press-fb:active { transform: scale(0.96); opacity: 0.85; }

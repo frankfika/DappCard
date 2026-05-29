@@ -2,7 +2,7 @@
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "projectname": "couple-cards",
-  "description": "心动卡片 - 找搭子社交平台",
+  "description": "DappCard - Web3 Social Namecard",
   "appid": "wxbc6567978157b98d",
   "setting": {
     "es6": true,
@@ -30,7 +30,7 @@
     "disableUseStrict": false
   },
   "compileType": "miniprogram",
-  "libVersion": "3.3.4",
+  "libVersion": "3.13.1",
   "simulatorPluginLibVersion": {},
   "packOptions": {
     "ignore": [],

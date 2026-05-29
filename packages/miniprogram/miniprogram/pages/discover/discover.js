@@ -1,151 +1,107 @@
-// pages/discover/discover.js
-const { getAllCategories } = require('../../data/companion-types.js');
-const app = getApp();
+const store = require('../../utils/store.js');
+const { companionTypes, mockActivities } = require('../../utils/cards-data.js');
 
 Page({
   data: {
-    searchText: '',
-    categories: getAllCategories(),
-    selectedCategory: null,
-    locationFilter: 'nearby', // 'nearby' | 'city' | 'area'
-    locationRadius: 10,
+    companionTypes: companionTypes,
     activities: [],
-    page: 1,
-    pageSize: 20,
-    hasMore: true,
-    loading: false,
-    refreshing: false,
-    showPrivacy: false
+    selectedCategory: null,
+    showCreate: false,
+    createTitle: '',
+    createDesc: '',
+    createLocation: '',
+    createTime: '',
+    createMaxParticipants: 4,
+    createCategory: '',
   },
 
-  onLoad(options) {
+  onLoad() {
     this.loadActivities();
-  },
-
-  // 隐私协议弹窗处理
-  onNeedPrivacyAuthorization(resolve, eventInfo) {
-    this.privacyResolve = resolve;
-    this.setData({ showPrivacy: true });
-  },
-
-  handleAgreePrivacy() {
-    this.setData({ showPrivacy: false });
-    if (this.privacyResolve) {
-      this.privacyResolve({ buttonId: 'agree-btn', event: 'agree' });
-    }
-  },
-
-  handleRejectPrivacy() {
-    this.setData({ showPrivacy: false });
-    if (this.privacyResolve) {
-      this.privacyResolve({ buttonId: 'reject-btn', event: 'disagree' });
-    }
-  },
-
-  openPrivacyContract() {
-    wx.openPrivacyContract();
   },
 
   onShow() {
-    // Refresh if needed
+    this.loadActivities();
   },
 
-  onPullDownRefresh() {
-    this.setData({
-      refreshing: true,
-      page: 1,
-      activities: [],
-      hasMore: true
-    });
-    this.loadActivities(() => {
-      wx.stopPullDownRefresh();
-      this.setData({ refreshing: false });
-    });
-  },
-
-  onReachBottom() {
-    if (this.data.hasMore && !this.data.loading) {
-      this.setData({ page: this.data.page + 1 });
-      this.loadActivities();
+  loadActivities() {
+    let activities = store.getActivities();
+    if (activities.length === 0) {
+      activities = mockActivities.map(a => ({ ...a, joined: false }));
+      wx.setStorageSync('dappcard_activities', activities);
     }
+    this.setData({ activities });
   },
 
-  onSearchInput(e) {
-    this.setData({ searchText: e.detail.value });
+  selectCategory(e) {
+    const cat = e.currentTarget.dataset.cat;
+    this.setData({ selectedCategory: this.data.selectedCategory === cat ? null : cat });
   },
 
-  onSearch() {
-    this.setData({ page: 1, activities: [] });
-    this.loadActivities();
+  getFilteredActivities() {
+    const { activities, selectedCategory } = this.data;
+    if (!selectedCategory) return activities;
+    return activities.filter(a => a.category === selectedCategory);
   },
 
-  onCategoryTap(e) {
-    const categoryId = e.currentTarget.dataset.id;
-    this.setData({
-      selectedCategory: categoryId === this.data.selectedCategory ? null : categoryId,
-      page: 1,
-      activities: []
-    });
-    this.loadActivities();
+  getCategoryInfo(categoryId) {
+    return companionTypes.find(c => c.id === categoryId);
   },
 
-  onLocationFilterChange(e) {
-    const filter = e.currentTarget.dataset.filter;
-    this.setData({
-      locationFilter: filter,
-      page: 1,
-      activities: []
-    });
-    this.loadActivities();
+  joinActivity(e) {
+    const id = e.currentTarget.dataset.id;
+    const activities = store.joinActivity(id);
+    this.setData({ activities });
   },
 
-  loadActivities(callback) {
-    if (this.data.loading) return;
+  leaveActivity(e) {
+    const id = e.currentTarget.dataset.id;
+    const activities = store.leaveActivity(id);
+    this.setData({ activities });
+  },
 
-    if (!app.globalData.cloudReady) {
-      this.setData({ loading: false, hasMore: false });
-      callback && callback();
+  openCreate() {
+    this.setData({ showCreate: true });
+  },
+
+  closeCreate() {
+    this.setData({ showCreate: false });
+  },
+
+  onCreateTitle(e) { this.setData({ createTitle: e.detail.value }); },
+  onCreateDesc(e) { this.setData({ createDesc: e.detail.value }); },
+  onCreateLocation(e) { this.setData({ createLocation: e.detail.value }); },
+  onCreateTime(e) { this.setData({ createTime: e.detail.value }); },
+  onCreateMax(e) { this.setData({ createMaxParticipants: parseInt(e.detail.value) || 4 }); },
+  onCreateCategory(e) { this.setData({ createCategory: e.currentTarget.dataset.cat }); },
+
+  noop() {},
+
+  submitCreate() {
+    if (!this.data.createTitle.trim()) {
+      wx.showToast({ title: '请输入标题', icon: 'none' });
       return;
     }
-
-    this.setData({ loading: true });
-
-    wx.cloud.callFunction({
-      name: 'companion',
-      data: {
-        action: 'getActivities',
-        page: this.data.page,
-        pageSize: this.data.pageSize,
-        category: this.data.selectedCategory,
-        searchText: this.data.searchText,
-        locationFilter: this.data.locationFilter,
-        radius: this.data.locationRadius
-      }
-    }).then(res => {
-      const newActivities = res.result.data || [];
-      this.setData({
-        activities: this.data.page === 1 ? newActivities : this.data.activities.concat(newActivities),
-        hasMore: newActivities.length >= this.data.pageSize,
-        loading: false
-      });
-      callback && callback();
-    }).catch(err => {
-      console.warn('云开发调用失败，可能未开通:', err.message || err);
-      this.setData({ loading: false, hasMore: false });
-      callback && callback();
+    const profile = store.getProfile();
+    store.addActivity({
+      title: this.data.createTitle.trim(),
+      description: this.data.createDesc.trim(),
+      location: this.data.createLocation.trim(),
+      time: this.data.createTime.trim(),
+      maxParticipants: this.data.createMaxParticipants,
+      category: this.data.createCategory || 'sport',
+      subcategory: '',
+      avatar: `https://api.dicebear.com/7.x/notionists/svg?seed=${profile.name || 'user'}`,
+      creator: profile.name || '匿名',
     });
+    this.setData({
+      showCreate: false,
+      createTitle: '',
+      createDesc: '',
+      createLocation: '',
+      createTime: '',
+      createMaxParticipants: 4,
+      createCategory: '',
+    });
+    this.loadActivities();
   },
-
-  onCreateActivityTap() {
-    wx.navigateTo({
-      url: '/pages/create-activity/create-activity'
-    });
-  },
-
-  onActivityTap(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: `/pages/activity-detail/activity-detail?id=${id}`
-    });
-  }
 });

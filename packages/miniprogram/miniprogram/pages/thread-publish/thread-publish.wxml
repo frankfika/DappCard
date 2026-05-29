@@ -1,0 +1,36 @@
+<view class="page">
+  <view class="publish-header">
+    <view class="header-cancel" bindtap="goBack">取消</view>
+    <view class="header-title">新动态</view>
+    <view class="header-submit {{content || imagePreviews.length > 0 ? 'header-submit-active' : ''}}" bindtap="handlePublish">发布</view>
+  </view>
+
+  <view class="publish-body">
+    <view class="content-area">
+      <image class="author-avatar" src="{{authorAvatar}}" mode="aspectFill" />
+      <textarea class="content-input" placeholder="分享点什么..." placeholder-style="color: #bbb;" value="{{content}}" bindinput="onContentInput" maxlength="500" />
+    </view>
+
+    <!-- Image Previews -->
+    <view wx:if="{{imagePreviews.length > 0}}" class="image-preview-list">
+      <view wx:for="{{imagePreviews}}" wx:key="*this" class="image-preview-item">
+        <image class="preview-img" src="{{item}}" mode="aspectFill" />
+        <view class="remove-img" bindtap="removeImage" data-index="{{index}}">✕</view>
+      </view>
+    </view>
+
+    <!-- Tag Selector -->
+    <view class="tag-selector">
+      <view class="selector-label">选择标签</view>
+      <view class="selector-options">
+        <view wx:for="{{tags}}" wx:key="*this" class="selector-tag {{selectedTag === item ? 'selector-tag-active' : ''}}" bindtap="selectTag" data-tag="{{item}}">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- Add Image -->
+    <view class="add-image-btn" bindtap="chooseImage">
+      <text class="add-image-icon">📷</text>
+      <text class="add-image-text">添加图片</text>
+    </view>
+  </view>
+</view>

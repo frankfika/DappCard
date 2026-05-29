@@ -1,6 +1,6 @@
 // 中文语言包
 const lang = {
-  appName: '心动卡片',
+  appName: 'DappCard',
   slogan: '让每一次互动都充满心动',
   greeting: {
     morning: '早安',
@@ -96,7 +96,7 @@ const lang = {
 
   // 欢迎页
   welcome: {
-    title: '心动卡片',
+    title: 'DappCard',
     subtitle: '让每次互动都充满心动',
     start: '开始探索'
   },

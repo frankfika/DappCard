@@ -1,0 +1,85 @@
+<view class="page">
+  <view class="game-header">
+    <view class="game-title">互动卡片</view>
+    <view class="game-subtitle">抽一张卡片，开启对话</view>
+  </view>
+
+  <view class="game-body">
+    <!-- Current Card Display -->
+    <view wx:if="{{currentCard}}" class="card-display">
+      <view class="card-question">{{currentCard.question}}</view>
+      <view class="card-source">{{currentCard.source}}</view>
+      <view class="card-tags">
+        <view wx:for="{{currentCard.tags}}" wx:key="*this" class="card-tag">{{item}}</view>
+      </view>
+    </view>
+
+    <view wx:else class="card-placeholder">
+      <view class="placeholder-icon">🎴</view>
+      <view class="placeholder-text">点击抽卡开始</view>
+    </view>
+
+    <!-- Stats -->
+    <view class="game-stats">
+      <view class="stat-item">
+        <view class="stat-value">{{totalPlayed}}</view>
+        <view class="stat-label">已抽</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{getFilteredCount()}}</view>
+        <view class="stat-label">剩余</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{favorites.length}}</view>
+        <view class="stat-label">收藏</view>
+      </view>
+    </view>
+
+    <!-- Actions -->
+    <view class="game-actions">
+      <button class="draw-btn" bindtap="drawCard">{{currentCard ? '再抽一张' : '抽卡'}}</button>
+      <view wx:if="{{currentCard}}" class="secondary-actions">
+        <view class="action-btn {{isFav() ? 'action-fav' : ''}}" bindtap="toggleFavorite">
+          <text class="action-btn-icon">{{isFav() ? '❤️' : '🤍'}}</text>
+          <text class="action-btn-text">{{isFav() ? '已收藏' : '收藏'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Filter Toggle -->
+    <view class="filter-toggle" bindtap="toggleFilters">
+      <text>{{showFilters ? '收起筛选' : '筛选卡片'}}</text>
+      <text class="toggle-icon">{{showFilters ? '▲' : '▼'}}</text>
+    </view>
+
+    <!-- Filters -->
+    <view wx:if="{{showFilters}}" class="filters-panel">
+      <view class="filter-section">
+        <view class="filter-label">预设</view>
+        <view class="filter-options">
+          <view wx:for="{{presets}}" wx:key="id" class="filter-chip {{selectedPreset === item.id ? 'filter-chip-active' : ''}}" bindtap="selectPreset" data-preset="{{item.id}}">{{item.name}}</view>
+        </view>
+      </view>
+      <view class="filter-section">
+        <view class="filter-label">标签</view>
+        <view class="filter-options">
+          <view wx:for="{{tags}}" wx:key="id" class="filter-chip {{selectedTags.includes(item.id) ? 'filter-chip-active' : ''}}" bindtap="toggleTag" data-tag="{{item.id}}">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- History Toggle -->
+    <view class="filter-toggle" bindtap="toggleHistory">
+      <text>历史记录 ({{history.length}})</text>
+      <text class="toggle-icon">{{showHistory ? '▲' : '▼'}}</text>
+    </view>
+
+    <view wx:if="{{showHistory}}" class="history-list">
+      <view wx:for="{{getHistoryCards()}}" wx:key="id" class="history-item">
+        <view class="history-question">{{item.question}}</view>
+        <view class="history-source">{{item.source}}</view>
+      </view>
+      <view wx:if="{{history.length > 0}}" class="reset-btn" bindtap="resetAll">重置历史</view>
+    </view>
+  </view>
+</view>

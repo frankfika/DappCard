@@ -1,42 +1,23 @@
 App({
   onLaunch() {
-    // 初始化云开发
-    this.globalData.cloudReady = false;
-    if (wx.cloud) {
-      wx.cloud.init({
-        env: wx.cloud.DYNAMIC_CURRENT_ENV,
-        traceUser: true
-      });
-      // 用一次轻量调用探测云开发是否真正可用
-      wx.cloud.callFunction({
-        name: 'login',
-        success: (res) => {
-          this.globalData.cloudReady = true;
-          if (res.result && res.result.user) {
-            this.globalData.userInfo = res.result.user;
-            this.globalData.isLoggedIn = true;
-            this.globalData.openid = res.result.openid;
-          }
-        },
-        fail: () => {
-          this.globalData.cloudReady = false;
-        }
+    // 初始化本地存储默认值
+    const profile = wx.getStorageSync('dappcard_profile');
+    if (!profile) {
+      wx.setStorageSync('dappcard_profile', {
+        name: '', handle: '', avatar: '', bio: '', tags: [],
+        lookingFor: '', highlights: [],
+        verified: { wallet: '', twitter: '', discord: '', wechat: '' },
+        event: ''
       });
     }
-
-    // 初始化本地存储
-    const progress = wx.getStorageSync('progress');
-    if (!progress) {
-      wx.setStorageSync('progress', {});
+    const threads = wx.getStorageSync('dappcard_threads');
+    if (!threads) wx.setStorageSync('dappcard_threads', []);
+    const activities = wx.getStorageSync('dappcard_activities');
+    if (!activities) wx.setStorageSync('dappcard_activities', []);
+    const gameSession = wx.getStorageSync('dappcard_game');
+    if (!gameSession) {
+      wx.setStorageSync('dappcard_game', { presetId: null, selectedTags: [], history: [], favorites: [] });
     }
   },
-
-  globalData: {
-    userInfo: null,
-    isLoggedIn: false,
-    openid: null,
-    currentMode: null,
-    currentCard: null,
-    cloudReady: false
-  }
+  globalData: {}
 });

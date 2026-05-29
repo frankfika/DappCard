@@ -1,18 +1,25 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Compass, Gamepad2, Settings, ChevronRight, Sparkles, Box, Wallet } from 'lucide-react';
+import { Compass, Gamepad2, Settings, ChevronRight, Sparkles, Box } from 'lucide-react';
 import DiscoverPage from './DiscoverPage';
 import GamesPage from './GamesPage';
 import WalletConnect from '../components/WalletConnect';
+import ChainIdentityCard from '../components/chain/ChainIdentityCard';
+import { useProfile } from '../store';
 
 export default function MorePage() {
   const [activeView, setActiveView] = useState<'index' | 'discover' | 'games'>('index');
+  const { profile } = useProfile();
+  const profileComplete = !!(
+    profile.name && profile.bio && profile.tags?.length >= 3 &&
+    (profile.verified?.wallet || profile.verified?.twitter || profile.verified?.discord)
+  );
 
   if (activeView === 'discover') {
     return (
       <div className="h-full flex flex-col relative bg-background">
         <header className="px-5 py-3 border-b border-border flex items-center shrink-0">
-          <button 
+          <button
             onClick={() => setActiveView('index')}
             className="text-[14px] font-semibold text-muted-foreground hover:text-foreground"
           >
@@ -28,7 +35,7 @@ export default function MorePage() {
     return (
       <div className="h-full flex flex-col relative bg-background">
         <header className="px-5 py-3 border-b border-border flex items-center shrink-0">
-          <button 
+          <button
             onClick={() => setActiveView('index')}
             className="text-[14px] font-semibold text-muted-foreground hover:text-foreground"
           >
@@ -47,34 +54,42 @@ export default function MorePage() {
       </header>
 
       <main className="flex-1 overflow-y-auto px-6 pb-32 space-y-6 no-scrollbar">
+        {/* On-Chain Identity (DappChain microchain — primary surface) */}
         <section>
-          <div className="flex items-center gap-2 mb-3">
-            <Wallet className="w-4 h-4 text-muted-foreground" />
-            <h3 className="text-[12px] font-bold uppercase tracking-widest text-muted-foreground">Account</h3>
-          </div>
-          <div className="rounded-[24px] border border-border/50 bg-card/70 p-5 shadow-sm backdrop-blur-md">
-            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <h4 className="text-[17px] font-bold text-foreground leading-tight mb-1">钱包连接</h4>
-                <p className="text-[13px] font-medium text-muted-foreground">
-                  仅在链上同步或发布时需要连接，平时不用占据主界面。
-                </p>
-              </div>
-              <div className="shrink-0 self-stretch sm:self-auto">
-                <WalletConnect />
-              </div>
-            </div>
-          </div>
+          <ChainIdentityCard profileComplete={profileComplete} />
         </section>
 
-        
+        {/* Wallet Anchor (advanced, collapsed by default) */}
+        <section>
+          <details className="group rounded-[20px] border border-border/50 bg-card/60 backdrop-blur-md overflow-hidden">
+            <summary className="list-none cursor-pointer px-5 py-4 flex items-center justify-between active:bg-secondary/40 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-[12px] bg-secondary flex items-center justify-center">
+                  <Box className="w-4 h-4 text-foreground" />
+                </div>
+                <div>
+                  <h4 className="text-[14px] font-bold text-foreground leading-tight">链上锚定（高级）</h4>
+                  <p className="text-[11px] font-medium text-muted-foreground mt-0.5">把本地链摘要存到真实测试网</p>
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 text-muted-foreground group-open:rotate-90 transition-transform" />
+            </summary>
+            <div className="px-5 pb-5 pt-0">
+              <WalletConnect />
+              <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
+                本地链已记录所有活动 — 连接钱包仅用于把最新区块哈希锚定到 EVM 测试网，作为外部存证。日常使用无需连接。
+              </p>
+            </div>
+          </details>
+        </section>
+
         {/* Discover Module */}
         <section>
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-4 h-4 text-muted-foreground" />
             <h3 className="text-[12px] font-bold uppercase tracking-widest text-muted-foreground">Network</h3>
           </div>
-          <motion.button 
+          <motion.button
             whileHover={{ scale: 0.98 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setActiveView('discover')}
@@ -102,7 +117,7 @@ export default function MorePage() {
             <h3 className="text-[12px] font-bold uppercase tracking-widest text-muted-foreground">Utilities</h3>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 0.98 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveView('games')}
@@ -128,7 +143,6 @@ export default function MorePage() {
             </div>
           </div>
         </section>
-
       </main>
     </div>
   );

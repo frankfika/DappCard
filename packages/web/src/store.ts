@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAccount, useWriteContract, useReadContract } from 'wagmi';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from './lib/web3/config';
 import { uploadToIPFS, fetchFromIPFS, computeContentHash, type ChainContent } from './lib/web3/ipfs';
+import { emit as chainEmit } from './lib/chain/chain';
 
 export interface Profile {
   name: string;
@@ -95,6 +96,7 @@ export function useProfile() {
   const [syncStatus, setSyncStatus] = useState<SyncStatus>(() =>
     loadFromStorage('dappcard_profile_sync', DEFAULT_SYNC_STATUS)
   );
+  const initialNameRef = useRef(profile.name);
 
   const { address, chainId } = useAccount();
   const { writeContractAsync } = useWriteContract();
@@ -109,7 +111,18 @@ export function useProfile() {
   }, [syncStatus]);
 
   const updateProfile = useCallback((updates: Partial<Profile>) => {
-    setProfile(prev => ({ ...prev, ...updates }));
+    setProfile(prev => {
+      const next = { ...prev, ...updates };
+      const isFirstCreate = !initialNameRef.current && next.name;
+      if (isFirstCreate) {
+        initialNameRef.current = next.name;
+        chainEmit('profile.create', { name: next.name }).catch(() => {});
+      } else if (initialNameRef.current) {
+        const changedKeys = Object.keys(updates);
+        chainEmit('profile.update', { fields: changedKeys }).catch(() => {});
+      }
+      return next;
+    });
     setSyncStatus(prev => ({ ...prev, isSynced: false }));
   }, []);
 
@@ -225,6 +238,7 @@ export function useGameSession() {
       ...prev,
       history: [...prev.history.filter(id => id !== cardId), cardId],
     }));
+    chainEmit('card.draw', { cardId }).catch(() => {});
   }, []);
 
   const toggleFavorite = useCallback((cardId: string) => {
@@ -234,6 +248,7 @@ export function useGameSession() {
         ? prev.favorites.filter(id => id !== cardId)
         : [...prev.favorites, cardId],
     }));
+    chainEmit('card.favorite', { cardId }).catch(() => {});
   }, []);
 
   const resetHistory = useCallback(() => {
@@ -271,6 +286,7 @@ export function useActivities() {
     };
     setActivities(prev => [newActivity, ...prev]);
     setSyncStatus(prev => ({ ...prev, isSynced: false }));
+    chainEmit('activity.create', { id: newActivity.id, title: newActivity.title, category: newActivity.category }).catch(() => {});
     return newActivity;
   }, []);
 
@@ -280,6 +296,7 @@ export function useActivities() {
         ? { ...a, participants: a.participants + 1, joined: true }
         : a
     ));
+    chainEmit('activity.join', { id }).catch(() => {});
   }, []);
 
   const leaveActivity = useCallback((id: string) => {
@@ -288,6 +305,7 @@ export function useActivities() {
         ? { ...a, participants: Math.max(0, a.participants - 1), joined: false }
         : a
     ));
+    chainEmit('activity.leave', { id }).catch(() => {});
   }, []);
 
   const syncToChain = useCallback(async (): Promise<boolean> => {

@@ -29,12 +29,16 @@ function MobileHeader({ activeTab, onBack }: { activeTab: string; onBack?: () =>
         <div className="h-12 flex items-center justify-between px-4 max-w-md mx-auto relative">
           <div className="w-10 flex items-center justify-start">
             {onBack && (
-              <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-foreground/5 transition-colors active:scale-95">
+              <button
+                onClick={onBack}
+                aria-label="返回"
+                className="tap-target p-2 -ml-2 rounded-full hover:bg-foreground/5 active:bg-foreground/10 transition-colors active:scale-95 flex items-center justify-center"
+              >
                 <ChevronLeft className="w-6 h-6 text-foreground" />
               </button>
             )}
           </div>
-          <h1 className="text-[16px] font-bold tracking-tight text-foreground flex-1 text-center">
+          <h1 className="text-[16px] font-bold tracking-tight text-foreground flex-1 text-center truncate px-2">
             {getTitle()}
           </h1>
           <div className="w-10 flex items-center justify-end">
@@ -50,17 +54,21 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>(() => {
     return (localStorage.getItem('dappcard_tab') as Tab) || 'card';
   });
+  
+  const isSharedView = new URLSearchParams(window.location.search).has('c');
 
   useEffect(() => {
-    localStorage.setItem('dappcard_tab', activeTab);
-  }, [activeTab]);
+    if (!isSharedView) {
+      localStorage.setItem('dappcard_tab', activeTab);
+    }
+  }, [activeTab, isSharedView]);
 
   return (
     <>
       <IMBrowserNotice />
-      <div className="min-h-screen bg-background text-foreground flex md:flex-row flex-col">
+      <div className="min-h-dvh bg-background text-foreground flex md:flex-row flex-col">
         <MobileHeader activeTab={activeTab} />
-        
+
         {/* Desktop Sidebar */}
         <aside className="hidden md:flex flex-col w-56 border-r border-border bg-sidebar shrink-0">
           <div className="p-6 flex items-center gap-3">
@@ -91,8 +99,14 @@ export default function App() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col h-screen md:h-auto relative overflow-hidden">
-          <div className="flex-1 flex flex-col overflow-hidden relative pt-[calc(48px+env(safe-area-inset-top))] pb-[88px] md:pt-0 md:pb-0">
+        <main className="flex-1 flex flex-col h-dvh md:h-auto relative overflow-hidden">
+          <div
+            className="flex-1 flex flex-col overflow-hidden relative md:pt-0 md:pb-0"
+            style={{
+              paddingTop: 'calc(48px + env(safe-area-inset-top))',
+              paddingBottom: 'calc(64px + env(safe-area-inset-bottom))',
+            }}
+          >
             {activeTab === 'card' && <CardPage />}
             {activeTab === 'threads' && <ThreadsPage />}
             {activeTab === 'more' && <MorePage />}
@@ -100,9 +114,14 @@ export default function App() {
 
           {/* Mobile Bottom Tab Bar */}
           <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
-            <div className="h-8 bg-gradient-to-t from-background to-transparent" />
-            <div className="bg-background/85 backdrop-blur-2xl px-6 pb-safe pt-3 pointer-events-auto border-t border-border/50 shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-              <div className="flex items-center justify-between max-w-md mx-auto">
+            <div className="h-6 bg-gradient-to-t from-background/80 to-transparent" />
+            <nav
+              role="tablist"
+              aria-label="主导航"
+              className="bg-background/90 backdrop-blur-2xl px-2 pt-2 pointer-events-auto border-t border-border/50 shadow-[0_-8px_30px_rgba(0,0,0,0.04)]"
+              style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 8px)' }}
+            >
+              <div className="flex items-stretch justify-between max-w-md mx-auto">
                 {TAB_CONFIG.map(tab => (
                   <div key={tab.id} className="flex-1 flex justify-center">
                     <TabBtn
@@ -114,7 +133,7 @@ export default function App() {
                   </div>
                 ))}
               </div>
-            </div>
+            </nav>
           </div>
         </main>
       </div>
@@ -126,28 +145,31 @@ function TabBtn({ icon, label, active, onClick }: { icon: ReactNode; label: stri
   return (
     <button
       onClick={onClick}
-      className="relative flex flex-col items-center gap-1.5 px-4 py-2 rounded-2xl transition-all duration-400 ease-out group"
+      role="tab"
+      aria-selected={active}
+      aria-label={label}
+      className="tap-target relative flex flex-col items-center justify-center gap-1 px-4 py-1.5 rounded-2xl transition-all duration-300 ease-out group"
     >
       {/* Background Highlight */}
-      <div 
-        className={`absolute inset-0 rounded-2xl transition-all duration-400 ease-out ${
-          active ? 'bg-foreground/10 scale-100 opacity-100' : 'bg-foreground/0 scale-50 opacity-0 group-hover:bg-foreground/5 group-hover:scale-100 group-hover:opacity-100'
+      <div
+        className={`absolute inset-0 rounded-2xl transition-all duration-300 ease-out ${
+          active ? 'bg-foreground/10 scale-100 opacity-100' : 'bg-foreground/0 scale-50 opacity-0 group-active:bg-foreground/5 group-active:scale-100 group-active:opacity-100'
         }`}
       />
-      
+
       {/* Icon Container */}
-      <div 
-        className={`relative z-10 transition-all duration-400 ease-out ${
-          active ? 'text-foreground scale-110 -translate-y-0.5' : 'text-muted-foreground scale-100 translate-y-0 group-hover:text-foreground/80'
+      <div
+        className={`relative z-10 transition-all duration-300 ease-out ${
+          active ? 'text-foreground scale-110 -translate-y-0.5' : 'text-muted-foreground scale-100 translate-y-0 group-active:text-foreground/80'
         }`}
       >
         {icon}
       </div>
-      
+
       {/* Label Container */}
-      <div 
-        className={`relative z-10 text-[10px] font-bold tracking-wider transition-all duration-400 ease-out ${
-          active ? 'text-foreground opacity-100 translate-y-0' : 'text-muted-foreground opacity-70 translate-y-0.5 group-hover:opacity-90'
+      <div
+        className={`relative z-10 text-[10px] font-bold tracking-wider transition-all duration-300 ease-out ${
+          active ? 'text-foreground opacity-100 translate-y-0' : 'text-muted-foreground opacity-70 translate-y-0.5'
         }`}
       >
         {label}

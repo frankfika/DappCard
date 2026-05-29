@@ -8,102 +8,54 @@ const RPC_ENDPOINTS = {
   80002: 'https://rpc-amoy.polygon.technology',
 };
 
-const CONTRACT_ABI = [
-  {
-    inputs: [{ name: 'user', type: 'address' }],
-    name: 'getLatestProfile',
-    outputs: [{ name: '', type: 'string' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ name: 'user', type: 'address' }],
-    name: 'getUserEntries',
-    outputs: [
-      {
-        components: [
-          { name: 'contentType', type: 'string' },
-          { name: 'ipfsHash', type: 'string' },
-          { name: 'contentHash', type: 'bytes32' },
-          { name: 'timestamp', type: 'uint256' },
-          { name: 'chainId', type: 'uint256' },
-        ],
-        name: 'entries',
-        type: 'tuple[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ name: 'ipfsHash', type: 'string' }],
-    name: 'getEntry',
-    outputs: [
-      {
-        components: [
-          { name: 'contentType', type: 'string' },
-          { name: 'ipfsHash', type: 'string' },
-          { name: 'contentHash', type: 'bytes32' },
-          { name: 'timestamp', type: 'uint256' },
-          { name: 'chainId', type: 'uint256' },
-        ],
-        name: 'entry',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-];
+// 预计算的函数 selector（keccak256 前 4 字节）
+const FUNCTION_SELECTORS = {
+  getLatestProfile: '0xedb82346',
+  getUserEntries: '0x904181d0',
+  getEntry: '0xb319c9e4',
+};
 
-// 简单的 keccak256 方法名编码
-function encodeFunctionCall(methodName, params) {
-  // 小程序没有 ethers.js，用简单的 hex 编码
-  // 只支持 address 类型的单参数函数
-  if (params[0].type === 'address') {
-    const methodSig = methodName + '(address)';
-    // 简化的方法 ID：取前 8 个 hex 字符
-    const methodId = simpleHash(methodSig).slice(0, 8);
-    const paddedAddress = params[0].value.toLowerCase().replace('0x', '').padStart(64, '0');
-    return '0x' + methodId + paddedAddress;
-  }
-  if (params[0].type === 'string') {
-    // 字符串编码较复杂，小程序端暂不支持
-    return null;
-  }
-  return null;
+function encodeAddressParam(address) {
+  return address.toLowerCase().replace('0x', '').padStart(64, '0');
 }
 
-function simpleHash(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash + char) | 0;
+function encodeStringParam(str) {
+  // ABI encode string: offset (32 bytes) + length (32 bytes) + data (padded)
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(str);
+  const length = bytes.length;
+  // offset is always 32 (0x20) for a single dynamic param
+  const offsetHex = '0000000000000000000000000000000000000000000000000000000000000020';
+  const lengthHex = length.toString(16).padStart(64, '0');
+  let dataHex = '';
+  for (const b of bytes) {
+    dataHex += b.toString(16).padStart(2, '0');
   }
-  return Math.abs(hash).toString(16).padStart(64, '0');
+  // pad to 32-byte boundary
+  const padLength = Math.ceil(dataHex.length / 64) * 64;
+  dataHex = dataHex.padEnd(padLength, '0');
+  return offsetHex + lengthHex + dataHex;
 }
 
 function decodeStringResult(hex) {
-  if (!hex || hex === '0x' || hex.length < 130) return null;
+  if (!hex || hex === '0x' || hex.length < 130) return '';
   try {
     const offset = parseInt(hex.slice(2, 66), 16) * 2;
     const length = parseInt(hex.slice(66, 130), 16) * 2;
-    if (offset + 64 + length > hex.length * 2) return null;
-    const strHex = hex.slice(130 + offset, 130 + offset + length);
-    if (!strHex) return null;
+    const start = 130 + offset;
+    const strHex = hex.slice(start, start + length);
+    if (!strHex) return '';
     const bytes = [];
     for (let i = 0; i < strHex.length; i += 2) {
       bytes.push(parseInt(strHex.slice(i, i + 2), 16));
     }
     return new TextDecoder().decode(new Uint8Array(bytes));
   } catch {
-    return null;
+    return '';
   }
 }
 
 function getContractAddress(chainId) {
-  // 小程序端硬编码的测试网合约地址
-  // TODO: 部署后更新
   const addresses = {
     11155111: '0x0000000000000000000000000000000000000000',
     84532: '0x0000000000000000000000000000000000000000',
@@ -111,6 +63,30 @@ function getContractAddress(chainId) {
     80002: '0x0000000000000000000000000000000000000000',
   };
   return addresses[chainId] || null;
+}
+
+function makeEthCall(rpcUrl, to, data) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: rpcUrl,
+      method: 'POST',
+      header: { 'Content-Type': 'application/json' },
+      data: {
+        jsonrpc: '2.0',
+        id: Date.now(),
+        method: 'eth_call',
+        params: [{ to, data }, 'latest'],
+      },
+      success: (res) => {
+        if (res.statusCode === 200 && res.data && !res.data.error) {
+          resolve(res.data.result);
+        } else {
+          reject(res.data?.error || new Error('RPC call failed'));
+        }
+      },
+      fail: reject,
+    });
+  });
 }
 
 module.exports = {
@@ -125,25 +101,10 @@ module.exports = {
     }
 
     try {
-      const data = encodeFunctionCall('getLatestProfile', [{ type: 'address', value: walletAddress }]);
-      if (!data) return null;
-
-      const res = await wx.request({
-        url: rpcUrl,
-        method: 'POST',
-        header: { 'Content-Type': 'application/json' },
-        data: {
-          jsonrpc: '2.0',
-          id: 1,
-          method: 'eth_call',
-          params: [{ to: contractAddr, data }, 'latest'],
-        },
-      });
-
-      if (res.statusCode === 200 && res.data.result) {
-        return decodeStringResult(res.data.result);
-      }
-      return null;
+      const data = FUNCTION_SELECTORS.getLatestProfile + encodeAddressParam(walletAddress);
+      const result = await makeEthCall(rpcUrl, contractAddr, data);
+      const ipfsHash = decodeStringResult(result);
+      return ipfsHash || null;
     } catch (error) {
       console.error('getLatestProfile failed:', error);
       return null;
@@ -163,7 +124,9 @@ module.exports = {
 
     for (const url of gateways) {
       try {
-        const res = await wx.request({ url, timeout: 8000 });
+        const res = await new Promise((resolve, reject) => {
+          wx.request({ url, timeout: 8000, success: resolve, fail: reject });
+        });
         if (res.statusCode === 200 && res.data) {
           return res.data;
         }
@@ -185,30 +148,38 @@ module.exports = {
     }
 
     try {
-      const data = encodeFunctionCall('getUserEntries', [{ type: 'address', value: walletAddress }]);
-      if (!data) return [];
-
-      const res = await wx.request({
-        url: rpcUrl,
-        method: 'POST',
-        header: { 'Content-Type': 'application/json' },
-        data: {
-          jsonrpc: '2.0',
-          id: 1,
-          method: 'eth_call',
-          params: [{ to: contractAddr, data }, 'latest'],
-        },
-      });
-
-      if (res.statusCode === 200 && res.data.result) {
-        // 解码数组结果需要 ABI decoder，小程序端暂返回原始数据
-        // 实际项目中可以通过云函数做解码
-        return [{ rawResult: res.data.result }];
+      const data = FUNCTION_SELECTORS.getUserEntries + encodeAddressParam(walletAddress);
+      const result = await makeEthCall(rpcUrl, contractAddr, data);
+      if (result) {
+        return [{ rawResult: result }];
       }
       return [];
     } catch (error) {
       console.error('getUserEntries failed:', error);
       return [];
+    }
+  },
+
+  /**
+   * 获取单个条目详情
+   */
+  async getEntry(ipfsHash, chainId = 84532) {
+    const contractAddr = getContractAddress(chainId);
+    const rpcUrl = RPC_ENDPOINTS[chainId];
+    if (!contractAddr || !rpcUrl || !ipfsHash) {
+      return null;
+    }
+
+    try {
+      const data = FUNCTION_SELECTORS.getEntry + encodeStringParam(ipfsHash);
+      const result = await makeEthCall(rpcUrl, contractAddr, data);
+      if (result) {
+        return { rawResult: result };
+      }
+      return null;
+    } catch (error) {
+      console.error('getEntry failed:', error);
+      return null;
     }
   },
 };

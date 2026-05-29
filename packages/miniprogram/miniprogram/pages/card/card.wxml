@@ -1,0 +1,149 @@
+<view class="page">
+  <!-- Onboarding -->
+  <view wx:if="{{showOnboarding}}" class="onboarding">
+    <view class="onboarding-content">
+      <view wx:if="{{onboardingStep === 0}}">
+        <view class="onboarding-title">欢迎使用 DappCard</view>
+        <view class="onboarding-subtitle">创建你的 Web3 社交名片</view>
+        <input class="input" placeholder="你的名字" placeholder-style="color: #bbb;" value="{{onboardingName}}" bindinput="onOnboardingNameInput" />
+        <input class="input" placeholder="DappCard ID" placeholder-style="color: #bbb;" value="{{onboardingHandle}}" bindinput="onOnboardingHandleInput" />
+      </view>
+      <view wx:if="{{onboardingStep === 1}}">
+        <view class="onboarding-title">选择标签</view>
+        <view class="onboarding-subtitle">最多选 5 个，也可以自定义</view>
+        <view class="tag-grid">
+          <view wx:for="{{tagOptions}}" wx:key="*this" class="tag-item {{onboardingTags.includes(item) ? 'tag-active' : ''}}" bindtap="onOnboardingTagSelect" data-tag="{{item}}">{{item}}</view>
+        </view>
+        <view class="custom-tag-row">
+          <input class="custom-tag-input" placeholder="自定义标签..." placeholder-style="color: #bbb;" value="{{onboardingCustomTag}}" bindinput="onOnboardingCustomTagInput" />
+          <view class="custom-tag-btn {{onboardingCustomTag ? 'custom-tag-btn-active' : ''}}" bindtap="addOnboardingCustomTag">添加</view>
+        </view>
+      </view>
+      <view wx:if="{{onboardingStep === 2}}">
+        <view class="onboarding-title">完善资料</view>
+        <textarea class="textarea" placeholder="个人简介" placeholder-style="color: #bbb;" value="{{onboardingBio}}" bindinput="onOnboardingBioInput" />
+        <view class="section-title">Looking for</view>
+        <view class="option-list">
+          <view wx:for="{{lookingForOptions}}" wx:key="*this" class="option-item {{onboardingLookingFor === item ? 'option-active' : ''}}" bindtap="onOnboardingLookingSelect" data-item="{{item}}">{{item}}</view>
+        </view>
+        <view class="section-title">活动</view>
+        <view class="option-list">
+          <view wx:for="{{eventOptions}}" wx:key="*this" class="option-item {{onboardingEvent === item ? 'option-active' : ''}}" bindtap="onOnboardingEventSelect" data-item="{{item}}">{{item}}</view>
+        </view>
+      </view>
+      <button class="btn-primary" bindtap="nextOnboardingStep">{{onboardingStep >= 2 ? '完成' : '下一步'}}</button>
+    </view>
+  </view>
+
+  <!-- Main Card View -->
+  <view wx:if="{{isSetup && !showOnboarding}}" class="card-container">
+    <scroll-view scroll-y class="card-scroll">
+      <view class="card-inner">
+        <!-- Profile Header -->
+        <view class="profile-header">
+          <image class="avatar" src="{{profile.avatar ? profile.avatar : 'https://api.dicebear.com/7.x/notionists/png?seed=' + profile.name + '&backgroundColor=transparent'}}" mode="aspectFill" />
+          <view class="profile-name">{{profile.name}}</view>
+          <view wx:if="{{profile.handle}}" class="profile-handle">{{profile.handle}}</view>
+        </view>
+
+        <!-- Tags & Event -->
+        <view wx:if="{{profile.event || (profile.tags && profile.tags.length > 0)}}" class="tags-wrap" bindtap="openEdit">
+          <view wx:if="{{profile.event}}" class="profile-tag">📍 {{profile.event}}</view>
+          <view wx:for="{{profile.tags}}" wx:key="label" class="profile-tag">{{item.label}}</view>
+          <view class="profile-tag profile-tag-add">+ 编辑</view>
+        </view>
+
+        <!-- Bio -->
+        <view wx:if="{{profile.bio}}" class="bio-card">
+          <text class="bio-text">{{profile.bio}}</text>
+        </view>
+
+        <!-- Looking For -->
+        <view wx:if="{{profile.lookingFor}}" class="looking-card">
+          <view class="looking-icon">⚡</view>
+          <view class="looking-content">
+            <view class="looking-label">LOOKING FOR</view>
+            <view class="looking-value">{{profile.lookingFor}}</view>
+          </view>
+        </view>
+
+        <!-- Verified -->
+        <view wx:if="{{profile.verified && (profile.verified.wallet || profile.verified.twitter || profile.verified.discord)}}" class="verified-card">
+          <view wx:if="{{profile.verified.wallet}}" class="verified-item">
+            <view class="verified-icon">👛</view>
+            <view class="verified-label">Wallet</view>
+          </view>
+          <view wx:if="{{profile.verified.twitter}}" class="verified-item">
+            <view class="verified-icon">𝕏</view>
+            <view class="verified-label">X</view>
+          </view>
+          <view wx:if="{{profile.verified.discord}}" class="verified-item">
+            <view class="verified-icon">💬</view>
+            <view class="verified-label">Discord</view>
+          </view>
+        </view>
+
+        <!-- Highlights -->
+        <view wx:if="{{profile.highlights && profile.highlights.length > 0}}" class="highlights-wrap">
+          <view class="section-label">HIGHLIGHTS</view>
+          <view wx:for="{{profile.highlights}}" wx:key="id" class="highlight-item">
+            <view class="highlight-icon">{{item.icon}}</view>
+            <view class="highlight-title">{{item.title}}</view>
+          </view>
+        </view>
+
+        <!-- Moment Preview -->
+        <view wx:if="{{profile.latestMoment}}" class="moment-preview">
+          <view class="moment-header">
+            <view class="moment-icon">✨</view>
+            <view class="moment-title">最新动态</view>
+          </view>
+          <view class="moment-content">{{profile.latestMoment}}</view>
+        </view>
+      </view>
+      <view class="bottom-space" />
+    </scroll-view>
+
+    <!-- Actions -->
+    <view class="action-bar" wx:if="{{!isEditing}}">
+      <button wx:if="{{!isSharedView}}" class="btn-secondary" bindtap="openEdit">编辑名片</button>
+      <button wx:if="{{!isSharedView}}" class="btn-primary" open-type="share">分享我的名片</button>
+      <button wx:if="{{isSharedView}}" class="btn-primary btn-cta" bindtap="goHome">✨ 一键创建我的 Web3 社交名片</button>
+    </view>
+  </view>
+
+  <!-- Share Canvas -->
+  <canvas type="2d" id="shareCanvas" style="width: 750px; height: 600px; position: fixed; top: -9999px; left: -9999px;"></canvas>
+
+  <!-- Edit Modal -->
+  <view wx:if="{{isEditing}}" class="modal-overlay" bindtap="closeEdit">
+    <view class="modal-sheet" catchtap="noop">
+      <view class="modal-header">
+        <view class="modal-close" bindtap="closeEdit">✕</view>
+        <view class="modal-title">编辑名片</view>
+        <view class="modal-save" bindtap="saveEdit">保存</view>
+      </view>
+      <scroll-view scroll-y class="modal-body">
+        <input class="input" placeholder="名字" placeholder-style="color: #bbb;" value="{{editName}}" bindinput="onEditNameInput" />
+        <input class="input" placeholder="DappCard ID" placeholder-style="color: #bbb;" value="{{editHandle}}" bindinput="onEditHandleInput" />
+        <textarea class="textarea" placeholder="个人简介" placeholder-style="color: #bbb;" value="{{editBio}}" bindinput="onEditBioInput" />
+        <view class="section-title">标签（最多5个）</view>
+        <view class="tag-grid">
+          <view wx:for="{{tagOptions}}" wx:key="*this" class="tag-item {{editTags.includes(item) ? 'tag-active' : ''}}" bindtap="onEditTagSelect" data-tag="{{item}}">{{item}}</view>
+        </view>
+        <view class="custom-tag-row">
+          <input class="custom-tag-input" placeholder="自定义标签..." placeholder-style="color: #bbb;" value="{{editCustomTag}}" bindinput="onEditCustomTagInput" />
+          <view class="custom-tag-btn {{editCustomTag ? 'custom-tag-btn-active' : ''}}" bindtap="addEditCustomTag">添加</view>
+        </view>
+        <view class="section-title">Looking for</view>
+        <view class="option-list">
+          <view wx:for="{{lookingForOptions}}" wx:key="*this" class="option-item {{editLookingFor === item ? 'option-active' : ''}}" bindtap="onEditLookingSelect" data-item="{{item}}">{{item}}</view>
+        </view>
+        <view class="section-title">活动</view>
+        <view class="option-list">
+          <view wx:for="{{eventOptions}}" wx:key="*this" class="option-item {{editEvent === item ? 'option-active' : ''}}" bindtap="onEditEventSelect" data-item="{{item}}">{{item}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

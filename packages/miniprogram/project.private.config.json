@@ -1,6 +1,6 @@
 {
   "libVersion": "3.13.1",
-  "projectname": "couple-cards",
+  "projectname": "miniprogram",
   "setting": {
     "urlCheck": true,
     "coverView": true,
@@ -18,17 +18,5 @@
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true
   },
-  "condition": {
-    "miniprogram": {
-      "list": [
-        {
-          "name": "pages/index/index",
-          "pathName": "pages/index/index",
-          "query": "",
-          "scene": null,
-          "launchMode": "default"
-        }
-      ]
-    }
-  }
+  "condition": {}
 }

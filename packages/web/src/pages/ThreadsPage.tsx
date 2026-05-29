@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThumbsUp, Share2, Plus, X, Image as ImageIcon, MoreHorizontal } from 'lucide-react';
 import { useProfile } from '../store';
+import { emit as chainEmit } from '../lib/chain/chain';
+import ProofPill from '../components/chain/ProofPill';
 
 const TAGS = ['All', 'Work', 'Life', 'Web3', 'Thoughts'];
 
@@ -18,6 +20,7 @@ interface Thread {
   likes: number;
   timestamp: string;
   isLiked: boolean;
+  proofId?: string;
 }
 
 const MOCK_THREADS: Thread[] = [
@@ -54,6 +57,7 @@ export default function ThreadsPage() {
   const [activeTag, setActiveTag] = useState('All');
   const [threads, setThreads] = useState(MOCK_THREADS);
   const [isPublishing, setIsPublishing] = useState(false);
+  const isSharedView = new URLSearchParams(window.location.search).has('c');
 
   const filteredThreads = activeTag === 'All' 
     ? threads 
@@ -144,29 +148,34 @@ export default function ThreadsPage() {
             )}
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-4 items-center">
               {thread.tags.map(tag => (
                 <span key={tag} className="text-[12px] font-semibold text-muted-foreground bg-secondary px-2 py-1 rounded-md">
                   #{tag}
                 </span>
               ))}
+              {thread.proofId && (
+                <ProofPill hash={thread.proofId} variant="subtle" label="" />
+              )}
             </div>
 
             {/* Interactions - No Comments */}
-            <div className="flex items-center gap-6 border-t border-border pt-3">
-              <button 
-                onClick={() => handleLike(thread.id)}
-                className={`flex items-center gap-1.5 transition-colors ${thread.isLiked ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <ThumbsUp className={`w-5 h-5 ${thread.isLiked ? 'fill-current' : ''}`} />
-                <span className="text-[13px] font-medium">{thread.likes > 0 ? thread.likes : 'Like'}</span>
-              </button>
-              
-              <button className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
-                <Share2 className="w-5 h-5" />
-                <span className="text-[13px] font-medium">Share</span>
-              </button>
-            </div>
+            {!isSharedView && (
+              <div className="flex items-center gap-6 border-t border-border pt-3">
+                <button 
+                  onClick={() => handleLike(thread.id)}
+                  className={`flex items-center gap-1.5 transition-colors ${thread.isLiked ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                >
+                  <ThumbsUp className={`w-5 h-5 ${thread.isLiked ? 'fill-current' : ''}`} />
+                  <span className="text-[13px] font-medium">{thread.likes > 0 ? thread.likes : 'Like'}</span>
+                </button>
+                
+                <button className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+                  <Share2 className="w-5 h-5" />
+                  <span className="text-[13px] font-medium">Share</span>
+                </button>
+              </div>
+            )}
           </motion.div>
         ))}
         
@@ -175,14 +184,18 @@ export default function ThreadsPage() {
       </div>
 
       {/* Floating Action Button */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsPublishing(true)}
-        className="fixed right-6 bottom-28 md:bottom-8 w-14 h-14 bg-foreground text-background rounded-full shadow-lg flex items-center justify-center z-20"
-      >
-        <Plus className="w-6 h-6" />
-      </motion.button>
+      {!isSharedView && (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsPublishing(true)}
+          aria-label="发布动态"
+          className="tap-target fixed right-5 sm:right-6 w-14 h-14 bg-foreground text-background rounded-full shadow-lg flex items-center justify-center z-20"
+          style={{ bottom: 'calc(80px + env(safe-area-inset-bottom))' }}
+        >
+          <Plus className="w-6 h-6" />
+        </motion.button>
+      )}
 
       {/* Publish Modal/Drawer */}
       <AnimatePresence>
@@ -206,11 +219,20 @@ function PublishModal({ onClose, onPublish }: { onClose: () => void, onPublish: 
   const [selectedTag, setSelectedTag] = useState(TAGS[1]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     if (!content.trim() && imagePreviews.length === 0) return;
-    
+
+    const id = Date.now().toString();
+    let proofId: string | undefined;
+    try {
+      const tx = await chainEmit('thread.publish', {
+        id, len: content.length, images: imagePreviews.length, tag: selectedTag,
+      });
+      proofId = tx.tx.id;
+    } catch {}
+
     onPublish({
-      id: Date.now().toString(),
+      id,
       author: {
         name: profile.name || 'Anonymous',
         avatar: profile.avatar || 'https://api.dicebear.com/7.x/notionists/svg?seed=fallback&backgroundColor=transparent',
@@ -221,7 +243,8 @@ function PublishModal({ onClose, onPublish }: { onClose: () => void, onPublish: 
       tags: [selectedTag],
       likes: 0,
       timestamp: 'Just now',
-      isLiked: false
+      isLiked: false,
+      proofId,
     });
   };
 
